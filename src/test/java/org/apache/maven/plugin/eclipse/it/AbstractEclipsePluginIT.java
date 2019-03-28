@@ -96,12 +96,12 @@ public abstract class AbstractEclipsePluginIT
     /**
      * Group-Id for running test builds.
      */
-    protected static final String GROUP_ID = "org.apache.maven.plugins";
+    protected static final String GROUP_ID = "com.github.marschall";
 
     /**
      * Artifact-Id for running test builds.
      */
-    protected static final String ARTIFACT_ID = "maven-eclipse-plugin";
+    protected static final String ARTIFACT_ID = "eclipse-maven-plugin";
 
     /**
      * Version under which the plugin was installed to the test-time local repository for running test builds.
@@ -340,7 +340,7 @@ public abstract class AbstractEclipsePluginIT
         MavenProject project = readProject( pom );
 
         String outputDirPath =
-            IdeUtils.getPluginSetting( project, "org.apache.maven.plugins:maven-eclipse-plugin", "outputDir", null );
+            IdeUtils.getPluginSetting( project, "com.github.marschall:eclipse-maven-plugin", "outputDir", null );
         File projectOutputDir = basedir;
 
         if ( outputDirPath != null )
@@ -404,7 +404,7 @@ public abstract class AbstractEclipsePluginIT
         MavenProject project = readProject( pom );
 
         String outputDirPath =
-            IdeUtils.getPluginSetting( project, "org.apache.maven.plugins:maven-eclipse-plugin", "outputDir", null );
+            IdeUtils.getPluginSetting( project, "com.github.marschall:eclipse-maven-plugin", "outputDir", null );
         File outputDir;
         File projectOutputDir = basedir;
 

@@ -30,7 +30,7 @@ under the License.
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.0</version>
+      <version>3.8.2</version>
     </dependency>
   </dependencies>
   <build>
@@ -44,8 +44,8 @@ under the License.
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
+        <groupId>com.github.marschall</groupId>
+        <artifactId>eclipse-maven-plugin</artifactId>
         <version>test</version>
         <configuration>
           <workspace>${basedir}/../../eclipse/workspaceDoesNotExist</workspace>

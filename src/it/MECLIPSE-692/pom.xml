@@ -28,8 +28,8 @@ under the License.
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
+        <groupId>com.github.marschall</groupId>
+        <artifactId>eclipse-maven-plugin</artifactId>
         <version>@project.version@</version>
         <executions>
           <execution>

@@ -343,8 +343,8 @@ public class EclipsePlugin
      * 
      * <pre>
      * &lt;plugin&gt;
-     *  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-     *  &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
+     *  &lt;groupId&gt;com.github.marschall&lt;/groupId&gt;
+     *  &lt;artifactId&gt;eclipse-maven-plugin&lt;/artifactId&gt;
      *  &lt;configuration&gt;
      *   &lt;additionalConfig&gt;
      *    &lt;file&gt;
@@ -367,8 +367,8 @@ public class EclipsePlugin
      * 
      * <pre>
      * &lt;plugin&gt;
-     *  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-     *  &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
+     *  &lt;groupId&gt;com.github.marschall&lt;/groupId&gt;
+     *  &lt;artifactId&gt;eclipse-maven-plugin&lt;/artifactId&gt;
      *  &lt;configuration&gt;
      *   &lt;additionalConfig&gt;
      *    &lt;file&gt;
@@ -383,8 +383,8 @@ public class EclipsePlugin
      * 
      * <pre>
      * &lt;plugin&gt;
-     *  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-     *  &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
+     *  &lt;groupId&gt;com.github.marschall&lt;/groupId&gt;
+     *  &lt;artifactId&gt;eclipse-maven-plugin&lt;/artifactId&gt;
      *  &lt;configuration&gt;
      *   &lt;additionalConfig&gt;
      *    &lt;file&gt;
@@ -543,8 +543,8 @@ public class EclipsePlugin
      * 
      * <pre>
      * &lt;plugin&gt;
-     *   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-     *   &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
+     *   &lt;groupId&gt;com.github.marschall&lt;/groupId&gt;
+     *   &lt;artifactId&gt;eclipse-maven-plugin&lt;/artifactId&gt;
      *   &lt;configuration&gt; 
      *     &lt;linkedResources&gt; 
      *       &lt;linkedResource&gt;
@@ -1990,7 +1990,7 @@ public class EclipsePlugin
         Build build = mavenProject.getBuild();
         if ( build != null )
         {
-            String eclipsePlugin = "org.apache.maven.plugins:maven-eclipse-plugin";
+            String eclipsePlugin = "com.github.marschall:eclipse-maven-plugin";
             Plugin plugin = (Plugin) build.getPluginsAsMap().get( eclipsePlugin );
             if ( plugin == null && build.getPluginManagement() != null )
             {
