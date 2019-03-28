@@ -595,57 +595,6 @@ public abstract class AbstractIdeSupportMojo
                                     || emittedReactorProjectId.add( art.getGroupId() + '-' + art.getArtifactId() ) ) )
                         {
 
-                            // the following doesn't work: art.getArtifactHandler().getPackaging() always returns "jar"
-                            // also
-                            // if the packaging specified in pom.xml is different.
-
-                            // osgi-bundle packaging is provided by the felix osgi plugin
-                            // eclipse-plugin packaging is provided by this eclipse plugin
-                            // String packaging = art.getArtifactHandler().getPackaging();
-                            // boolean isOsgiBundle = "osgi-bundle".equals( packaging ) || "eclipse-plugin".equals(
-                            // packaging );
-
-                            // we need to check the manifest, if "Bundle-SymbolicName" is there the artifact can be
-                            // considered
-                            // an osgi bundle
-                            boolean isOsgiBundle;
-                            String osgiSymbolicName = null;
-                            if ( art.getFile() != null )
-                            {
-                                JarFile jarFile = null;
-                                try
-                                {
-                                    jarFile = new JarFile( art.getFile(), false, ZipFile.OPEN_READ );
-
-                                    Manifest manifest = jarFile.getManifest();
-                                    if ( manifest != null )
-                                    {
-                                        osgiSymbolicName =
-                                            manifest.getMainAttributes().getValue( 
-                                                                       new Attributes.Name( "Bundle-SymbolicName" ) );
-                                    }
-                                }
-                                catch ( IOException e )
-                                {
-                                    getLog().info( "Unable to read jar manifest from " + art.getFile() );
-                                }
-                                finally
-                                {
-                                    if ( jarFile != null )
-                                    {
-                                        try
-                                        {
-                                            jarFile.close();
-                                        }
-                                        catch ( IOException e )
-                                        {
-                                            // ignore
-                                        }
-                                    }
-                                }
-                            }
-
-                            isOsgiBundle = osgiSymbolicName != null;
 
                             IdeDependency dep =
                                 new IdeDependency( art.getGroupId(), art.getArtifactId(), art.getVersion(),
@@ -654,8 +603,7 @@ public abstract class AbstractIdeSupportMojo
                                                    Artifact.SCOPE_SYSTEM.equals( art.getScope() ),
                                                    Artifact.SCOPE_PROVIDED.equals( art.getScope() ),
                                                    art.getArtifactHandler().isAddedToClasspath(), art.getFile(),
-                                                   art.getType(), isOsgiBundle, osgiSymbolicName, dependencyDepth,
-                                                   getProjectNameForArifact( art ) );
+                                                   art.getType(), dependencyDepth, getProjectNameForArifact( art ) );
                             // no duplicate entries allowed. System paths can cause this problem.
                             if ( !dependencies.contains( dep ) )
                             {

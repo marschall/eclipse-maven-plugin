@@ -126,8 +126,6 @@ public class EclipseWriterConfig
      */
     private float wtpVersion;
 
-    private float ajdtVersion;
-
     private WorkspaceConfiguration workspaceConfiguration;
 
     private List linkedResources;
@@ -486,26 +484,6 @@ public class EclipseWriterConfig
     public void setWtpVersion( float wtpVersion )
     {
         this.wtpVersion = wtpVersion;
-    }
-
-    /**
-     * Returns the ajdtVersion.
-     * 
-     * @return the ajdtVersion.
-     */
-    public float getAjdtVersion()
-    {
-        return ajdtVersion;
-    }
-
-    /**
-     * Sets the ajdtVersion.
-     * 
-     * @param ajdtVersion the ajdtVersion.
-     */
-    public void setAjdtVersion( float ajdtVersion )
-    {
-        this.ajdtVersion = ajdtVersion;
     }
 
     /**

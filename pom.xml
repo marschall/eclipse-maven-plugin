@@ -167,16 +167,6 @@ under the License.
       <version>1.0-alpha-7</version>
     </dependency>
     <dependency>
-      <groupId>biz.aQute</groupId>
-      <artifactId>bndlib</artifactId>
-      <version>0.0.145</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.shared</groupId>
-      <artifactId>maven-osgi</artifactId>
-      <version>0.2.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>resources</artifactId>
       <version>3.3.0-v20070604</version>

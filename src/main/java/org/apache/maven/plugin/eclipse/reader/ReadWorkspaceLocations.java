@@ -390,7 +390,7 @@ public class ReadWorkspaceLocations
             logger.debug( "found workspace artefact " + group + ":" + artifact + ":" + version + " " + packaging + " ("
                 + eclipseProjectName + ")" + " -> " + projectLocation.getAbsolutePath() );
             return new IdeDependency( group, artifact, version, packaging, true, false, false, false, false, null,
-                                      packaging, false, null, 0, eclipseProjectName );
+                                      packaging, 0, eclipseProjectName );
         }
         else
         {

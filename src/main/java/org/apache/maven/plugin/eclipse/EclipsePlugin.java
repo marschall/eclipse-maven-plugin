@@ -42,9 +42,7 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.eclipse.reader.ReadWorkspaceLocations;
-import org.apache.maven.plugin.eclipse.writers.EclipseAjdtWriter;
 import org.apache.maven.plugin.eclipse.writers.EclipseClasspathWriter;
-import org.apache.maven.plugin.eclipse.writers.EclipseManifestWriter;
 import org.apache.maven.plugin.eclipse.writers.EclipseProjectWriter;
 import org.apache.maven.plugin.eclipse.writers.EclipseWriterConfig;
 import org.apache.maven.plugin.eclipse.writers.workspace.EclipseSettingsWriter;
@@ -100,26 +98,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 public class EclipsePlugin
     extends AbstractIdeSupportMojo
 {
-    private static final String WEAVE_DEPENDENCY = "weaveDependency";
-
-    private static final String WEAVE_DEPENDENCIES = "weaveDependencies";
-
-    private static final String ASPECT_LIBRARY = "aspectLibrary";
-
-    private static final String ASPECT_LIBRARIES = "aspectLibraries";
-
-    private static final String ASPECT_DIRECTORY = "aspectDirectory";
-
-    private static final String TEST_ASPECT_DIRECTORY = "testAspectDirectory";
-
-    private static final String ASPECTJ_MAVEN_PLUGIN = "aspectj-maven-plugin";
-
-    private static final String ORG_CODEHAUS_MOJO = "org.codehaus.mojo";
-
-    private static final String DEFAULT_TEST_ASPECT_DIRECTORY = "src/test/aspect";
-
-    private static final String DEFAULT_ASPECT_DIRECTORY = "src/main/aspect";
-
     private static final String NATURE_WST_FACET_CORE_NATURE = 
                     "org.eclipse.wst.common.project.facet.core.nature";
 
@@ -135,24 +113,16 @@ public class EclipsePlugin
 
     private static final String BUILDER_WST_FACET = "org.eclipse.wst.common.project.facet.core.builder";
 
-    private static final String BUILDER_AJDT_CORE_JAVA = "org.eclipse.ajdt.core.ajbuilder";
-
     private static final String NATURE_WST_MODULE_CORE_NATURE = "org.eclipse.wst.common.modulecore.ModuleCoreNature";
 
     private static final String NATURE_JDT_CORE_JAVA = "org.eclipse.jdt.core.javanature";
 
     private static final String NATURE_JEM_WORKBENCH_JAVA_EMF = "org.eclipse.jem.workbench.JavaEMFNature";
 
-    private static final String NATURE_AJDT_CORE_JAVA = "org.eclipse.ajdt.ui.ajnature";
-
     protected static final String COMMON_PATH_JDT_LAUNCHING_JRE_CONTAINER = "org.eclipse.jdt.launching.JRE_CONTAINER";
-
-    protected static final String ASPECTJ_RT_CONTAINER = "org.eclipse.ajdt.core.ASPECTJRT_CONTAINER";
 
     // warning, order is important for binary search
     public static final String[] WTP_SUPPORTED_VERSIONS = new String[] { "1.0", "1.5", "2.0", "R7", "none" };
-
-    public static final String ASPECTJ_FILE_PATTERN = "**/*.aj";
 
     public static final String JAVA_FILE_PATTERN = "**/*.java";
 
@@ -326,11 +296,6 @@ public class EclipsePlugin
     private String wtpContextName;
 
     /**
-     * Is it an AJDT project? If yes, the plugin adds the necessary natures and build commands to the .project file.
-     */
-    private boolean ajdt;
-
-    /**
      * The relative path of the manifest file
      */
     @Parameter( property = "eclipse.manifest", defaultValue = "${basedir}/META-INF/MANIFEST.MF" )
@@ -441,12 +406,6 @@ public class EclipsePlugin
     private boolean isJavaProject;
 
     /**
-     * Must the manifest files be written for java projects so that that the jee classpath for wtp is correct.
-     */
-    @Parameter( property = "eclipse.wtpmanifest", defaultValue = "false" )
-    private boolean wtpmanifest;
-
-    /**
      * Must the application files be written for ear projects in a separate directory.
      */
     @Parameter( property = "eclipse.wtpapplicationxml", defaultValue = "false" )
@@ -508,13 +467,6 @@ public class EclipsePlugin
     protected boolean limitProjectReferencesToWorkspace;
 
     /**
-     * The version of AJDT for which configuration files will be generated. The default value is "1.5", supported
-     * versions are "none" (AJDT support disabled), "1.4", and "1.5".
-     */
-    @Parameter( property = "eclipse.ajdtVersion", defaultValue = "none" )
-    private String ajdtVersion;
-
-    /**
      * List of exclusions to add to the source directories on the classpath. Adds excluding="" to the classpathentry of
      * the eclipse .classpath file. [MECLIPSE-104]
      *
@@ -528,8 +480,6 @@ public class EclipsePlugin
      * the eclipse .classpath file.
      * <p>
      * Java projects will always include "**&#47;*.java"
-     * <p>
-     * Ajdt projects will always include "**&#47;*.aj"
      * <p>
      * [MECLIPSE-104]
      * 
@@ -912,7 +862,6 @@ public class EclipsePlugin
         setProjectNameTemplate( IdeUtils.calculateProjectNameTemplate( getProjectNameTemplate(),
                                                                        isAddVersionToProjectName(),
                                                                        isAddGroupIdToProjectName(), getLog() ) );
-        ajdt = enableAjdt( executedProject ) && !ajdtVersion.equals( "none" );
         ready = validate();
 
         // TODO: Why are we using project in some places, and executedProject in others??
@@ -932,17 +881,11 @@ public class EclipsePlugin
         {
             sourceIncludes.add( JAVA_FILE_PATTERN );
         }
-        if ( ajdt )
-        {
-            sourceIncludes.add( ASPECTJ_FILE_PATTERN );
-        }
 
         if ( sourceExcludes == null )
         {
             sourceExcludes = new ArrayList();
         }
-
-        setupExtras();
 
         parseConfigurationOptions();
 
@@ -1041,19 +984,6 @@ public class EclipsePlugin
         }
     }
     // CHECKSTYLE_ON: MagicNumber
-
-    /**
-     * Extension point for subclasses.
-     * <p>
-     * Called during <code>setup</code>.
-     * 
-     * @throws MojoExecutionException mojo failures.
-     */
-    protected void setupExtras()
-        throws MojoExecutionException
-    {
-        // extension point.
-    }
 
     private void verifyClasspathContainerListIsComplete()
     {
@@ -1177,14 +1107,6 @@ public class EclipsePlugin
     {
         EclipseWriterConfig config = createEclipseWriterConfig( deps );
 
-        if ( wtpmanifest && isJavaProject() )
-        {
-            // NOTE: This could change the config!
-            EclipseManifestWriter.addManifestResource( getLog(), config );
-        }
-        // NOTE: This could change the config!
-        writeConfigurationExtras( config );
-
         // CHECKSTYLE_OFF: MagicNumber
         if ( wtpVersionFloat == 0.7f )
         {
@@ -1210,10 +1132,6 @@ public class EclipsePlugin
         if ( isJavaProject )
         {
             new EclipseClasspathWriter().init( getLog(), config ).write();
-            if ( ajdt && ajdtVersion.equals( "1.4" ) )
-            {
-                new EclipseAjdtWriter().init( getLog(), config ).write();
-            }
         }
 
         if ( wtpapplicationxml )
@@ -1368,19 +1286,7 @@ public class EclipsePlugin
 
         config.setWtpVersion( wtpVersionFloat );
 
-        float ajdtVersionFloat;
-        try
-        {
-            ajdtVersionFloat = Float.parseFloat( ajdtVersion );
-        }
-        catch ( NumberFormatException e )
-        {
-            ajdtVersionFloat = 0.0f;
-        }
-
-        config.setAjdtVersion( ajdtVersionFloat );
-
-        Set convertedBuildCommands = new LinkedHashSet();
+        Set<BuildCommand> convertedBuildCommands = new LinkedHashSet<>();
 
         if ( buildcommands != null )
         {
@@ -1397,13 +1303,7 @@ public class EclipsePlugin
             }
         }
 
-        if ( ajdt )
-        {
-            buildAjdtWeaveDeps( deps );
-            buildAspectjDeps( deps );
-        }
-
-        config.setBuildCommands( new LinkedList( convertedBuildCommands ) );
+        config.setBuildCommands( new LinkedList<>( convertedBuildCommands ) );
 
         config.setBuildOutputDirectory( buildOutputDirectory );
         config.setClasspathContainers( classpathContainers );
@@ -1488,20 +1388,6 @@ public class EclipsePlugin
         }
     }
 
-    /**
-     * Write any extra configuration information for the Eclipse project. This is an extension point, called before the
-     * main configurations are written. <br/>
-     * <b> NOTE: This could change the config! </b>
-     * 
-     * @param config
-     * @throws MojoExecutionException
-     */
-    protected void writeConfigurationExtras( EclipseWriterConfig config )
-        throws MojoExecutionException
-    {
-        // extension point.
-    }
-
     private void assertNotEmpty( String string, String elementName )
         throws MojoExecutionException
     {
@@ -1531,11 +1417,6 @@ public class EclipsePlugin
 
         if ( isJavaProject )
         {
-            if ( ajdt )
-            {
-                projectnatures.add( NATURE_AJDT_CORE_JAVA );
-            }
-
             projectnatures.add( NATURE_JDT_CORE_JAVA );
         }
 
@@ -1570,11 +1451,6 @@ public class EclipsePlugin
                                + getWorkspaceConfiguration().getDefaultClasspathContainer() );
             classpathContainers.add( getWorkspaceConfiguration().getDefaultClasspathContainer() );
         }
-
-        if ( ajdt )
-        {
-            classpathContainers.add( ASPECTJ_RT_CONTAINER );
-        }
     }
 
     /**
@@ -1597,14 +1473,7 @@ public class EclipsePlugin
 
         if ( isJavaProject )
         {
-            if ( ajdt )
-            {
-                buildcommands.add( new BuildCommand( BUILDER_AJDT_CORE_JAVA ) );
-            }
-            else
-            {
-                buildcommands.add( new BuildCommand( BUILDER_JDT_CORE_JAVA ) );
-            }
+            buildcommands.add( new BuildCommand( BUILDER_JDT_CORE_JAVA ) );
         }
 
         if ( wtpVersionFloat >= 1.5f )
@@ -1684,11 +1553,7 @@ public class EclipsePlugin
             directories.addAll( mainDirectories );
             directories.addAll( testDirectories );
         }
-        if ( ajdt )
-        {
-            extractAspectDirs( directories, project, basedir, projectBaseDir, testOutput );
-        }
-        return (EclipseSourceDir[]) directories.toArray( new EclipseSourceDir[directories.size()] );
+        return directories.toArray( new EclipseSourceDir[directories.size()] );
     }
 
     private void extractSourceDirs( Set directories, List sourceRoots, File basedir, File projectBaseDir, boolean test,
@@ -1809,145 +1674,6 @@ public class EclipsePlugin
             }
         }
         return null;
-    }
-
-    private void extractAspectDirs( Set directories, MavenProject project, File basedir, File projectBaseDir,
-                                    String testOutput )
-        throws MojoExecutionException
-    {
-        Xpp3Dom configuration = getAspectjConfiguration( project );
-        if ( configuration != null )
-        {
-            String aspectDirectory = DEFAULT_ASPECT_DIRECTORY;
-            Xpp3Dom aspectDirectoryElement = configuration.getChild( ASPECT_DIRECTORY );
-            if ( aspectDirectoryElement != null )
-            {
-                aspectDirectory = aspectDirectoryElement.getValue();
-            }
-
-            File aspectDirectoryFile = new File( basedir, aspectDirectory );
-            if ( aspectDirectoryFile.exists() && aspectDirectoryFile.isDirectory() )
-            {
-                String sourceRoot =
-                    IdeUtils.toRelativeAndFixSeparator( projectBaseDir, aspectDirectoryFile,
-                                                        !projectBaseDir.equals( basedir ) );
-
-                directories.add( new EclipseSourceDir( sourceRoot, null, false, false, sourceIncludes, sourceExcludes,
-                                                       false ) );
-            }
-
-            String testAspectDirectory = DEFAULT_TEST_ASPECT_DIRECTORY;
-            Xpp3Dom testAspectDirectoryElement = configuration.getChild( TEST_ASPECT_DIRECTORY );
-            if ( testAspectDirectoryElement != null )
-            {
-                testAspectDirectory = testAspectDirectoryElement.getValue();
-            }
-
-            File testAspectDirectoryFile = new File( basedir, testAspectDirectory );
-            if ( testAspectDirectoryFile.exists() && testAspectDirectoryFile.isDirectory() )
-            {
-                String sourceRoot =
-                    IdeUtils.toRelativeAndFixSeparator( projectBaseDir, testAspectDirectoryFile,
-                                                        !projectBaseDir.equals( basedir ) );
-
-                directories.add( new EclipseSourceDir( sourceRoot, testOutput, false, true, sourceIncludes,
-                                                       sourceExcludes, false ) );
-            }
-        }
-    }
-
-    private boolean enableAjdt( MavenProject project )
-    {
-        boolean enable = false;
-        List buildPlugins = project.getBuildPlugins();
-        for ( Object buildPlugin : buildPlugins )
-        {
-            Plugin plugin = (Plugin) buildPlugin;
-            if ( plugin.getGroupId().equals( ORG_CODEHAUS_MOJO )
-                && plugin.getArtifactId().equals( ASPECTJ_MAVEN_PLUGIN ) )
-            {
-                enable = true;
-                break;
-            }
-        }
-
-        return enable;
-    }
-
-    private Xpp3Dom getAspectjConfiguration( MavenProject project )
-    {
-        Xpp3Dom configuration = null;
-        List buildPlugins = project.getBuildPlugins();
-        for ( Object buildPlugin : buildPlugins )
-        {
-            Plugin plugin = (Plugin) buildPlugin;
-            if ( plugin.getGroupId().equals( ORG_CODEHAUS_MOJO )
-                && plugin.getArtifactId().equals( ASPECTJ_MAVEN_PLUGIN ) )
-            {
-                configuration = (Xpp3Dom) plugin.getConfiguration();
-                break;
-            }
-        }
-
-        return configuration;
-    }
-
-    private void buildAspectjDeps( IdeDependency[] deps )
-        throws MojoExecutionException
-    {
-        Xpp3Dom configuration = getAspectjConfiguration( executedProject );
-        if ( configuration != null )
-        {
-            Xpp3Dom aspectLibrariesParent = configuration.getChild( ASPECT_LIBRARIES );
-            if ( aspectLibrariesParent != null )
-            {
-                Xpp3Dom[] aspectLibraries = aspectLibrariesParent.getChildren( ASPECT_LIBRARY );
-                outerLoop: for ( Xpp3Dom aspectLibrary : aspectLibraries )
-                {
-                    String artifactId = aspectLibrary.getChild( POM_ELT_ARTIFACT_ID ).getValue();
-                    String groupId = aspectLibrary.getChild( POM_ELT_GROUP_ID ).getValue();
-                    for ( IdeDependency dep : deps )
-                    {
-                        if ( dep.getArtifactId().equals( artifactId ) && dep.getGroupId().equals( groupId ) )
-                        {
-                            dep.setAjdtDependency( true );
-                            continue outerLoop;
-                        }
-                    }
-
-                    throw new MojoExecutionException( "AspectLibrary is not a dependency of project" );
-                }
-            }
-        }
-    }
-
-    private void buildAjdtWeaveDeps( IdeDependency[] deps )
-        throws MojoExecutionException
-    {
-        Xpp3Dom configuration = getAspectjConfiguration( executedProject );
-        if ( configuration != null )
-        {
-            Xpp3Dom weaveDependenciesParent = configuration.getChild( WEAVE_DEPENDENCIES );
-            if ( weaveDependenciesParent != null )
-            {
-                Xpp3Dom[] weaveDependencies = weaveDependenciesParent.getChildren( WEAVE_DEPENDENCY );
-                outerLoop: for ( Xpp3Dom weaveDependency : weaveDependencies )
-                {
-                    String artifactId = weaveDependency.getChild( POM_ELT_ARTIFACT_ID ).getValue();
-                    String groupId = weaveDependency.getChild( POM_ELT_GROUP_ID ).getValue();
-                    for ( IdeDependency dep : deps )
-                    {
-                        if ( dep.getArtifactId().equals( artifactId ) && dep.getGroupId().equals( groupId ) )
-                        {
-                            dep.setAjdtWeaveDependency( true );
-                            continue outerLoop;
-                        }
-                    }
-
-                    throw new MojoExecutionException( "WeaveDependency is not a dependency of project" );
-                }
-            }
-        }
     }
 
     /**

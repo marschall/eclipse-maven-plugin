@@ -58,18 +58,6 @@ public class EclipseClasspathWriter
     /**
      *
      */
-    private static final String ORG_ECLIPSE_AJDT_INPATH = "org.eclipse.ajdt.inpath";
-
-    /**
-     *
-     */
-    private static final String ORG_ECLIPSE_AJDT_ASPECTPATH = "org.eclipse.ajdt.aspectpath";
-
-    private static final String ASPECTJRT_CONTAINER = "org.eclipse.ajdt.core.ASPECTJRT_CONTAINER";
-
-    /**
-     *
-     */
     private static final String NAME = "name";
 
     /**
@@ -510,16 +498,6 @@ public class EclipseClasspathWriter
 
         }
 
-        // Replace aspectJ runtime library with ajdt ASPECTJRT_CONTAINER.
-        if ( ( config.getAjdtVersion() != 0 ) && isAspectJRuntime( dep ) )
-        {
-            if ( !config.getClasspathContainers().contains( ASPECTJRT_CONTAINER ) )
-            {
-                config.getClasspathContainers().add( ASPECTJRT_CONTAINER );
-            }
-            return;
-        }
-
         writer.startElement( ELT_CLASSPATHENTRY );
         writer.addAttribute( ATTR_KIND, kind );
         writer.addAttribute( ATTR_PATH, path );
@@ -563,55 +541,11 @@ public class EclipseClasspathWriter
 
         }
 
-        // CHECKSTYLE_OFF: MagicNumber
-        if ( dep.isAjdtDependency() && ( config.getAjdtVersion() >= 1.5 ) )
-        {
-            if ( !attributeElemOpen )
-            {
-                writer.startElement( ATTRIBUTES );
-                attributeElemOpen = true;
-            }
-
-            writer.startElement( ATTRIBUTE );
-            writer.addAttribute( NAME, ORG_ECLIPSE_AJDT_ASPECTPATH );
-            writer.addAttribute( VALUE, Boolean.TRUE.toString() );
-            writer.endElement();
-        }
-        // CHECKSTYLE_ON: MagicNumber
-
-        // CHECKSTYLE_OFF: MagicNumber
-        if ( dep.isAjdtWeaveDependency() && ( config.getAjdtVersion() >= 1.5 ) )
-        {
-            if ( !attributeElemOpen )
-            {
-                writer.startElement( ATTRIBUTES );
-                attributeElemOpen = true;
-            }
-
-            writer.startElement( ATTRIBUTE );
-            writer.addAttribute( NAME, ORG_ECLIPSE_AJDT_INPATH );
-            writer.addAttribute( VALUE, Boolean.TRUE.toString() );
-            writer.endElement();
-        }
-        // CHECKSTYLE_ON: MagicNumber
-
         if ( attributeElemOpen )
         {
             writer.endElement();
         }
         writer.endElement();
 
-    }
-
-    /**
-     * @return
-     */
-    private boolean isAspectJRuntime( IdeDependency dep )
-    {
-        if ( dep.getArtifactId().equals( "aspectjrt" ) )
-        {
-            return dep.getGroupId().equals( "org.aspectj" ) || dep.getGroupId().equals( "aspectj" );
-        }
-        return false;
     }
 }

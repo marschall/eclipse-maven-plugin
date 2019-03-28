@@ -96,24 +96,9 @@ public class IdeDependency
     private String type;
 
     /**
-     * Does this artifact contains a OSGI Manifest?
-     */
-    private boolean osgiBundle;
-
-    /**
      * How is this dependency called when it is an eclipse project.
      */
     private String eclipseProjectName;
-
-    /**
-     * The ajdt weave dependency
-     */
-    private boolean ajdtWeaveDependency;
-
-    /**
-     * The ajdt dependency.
-     */
-    private boolean ajdtDependency;
 
     /**
      * Creates an uninitialized instance
@@ -134,15 +119,13 @@ public class IdeDependency
      * @param addedToClasspath Is this dependency added to classpath?
      * @param file Resolved artifact file
      * @param type Artifact type
-     * @param osgiBundle Does this artifact contains a OSGI Manifest?
-     * @param osgiSymbolicName Bundle-SymbolicName from the Manifest (if available)
      * @param dependencyDepth Depth of this dependency in the transitive dependency trail.
      * @param eclipseProjectName The name of the project in eclipse
      */
     public IdeDependency( String groupId, String artifactId, String version, String classifier,
                           boolean referencedProject, boolean testDependency, boolean systemScoped, boolean provided,
-                          boolean addedToClasspath, File file, String type, boolean osgiBundle,
-                          String osgiSymbolicName, int dependencyDepth, String eclipseProjectName )
+                          boolean addedToClasspath, File file, String type, int dependencyDepth,
+                          String eclipseProjectName )
     {
         // group:artifact:version
         this.groupId = groupId;
@@ -158,7 +141,6 @@ public class IdeDependency
         this.addedToClasspath = addedToClasspath;
 
         // needed for OSGI support
-        this.osgiBundle = osgiBundle;
         // file and type
         this.file = file;
         this.type = type;
@@ -273,16 +255,6 @@ public class IdeDependency
     public boolean isReferencedProject()
     {
         return referencedProject;
-    }
-
-    /**
-     * Getter for <code>osgiBundle</code>.
-     * 
-     * @return Returns the osgiBundle.
-     */
-    public boolean isOsgiBundle()
-    {
-        return osgiBundle;
     }
 
     /**
@@ -463,46 +435,6 @@ public class IdeDependency
     public void setEclipseProjectName( String eclipseProjectName )
     {
         this.eclipseProjectName = eclipseProjectName;
-    }
-
-    /**
-     * Returns the ajdtWeaveDependency.
-     * 
-     * @return the ajdtWeaveDependency.
-     */
-    public boolean isAjdtWeaveDependency()
-    {
-        return ajdtWeaveDependency;
-    }
-
-    /**
-     * Sets the ajdtWeaveDependency.
-     * 
-     * @param ajdtWeaveDependency the ajdtWeaveDependency.
-     */
-    public void setAjdtWeaveDependency( boolean ajdtWeaveDependency )
-    {
-        this.ajdtWeaveDependency = ajdtWeaveDependency;
-    }
-
-    /**
-     * Returns the ajdtDependency.
-     * 
-     * @return the ajdtDependency.
-     */
-    public boolean isAjdtDependency()
-    {
-        return ajdtDependency;
-    }
-
-    /**
-     * Sets the ajdtDependency.
-     * 
-     * @param ajdtDependency the ajdtDependency.
-     */
-    public void setAjdtDependency( boolean ajdtDependency )
-    {
-        this.ajdtDependency = ajdtDependency;
     }
 
     /**

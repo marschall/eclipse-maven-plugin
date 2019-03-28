@@ -50,42 +50,8 @@ ${project.name}
   * {{{./eclipse-mojo.html}eclipse:eclipse}} generates the Eclipse configuration
   files.
 
-  * {{{./resolve-workspace-dependencies-mojo.html}eclipse:resolve-workspace-dependencies}} is used to download
-  all missing M2_REPO classpath variable elements for all projects in a workspace. Used if the Eclipse project
-  configuration files are committed to version control and other users need to resolve new artifacts after an
-  update.
-
   * {{{./clean-mojo.html}eclipse:clean}} is used to delete the files used by the
   Eclipse IDE.
-
-** Specific goals
-
-*** Specific goals for PDE developments
-
-  * {{{./to-maven-mojo.html}eclipse:to-maven}} Add eclipse artifacts from an eclipse installation
-  to the local repo. This mojo automatically analize the eclipse directory, copy plugins jars
-  to the local maven repo, and generates appropriate poms. This is the official central repository
-  builder for Eclipse plugins, so it has the necessary default values. For customized repositories
-  see {{{./make-artifacts-mojo.html}eclipse:make-artifacts}}.
-
-  * {{{./install-plugins-mojo.html}eclipse:install-plugins}} installs all resolved project
-  dependencies of a particular type (usually 'eclipse-plugin') into the specified Eclipse
-  installation directory.
-
-  * {{{./make-artifacts-mojo.html}eclipse:make-artifacts}} copies all Eclipse plugins from an
-  installation directory to the local repository, generating POMs for each.
-
-*** Specific goals to support myeclipse
-
-  * {{{./myeclipse-mojo.html}eclipse:myeclipse}} Generates the MyEclipse configuration files.
-
-  * {{{./myeclipse-clean-mojo.html}eclipse:myeclipse-clean}} Deletes the config files used by MyEclipse.
-
-*** Specific goals to support RAD v6
-
-  * {{{./rad-mojo.html}eclipse:rad}} Generates the Rad-6 configuration files.
-
-  * {{{./rad-clean-mojo.html}eclipse:rad-clean}} Deletes the config files used by Rad-6.
 
 * Usage
 

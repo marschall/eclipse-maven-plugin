@@ -56,27 +56,7 @@ generatedFiles = new String[] {
     // EclipseProjectWriter
     ".project",
     // EclipseSettingsWriter
-    ".settings/org.eclipse.jdt.core.prefs",
-    // MyEclipseHibernateWriter
-    ".myhibernatedata",
-    // MyEclipseMetadataWriter
-    ".mymetadata",
-    // MyEclipseSpringBeansWriter
-    ".springBeans",
-    // MyEclipseStrutsDataWriter
-    ".mystrutsdata",
-    // RadApplicationXMLWriter
-    "META-INF/application.xml", 
-    "META-INF/.modulemaps",    
-    // RadEjbClasspathWriter
-    "target/websphere/generated-classes/.classpath",
-    // RadJ2EEWriter
-    ".j2ee",
-    // RadLibCopier - copies libraries no way to check
-    // RadWebSettingsWriter
-    ".websettings",
-    // RadWebsiteConfigWriter
-    ".website-config"
+    ".settings/org.eclipse.jdt.core.prefs"
     };
 
 assert( boolean condition ) 
@@ -144,16 +124,8 @@ walker = new DirectoryWalker() {
         walk( startDirectory, results );
         return results;
     }
-    
-    checkDirectoryFilter() {
-        assert( !directoryFilter.accept( new File( "target/test-classes/projects/project-rad-5/project-rad-2/src") ) );
-        assert( !directoryFilter.accept( new File( "target/test-classes/projects/project-rad-5/project-rad-2/expected") ) );
-        assert( !directoryFilter.accept( new File( "target/test-classes/projects/project-rad-5/project-rad-2/target") ) );
-        assert( directoryFilter.accept( new File( "target/test-classes/projects/project-rad-8/src/main/webapp") ) );
-    }
 
 };
-walker.checkDirectoryFilter();
 project.log( "Checking for generated files that do not have an integration test file to verify against...", project.MSG_INFO );
 missingExpectedFiles = walker.find( integrationTestProjects_target );
 if ( missingExpectedFiles.isEmpty() ) {
