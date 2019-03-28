@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -42,6 +43,7 @@ public class EclipsePluginUnitTest
 
     private TestFileManager fileManager = new TestFileManager( "EclipsePlugin.unitTest.", "" );
 
+    @Override
     public void tearDown()
         throws IOException
     {
@@ -90,12 +92,12 @@ public class EclipsePluginUnitTest
 
         EclipsePlugin mojo = newMojo();
 
-        ArrayList sourceIncludes = new ArrayList();
+        List<String> sourceIncludes = new ArrayList<>();
         Field field = EclipsePlugin.class.getDeclaredField( "sourceIncludes" );
         field.setAccessible( true );
         field.set( mojo, sourceIncludes );
 
-        ArrayList sourceExcludes = new ArrayList();
+        List<String> sourceExcludes = new ArrayList<>();
         field = EclipsePlugin.class.getDeclaredField( "sourceExcludes" );
         field.setAccessible( true );
         field.set( mojo, sourceExcludes );
@@ -133,18 +135,18 @@ public class EclipsePluginUnitTest
 
         MavenProject project = new MavenProject( model );
 
-        Set result = new LinkedHashSet();
+        Set<EclipseSourceDir> result = new LinkedHashSet<>();
 
         EclipsePlugin plugin = newMojo();
 
         plugin.extractResourceDirs( result, project.getBuild().getResources(), basedir, basedir, false,
                                     "target/classes" );
 
-        Iterator resultIter = result.iterator();
+        Iterator<EclipseSourceDir> resultIter = result.iterator();
 
         assertEquals( "too many resource entries added.", 1, result.size() );
 
-        String path = ( (EclipseSourceDir) resultIter.next() ).getOutput();
+        String path = resultIter.next().getOutput();
 
         String prefix = "target/classes/";
 
@@ -174,17 +176,17 @@ public class EclipsePluginUnitTest
 
         MavenProject project = new MavenProject( model );
 
-        Set result = new LinkedHashSet();
+        Set<EclipseSourceDir> result = new LinkedHashSet<>();
 
         EclipsePlugin plugin = newMojo();
 
         plugin.extractResourceDirs( result, project.getBuild().getTestResources(), basedir, basedir, false, resOutput );
 
-        Iterator resultIter = result.iterator();
+        Iterator<EclipseSourceDir> resultIter = result.iterator();
 
         assertEquals( "should have added 1 resource.", 1, result.size() );
 
-        String path = ( (EclipseSourceDir) resultIter.next() ).getOutput();
+        String path = resultIter.next().getOutput();
 
         assertEquals( resOutput, path );
     }
@@ -232,18 +234,18 @@ public class EclipsePluginUnitTest
 
         MavenProject project = new MavenProject( model );
 
-        Set result = new LinkedHashSet();
+        Set<EclipseSourceDir> result = new LinkedHashSet<>();
 
         EclipsePlugin plugin = newMojo();
 
         plugin.extractResourceDirs( result, project.getBuild().getResources(), basedir, workspaceProjectBasedir, false,
                                     "target/classes" );
 
-        Iterator resultIter = result.iterator();
+        Iterator<EclipseSourceDir> resultIter = result.iterator();
 
         assertEquals( "too many resource entries added.", 1, result.size() );
 
-        String path = ( (EclipseSourceDir) resultIter.next() ).getPath();
+        String path = resultIter.next().getPath();
 
         if ( !basedir.equals( workspaceProjectBasedir ) )
         {
@@ -259,7 +261,7 @@ public class EclipsePluginUnitTest
 
         assertEquals( "too many test-resource entries added.", 2, result.size() );
 
-        path = ( (EclipseSourceDir) resultIter.next() ).getPath();
+        path = resultIter.next().getPath();
 
         if ( !basedir.equals( workspaceProjectBasedir ) )
         {

@@ -148,7 +148,7 @@ public class EclipsePlugin
      * </pre>
      */
     @Parameter
-    private List projectnatures;
+    private List<String> projectnatures;
 
     /**
      * List of artifacts, represented as <code>groupId:artifactId</code>, to exclude from the eclipse classpath, being
@@ -158,7 +158,7 @@ public class EclipsePlugin
      * @since 2.5
      */
     @Parameter
-    private List excludes;
+    private List<String> excludes;
 
     /**
      * List of eclipse project natures to be added to the default ones.
@@ -170,7 +170,7 @@ public class EclipsePlugin
      * </pre>
      */
     @Parameter
-    private List additionalProjectnatures;
+    private List<String> additionalProjectnatures;
 
     /**
      * List of eclipse project facets to be added to the default ones.
@@ -182,7 +182,7 @@ public class EclipsePlugin
      * </pre>
      */
     @Parameter
-    private Map additionalProjectFacets;
+    private Map<String, String> additionalProjectFacets;
 
     // CHECKSTYLE_OFF: LineLength
     /**
@@ -251,13 +251,14 @@ public class EclipsePlugin
      */
     // CHECKSTYLE_ON: LineLength
     @Parameter
-    private List classpathContainers;
+    private List<String> classpathContainers;
 
     /**
      * Enables/disables the downloading of source attachments. Defaults to false. DEPRECATED - use downloadSources
      *
      * @deprecated use downloadSources
      */
+    @Deprecated
     @Parameter( property = "eclipse.downloadSources" )
     private boolean eclipseDownloadSources;
 
@@ -473,7 +474,7 @@ public class EclipsePlugin
      * @since 2.6.1
      */
     @Parameter
-    private List sourceExcludes;
+    private List<String> sourceExcludes;
 
     /**
      * List of inclusions to add to the source directories on the classpath. Adds including="" to the classpathentry of
@@ -486,7 +487,7 @@ public class EclipsePlugin
      * @since 2.6.1
      */
     @Parameter
-    private List sourceIncludes;
+    private List<String> sourceIncludes;
 
     /**
      * A list of links to local files in the system. A configuration like this one in the pom :
@@ -522,7 +523,7 @@ public class EclipsePlugin
      * @since 2.8
      */
     @Parameter
-    private List linkedResources;
+    private List<LinkedResource> linkedResources;
 
     /**
      * Put classpath container entries last in eclipse classpath configuration. Note that this behaviour, although
@@ -647,7 +648,7 @@ public class EclipsePlugin
      * 
      * @return Returns the classpathContainers.
      */
-    public final List getClasspathContainers()
+    public final List<String> getClasspathContainers()
     {
         return classpathContainers;
     }
@@ -657,7 +658,7 @@ public class EclipsePlugin
      * 
      * @param classpathContainers The classpathContainers to set.
      */
-    public final void setClasspathContainers( List classpathContainers )
+    public final void setClasspathContainers( List<String> classpathContainers )
     {
         this.classpathContainers = classpathContainers;
     }
@@ -687,7 +688,7 @@ public class EclipsePlugin
      * 
      * @return Returns the projectnatures.
      */
-    public final List getProjectnatures()
+    public final List<String> getProjectnatures()
     {
         return projectnatures;
     }
@@ -707,6 +708,7 @@ public class EclipsePlugin
      * 
      * @return Returns the useProjectReferences.
      */
+    @Override
     public final boolean getUseProjectReferences()
     {
         return useProjectReferences;
@@ -767,7 +769,7 @@ public class EclipsePlugin
      * 
      * @return Returns the additionalProjectnatures.
      */
-    public final List getAdditionalProjectnatures()
+    public final List<String> getAdditionalProjectnatures()
     {
         return additionalProjectnatures;
     }
@@ -777,7 +779,7 @@ public class EclipsePlugin
      * 
      * @param additionalProjectnatures The additionalProjectnatures to set.
      */
-    public final void setAdditionalProjectnatures( List additionalProjectnatures )
+    public final void setAdditionalProjectnatures( List<String> additionalProjectnatures )
     {
         this.additionalProjectnatures = additionalProjectnatures;
     }
@@ -837,7 +839,7 @@ public class EclipsePlugin
     /**
      * @return the linkedResources
      */
-    public List getLinkedResources()
+    public List<LinkedResource> getLinkedResources()
     {
         return linkedResources;
     }
@@ -845,7 +847,7 @@ public class EclipsePlugin
     /**
      * @param linkedResources the linkedResources to set
      */
-    public void setLinkedResources( List linkedResources )
+    public void setLinkedResources( List<LinkedResource> linkedResources )
     {
         this.linkedResources = linkedResources;
     }
@@ -853,6 +855,7 @@ public class EclipsePlugin
     /**
      * @see org.apache.maven.plugin.Mojo#execute()
      */
+    @Override
     public final boolean setup()
         throws MojoExecutionException
     {
@@ -875,7 +878,7 @@ public class EclipsePlugin
 
         if ( sourceIncludes == null )
         {
-            sourceIncludes = new ArrayList();
+            sourceIncludes = new ArrayList<>();
         }
         if ( isJavaProject )
         {
@@ -884,7 +887,7 @@ public class EclipsePlugin
 
         if ( sourceExcludes == null )
         {
-            sourceExcludes = new ArrayList();
+            sourceExcludes = new ArrayList<>();
         }
 
         parseConfigurationOptions();
@@ -926,7 +929,7 @@ public class EclipsePlugin
 
         if ( linkedResources == null )
         {
-            linkedResources = new ArrayList();
+            linkedResources = new ArrayList<>();
         }
 
         locator.addSearchPath( FileResourceLoader.ID, project.getFile().getParentFile().getAbsolutePath() );
@@ -990,10 +993,10 @@ public class EclipsePlugin
         boolean containsJREContainer = false;
         // Check if classpathContainer contains a JRE (default, alternate or
         // Execution Environment)
-        for ( Object classPathContainer : classpathContainers )
+        for ( String classPathContainer : classpathContainers )
         {
             if ( classPathContainer != null
-                && classPathContainer.toString().startsWith( COMMON_PATH_JDT_LAUNCHING_JRE_CONTAINER ) )
+                && classPathContainer.startsWith( COMMON_PATH_JDT_LAUNCHING_JRE_CONTAINER ) )
             {
                 containsJREContainer = true;
                 break;
@@ -1102,6 +1105,7 @@ public class EclipsePlugin
         // provided for extension.
     }
 
+    @Override
     public final void writeConfiguration( IdeDependency[] deps )
         throws MojoExecutionException
     {
@@ -1294,7 +1298,7 @@ public class EclipsePlugin
             {
                 if ( cmd instanceof BuildCommand )
                 {
-                    convertedBuildCommands.add( cmd );
+                    convertedBuildCommands.add( (BuildCommand) cmd );
                 }
                 else
                 {
@@ -1337,10 +1341,8 @@ public class EclipsePlugin
         if ( reactorProjects != null && wtpContextName == null
             && Constants.PROJECT_PACKAGING_WAR.equals( project.getPackaging() ) )
         {
-            for ( Object reactorProject1 : reactorProjects )
+            for ( MavenProject reactorProject : reactorProjects )
             {
-                MavenProject reactorProject = (MavenProject) reactorProject1;
-
                 if ( Constants.PROJECT_PACKAGING_EAR.equals( reactorProject.getPackaging() ) )
                 {
                     Xpp3Dom[] warDefinitions =
@@ -1407,7 +1409,7 @@ public class EclipsePlugin
      */
     protected void fillDefaultNatures( String packaging )
     {
-        projectnatures = new ArrayList();
+        projectnatures = new ArrayList<>();
 
         // CHECKSTYLE_OFF: MagicNumber
         if ( wtpVersionFloat >= 1.0f )
@@ -1443,7 +1445,7 @@ public class EclipsePlugin
      */
     protected void fillDefaultClasspathContainers( String packaging )
     {
-        classpathContainers = new ArrayList();
+        classpathContainers = new ArrayList<>();
 
         if ( getWorkspaceConfiguration().getDefaultClasspathContainer() != null )
         {
@@ -1515,14 +1517,14 @@ public class EclipsePlugin
             getLog().debug( "testOutput after toRelative : " + testOutput );
         }
 
-        Set mainDirectories = new LinkedHashSet();
+        Set<EclipseSourceDir> mainDirectories = new LinkedHashSet<>();
 
         extractSourceDirs( mainDirectories, project.getCompileSourceRoots(), basedir, projectBaseDir, false, null );
 
         extractResourceDirs( mainDirectories, project.getBuild().getResources(), basedir, projectBaseDir, false,
                              mainOutput );
 
-        Set testDirectories = new LinkedHashSet();
+        Set<EclipseSourceDir> testDirectories = new LinkedHashSet<>();
 
         extractSourceDirs( testDirectories, project.getTestCompileSourceRoots(), basedir, projectBaseDir, true,
                            testOutput );
@@ -1531,7 +1533,7 @@ public class EclipsePlugin
                              testOutput );
 
         // avoid duplicated entries
-        Set directories = new LinkedHashSet();
+        Set<EclipseSourceDir> directories = new LinkedHashSet<>();
 
         // NOTE: Since MNG-3118, test classes come before main classes
         boolean testBeforeMain = isMavenVersion( "[2.0.8,)" );
@@ -1556,14 +1558,14 @@ public class EclipsePlugin
         return directories.toArray( new EclipseSourceDir[directories.size()] );
     }
 
-    private void extractSourceDirs( Set directories, List sourceRoots, File basedir, File projectBaseDir, boolean test,
-                                    String output )
+    private void extractSourceDirs( Set<EclipseSourceDir> directories, List<String> sourceRoots, File basedir,
+                                    File projectBaseDir, boolean test, String output )
         throws MojoExecutionException
     {
-        for ( Object sourceRoot1 : sourceRoots )
+        for ( String sourceRoot1 : sourceRoots )
         {
 
-            File sourceRootFile = new File( (String) sourceRoot1 );
+            File sourceRootFile = new File( sourceRoot1 );
 
             if ( sourceRootFile.isDirectory() )
             {
@@ -1577,8 +1579,8 @@ public class EclipsePlugin
         }
     }
 
-    final void extractResourceDirs( Set directories, List resources, File basedir, File workspaceProjectBaseDir,
-                                    boolean test, final String output )
+    final void extractResourceDirs( Set<EclipseSourceDir> directories, List<Resource> resources, File basedir,
+                                    File workspaceProjectBaseDir, boolean test, final String output )
         throws MojoExecutionException
     {
         for ( Object resource1 : resources )
@@ -1587,7 +1589,7 @@ public class EclipsePlugin
 
             getLog().debug( "Processing resource dir: " + resource.getDirectory() );
 
-            List excludes = new ArrayList( resource.getExcludes() );
+            List<String> excludes = new ArrayList<>( resource.getExcludes() );
             // automatically exclude java files: eclipse doesn't have the concept of resource directory so it will
             // try to compile any java file found in maven resource dirs
             excludes.add( JAVA_FILE_PATTERN );
@@ -1636,7 +1638,7 @@ public class EclipsePlugin
 
             if ( !directories.add( resourceDir ) )
             {
-                EclipseSourceDir originalDir = (EclipseSourceDir) get( directories, resourceDir );
+                EclipseSourceDir originalDir = get( directories, resourceDir );
 
                 boolean merged = originalDir.merge( resourceDir );
                 if ( merged )
@@ -1664,9 +1666,9 @@ public class EclipsePlugin
      * @param o the object to locate in the set
      * @return the object from the set, or null if not found in the set
      */
-    private Object get( Set set, Object o )
+    private static <T> T get( Set<T> set, Object o )
     {
-        for ( Object item : set )
+        for ( T item : set )
         {
             if ( o.equals( item ) )
             {
@@ -1679,6 +1681,7 @@ public class EclipsePlugin
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProjectNameForArifact( Artifact artifact )
     {
         IdeDependency[] workspaceArtefacts = getWorkspaceArtefacts();
@@ -1746,6 +1749,7 @@ public class EclipsePlugin
     /**
      * {@inheritDoc}
      */
+    @Override
     protected final IdeDependency[] getWorkspaceArtefacts()
     {
         return getWorkspaceConfiguration().getWorkspaceArtefacts();
@@ -1789,7 +1793,8 @@ public class EclipsePlugin
         }
     }
 
-    public final List getExcludes()
+    @Override
+    public final List<String> getExcludes()
     {
         return excludes;
     }
@@ -1800,6 +1805,7 @@ public class EclipsePlugin
      * @param artifact the artifact a project should produce.
      * @return <code>true</code> if the artifact is produced by a reactor projectart.
      */
+    @Override
     protected boolean isAvailableAsAReactorProject( Artifact artifact )
     {
         MavenProject project = getReactorProject( artifact );
@@ -1846,6 +1852,7 @@ public class EclipsePlugin
      * @param art the artifact to check
      * @return true if resolution should happen
      */
+    @Override
     protected final boolean hasToResolveJar( Artifact art )
     {
         return !( getUseProjectReferences() && isAvailableAsAReactorProject( art ) )
@@ -1859,6 +1866,7 @@ public class EclipsePlugin
      * @param art the artifact to check
      * @return true if a project reference has to be used.
      */
+    @Override
     protected final boolean useProjectReference( Artifact art )
     {
         boolean isReactorProject = getUseProjectReferences() && isAvailableAsAReactorProject( art );

@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.plugin.eclipse.BuildCommand;
 import org.apache.maven.plugin.eclipse.EclipseSourceDir;
+import org.apache.maven.plugin.eclipse.LinkedResource;
 import org.apache.maven.plugin.eclipse.WorkspaceConfiguration;
 import org.apache.maven.plugin.ide.IdeDependency;
 import org.apache.maven.project.MavenProject;
@@ -88,22 +90,22 @@ public class EclipseWriterConfig
     /**
      * Project natures.
      */
-    private List projectnatures;
+    private List<String> projectnatures;
 
     /**
      * Project facets.
      */
-    private Map projectFacets;
+    private Map<String, String> projectFacets;
 
     /**
-     * Build commands. List&lt;BuildCommand&gt;
+     * Build commands.
      */
-    private List buildCommands;
+    private List<BuildCommand> buildCommands;
 
     /**
      * Classpath containers.
      */
-    private List classpathContainers;
+    private List<String> classpathContainers;
 
     /**
      * @see org.apache.maven.plugin.eclipse.EclipsePlugin#getProjectNameTemplate()
@@ -128,7 +130,7 @@ public class EclipseWriterConfig
 
     private WorkspaceConfiguration workspaceConfiguration;
 
-    private List linkedResources;
+    private List<LinkedResource> linkedResources;
 
     /**
      * @See {@link org.apache.maven.plugin.eclipse.EclipsePlugin#classpathContainersLast}
@@ -315,7 +317,7 @@ public class EclipseWriterConfig
      * 
      * @return Returns the classpathContainers.
      */
-    public List getClasspathContainers()
+    public List<String> getClasspathContainers()
     {
         return classpathContainers;
     }
@@ -325,7 +327,7 @@ public class EclipseWriterConfig
      * 
      * @param classpathContainers The classpathContainers to set.
      */
-    public void setClasspathContainers( List classpathContainers )
+    public void setClasspathContainers( List<String> classpathContainers )
     {
         this.classpathContainers = classpathContainers;
     }
@@ -335,7 +337,7 @@ public class EclipseWriterConfig
      *
      * @return Returns the buildCommands.
      */
-    public List getBuildCommands()
+    public List<BuildCommand> getBuildCommands()
     {
         return buildCommands;
     }
@@ -345,7 +347,7 @@ public class EclipseWriterConfig
      * 
      * @param buildCommands The buildCommands to set.
      */
-    public void setBuildCommands( List buildCommands )
+    public void setBuildCommands( List<BuildCommand> buildCommands )
     {
         this.buildCommands = buildCommands;
     }
@@ -355,7 +357,7 @@ public class EclipseWriterConfig
      * 
      * @return Returns the projectnatures.
      */
-    public List getProjectnatures()
+    public List<String> getProjectnatures()
     {
         return projectnatures;
     }
@@ -365,7 +367,7 @@ public class EclipseWriterConfig
      * 
      * @param projectnatures The projectnatures to set.
      */
-    public void setProjectnatures( List projectnatures )
+    public void setProjectnatures( List<String> projectnatures )
     {
         this.projectnatures = projectnatures;
     }
@@ -375,7 +377,7 @@ public class EclipseWriterConfig
      * 
      * @return Returns the projectFacets
      */
-    public Map getProjectFacets()
+    public Map<String, String> getProjectFacets()
     {
         return projectFacets;
     }
@@ -385,7 +387,7 @@ public class EclipseWriterConfig
      * 
      * @param projectFacets The projectFacets to set.
      */
-    public void setProjectFacets( Map projectFacets )
+    public void setProjectFacets( Map<String, String> projectFacets )
     {
         this.projectFacets = projectFacets;
     }
@@ -489,7 +491,7 @@ public class EclipseWriterConfig
     /**
      * @return the linkedResources
      */
-    public List getLinkedResources()
+    public List<LinkedResource> getLinkedResources()
     {
         return linkedResources;
     }
@@ -497,7 +499,7 @@ public class EclipseWriterConfig
     /**
      * @param linkedResources the linkedResources to set
      */
-    public void setLinkedResources( List linkedResources )
+    public void setLinkedResources( List<LinkedResource> linkedResources )
     {
         this.linkedResources = linkedResources;
     }

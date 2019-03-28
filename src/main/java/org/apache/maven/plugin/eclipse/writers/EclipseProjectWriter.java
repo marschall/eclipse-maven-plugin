@@ -88,18 +88,19 @@ public class EclipseProjectWriter
     /**
      * To Store the link names
      */
-    ArrayList linkNames = new ArrayList();
+    List<String> linkNames = new ArrayList<>();
 
     /**
      * @see org.apache.maven.plugin.eclipse.writers.EclipseWriter#write()
      */
+    @Override
     public void write()
         throws MojoExecutionException
     {
 
-        Set projectnatures = new LinkedHashSet();
-        Set buildCommands = new LinkedHashSet();
-        Set linkedResources = new LinkedHashSet();
+        Set<String> projectnatures = new LinkedHashSet<>();
+        Set<BuildCommand> buildCommands = new LinkedHashSet<>();
+        Set<LinkedResource> linkedResources = new LinkedHashSet<>();
 
         File dotProject = new File( config.getEclipseProjectDirectory(), FILE_DOT_PROJECT );
 
@@ -172,17 +173,17 @@ public class EclipseProjectWriter
         }
 
         // adds new entries after the existing ones
-        for ( Object o2 : config.getProjectnatures() )
+        for ( String o2 : config.getProjectnatures() )
         {
             projectnatures.add( o2 );
         }
 
-        for ( Object o1 : config.getBuildCommands() )
+        for ( BuildCommand o1 : config.getBuildCommands() )
         {
             buildCommands.add( o1 );
         }
 
-        for ( Object o : config.getLinkedResources() )
+        for ( LinkedResource o : config.getLinkedResources() )
         {
             linkedResources.add( o );
         }

@@ -34,28 +34,28 @@ public class EclipseSourceDirTest
 {
     private EclipseSourceDir testFixture_src_main_java()
     {
-        List includes = new ArrayList();
+        List<String> includes = new ArrayList<>();
         includes.add( EclipsePlugin.JAVA_FILE_PATTERN );
         return new EclipseSourceDir( "/src/main/java", null, false, false, includes, null, false );
     }
 
     private EclipseSourceDir testFixture_src_main_resources()
     {
-        List excludes = new ArrayList();
+        List<String> excludes = new ArrayList<>();
         excludes.add( EclipsePlugin.JAVA_FILE_PATTERN );
         return new EclipseSourceDir( "/src/main/resources", "target/classes", true, false, null, excludes, false );
     }
 
     private EclipseSourceDir testFixture_src_test_java()
     {
-        List includes = new ArrayList();
+        List<String> includes = new ArrayList<>();
         includes.add( EclipsePlugin.JAVA_FILE_PATTERN );
         return new EclipseSourceDir( "/src/test/java", "target/test-classes", false, true, includes, null, false );
     }
 
     private EclipseSourceDir testFixture_src_test_resources()
     {
-        List excludes = new ArrayList();
+        List<String> excludes = new ArrayList<>();
         excludes.add( EclipsePlugin.JAVA_FILE_PATTERN );
         return new EclipseSourceDir( "/src/test/resources", "target/test-classes", true, true, null, excludes, false );
     }

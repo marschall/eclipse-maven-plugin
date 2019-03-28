@@ -45,12 +45,12 @@ public class BuildCommandTest
         assertEquals( true, b1.equals( b2 ) );
         assertEquals( true, b2.equals( b1 ) );
 
-        b2 = new BuildCommand( "foobuilder", null, new HashMap() );
+        b2 = new BuildCommand( "foobuilder", null, new HashMap<>() );
         assertEquals( true, b1.equals( b2 ) );
         assertEquals( true, b2.equals( b1 ) );
 
-        Map m1 = new HashMap();
-        Map m2 = new HashMap();
+        Map<String, String> m1 = new HashMap<>();
+        Map<String, String> m2 = new HashMap<>();
 
         b1 = new BuildCommand( "foobuilder", null, m1 );
         b2 = new BuildCommand( "foobuilder", null, m2 );

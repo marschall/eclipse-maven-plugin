@@ -37,6 +37,7 @@ public class EclipsePluginIT
 {
     private static boolean initialized = false;
 
+    @Override
     protected void setUp()
         throws Exception
     {
@@ -378,7 +379,7 @@ public class EclipsePluginIT
         // Install artefacts
         File basedir = getTestFile( "target/test-classes/projects/project-36" );
         File pom = new File( basedir, "pom.xml" );
-        List goals = new ArrayList();
+        List<String> goals = new ArrayList<>();
         goals.add( "install" );
         executeMaven( pom, new Properties(), goals );
         // Test
@@ -749,7 +750,7 @@ public class EclipsePluginIT
         // Install artefacts
         File basedir = getTestFile( "target/test-classes/projects/j2ee-simple" );
         File pom = new File( basedir, "pom.xml" );
-        List goals = new ArrayList();
+        List<String> goals = new ArrayList<>();
         goals.add( "install" );
         executeMaven( pom, new Properties(), goals );
         // Test project

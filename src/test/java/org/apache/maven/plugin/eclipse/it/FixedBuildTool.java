@@ -36,6 +36,7 @@ public class FixedBuildTool
     extends BuildTool
 {
 
+    @Override
     public InvocationRequest createBasicInvocationRequest( File pom, Properties properties, List goals,
                                                            File buildLogFile )
     {

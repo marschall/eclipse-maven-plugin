@@ -143,6 +143,7 @@ public class EclipseClasspathWriter
     /**
      * @see org.apache.maven.plugin.eclipse.writers.EclipseWriter#write()
      */
+    @Override
     public void write()
         throws MojoExecutionException
     {
@@ -171,9 +172,9 @@ public class EclipseClasspathWriter
         // Source roots and resources
         // ----------------------------------------------------------------------
 
-        List<EclipseSourceDir> specialSources = new ArrayList<EclipseSourceDir>();
+        List<EclipseSourceDir> specialSources = new ArrayList<>();
 
-        Map<String, List<EclipseSourceDir>> byOutputDir = new HashMap<String, List<EclipseSourceDir>>();
+        Map<String, List<EclipseSourceDir>> byOutputDir = new HashMap<>();
 
         for ( int j = 0; j < config.getSourceDirs().length; j++ )
         {
@@ -182,7 +183,7 @@ public class EclipseClasspathWriter
             List<EclipseSourceDir> byOutputDirs = byOutputDir.get( dir.getOutput() );
             if ( byOutputDirs == null )
             {
-                byOutputDirs = new ArrayList<EclipseSourceDir>();
+                byOutputDirs = new ArrayList<>();
                 byOutputDir.put( dir.getOutput() == null ? defaultOutput : dir.getOutput(), byOutputDirs );
             }
             byOutputDirs.add( dir );
@@ -392,11 +393,11 @@ public class EclipseClasspathWriter
         // Container classpath entries
         // ----------------------------------------------------------------------
 
-        for ( Object o : config.getClasspathContainers() )
+        for ( String o : config.getClasspathContainers() )
         {
             writer.startElement( ELT_CLASSPATHENTRY );
             writer.addAttribute( ATTR_KIND, "con" ); //$NON-NLS-1$
-            writer.addAttribute( ATTR_PATH, (String) o );
+            writer.addAttribute( ATTR_PATH, o );
             writer.endElement(); // name
         }
     }

@@ -21,7 +21,9 @@ package org.apache.maven.plugin.eclipse.writers.testutils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.maven.plugin.eclipse.BuildCommand;
 import org.apache.maven.plugin.eclipse.EclipseSourceDir;
+import org.apache.maven.plugin.eclipse.LinkedResource;
 import org.apache.maven.plugin.eclipse.writers.EclipseWriterConfig;
 import org.apache.maven.plugin.ide.IdeDependency;
 
@@ -29,30 +31,33 @@ public class TestEclipseWriterConfig
     extends EclipseWriterConfig
 {
 
-    public List getBuildCommands()
+    @Override
+    public List<BuildCommand> getBuildCommands()
     {
-        List result = super.getBuildCommands();
+        List<BuildCommand> result = super.getBuildCommands();
 
         if ( result == null )
         {
-            result = new ArrayList();
+            result = new ArrayList<>();
         }
 
         return result;
     }
 
-    public List getClasspathContainers()
+    @Override
+    public List<String> getClasspathContainers()
     {
-        List result = super.getClasspathContainers();
+        List<String> result = super.getClasspathContainers();
 
         if ( result == null )
         {
-            result = new ArrayList();
+            result = new ArrayList<>();
         }
 
         return result;
     }
 
+    @Override
     public IdeDependency[] getDeps()
     {
         IdeDependency[] deps = super.getDeps();
@@ -65,18 +70,20 @@ public class TestEclipseWriterConfig
         return deps;
     }
 
-    public List getProjectnatures()
+    @Override
+    public List<String> getProjectnatures()
     {
-        List result = super.getProjectnatures();
+        List<String> result = super.getProjectnatures();
 
         if ( result == null )
         {
-            result = new ArrayList();
+            result = new ArrayList<>();
         }
 
         return result;
     }
 
+    @Override
     public EclipseSourceDir[] getSourceDirs()
     {
         EclipseSourceDir[] dirs = super.getSourceDirs();
@@ -89,13 +96,14 @@ public class TestEclipseWriterConfig
         return dirs;
     }
 
-    public List getLinkedResources()
+    @Override
+    public List<LinkedResource> getLinkedResources()
     {
-        List result = super.getLinkedResources();
+        List<LinkedResource> result = super.getLinkedResources();
 
         if ( result == null )
         {
-            result = new ArrayList();
+            result = new ArrayList<>();
         }
 
         return result;

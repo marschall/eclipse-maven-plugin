@@ -73,6 +73,7 @@ public class EclipsePluginMasterProjectIT
     /**
      * @see org.apache.maven.plugin.eclipse.it.AbstractEclipsePluginIT#setUp()
      */
+    @Override
     protected void setUp()
         throws Exception
     {
@@ -90,7 +91,7 @@ public class EclipsePluginMasterProjectIT
 
         String pluginSpec = getPluginCLISpecification();
 
-        List goals = new ArrayList();
+        List<String> goals = new ArrayList<>();
 
         goals.add( pluginSpec + "clean" );
         goals.add( pluginSpec + "eclipse" );

@@ -61,6 +61,7 @@ public abstract class EclipseLaunchConfigurationWriter
         return super.init( log, config );
     }
 
+    @Override
     public void write()
         throws MojoExecutionException
     {
@@ -124,10 +125,8 @@ public abstract class EclipseLaunchConfigurationWriter
                 + " factoryID='org.eclipse.ui.internal.WorkingSetFactory'" + " label='workingSet'"
                 + " name='workingSet'>";
 
-        for ( Object o : getMonitoredResources() )
+        for ( MonitoredResource monitoredResource : getMonitoredResources() )
         {
-            MonitoredResource monitoredResource = (MonitoredResource) o;
-
             workingSet += monitoredResource.print();
         }
 
@@ -142,7 +141,7 @@ public abstract class EclipseLaunchConfigurationWriter
         IOUtil.close( w );
     }
 
-    protected List getMonitoredResources()
+    protected List<MonitoredResource> getMonitoredResources()
     {
         return Collections.singletonList( new MonitoredResource( config.getEclipseProjectName(),
                                                                  MonitoredResource.PROJECT ) );

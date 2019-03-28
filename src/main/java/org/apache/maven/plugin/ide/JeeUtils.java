@@ -33,13 +33,13 @@ public class JeeUtils
 
     public static final String ARTIFACT_MAVEN_WAR_PLUGIN = "org.apache.maven.plugins:maven-war-plugin"; //$NON-NLS-1$
 
-    private static final Map EJB_MAP = new HashMap();
+    private static final Map<String, JeeDescriptor> EJB_MAP = new HashMap<>();
 
-    private static final Map JEE_MAP = new HashMap();
+    private static final Map<String, JeeDescriptor> JEE_MAP = new HashMap<>();
 
-    private static final Map JSP_MAP = new HashMap();
+    private static final Map<String, JeeDescriptor> JSP_MAP = new HashMap<>();
 
-    private static final Map SERVLET_MAP = new HashMap();
+    private static final Map<String, JeeDescriptor> SERVLET_MAP = new HashMap<>();
 
     /** Names of artifacts of ejb APIs. */
     // private static final String[] EJB_API_ARTIFACTS = new String[] { "ejb", "ejb-api", "geronimo-spec-ejb" };
@@ -64,7 +64,7 @@ public class JeeUtils
     {
         if ( EJB_MAP.containsKey( ejbVersion ) )
         {
-            return (JeeDescriptor) EJB_MAP.get( ejbVersion );
+            return EJB_MAP.get( ejbVersion );
         }
         else
         {
@@ -82,7 +82,7 @@ public class JeeUtils
     {
         if ( JEE_MAP.containsKey( jeeVersion ) )
         {
-            return (JeeDescriptor) JEE_MAP.get( jeeVersion );
+            return JEE_MAP.get( jeeVersion );
         }
         else
         {
@@ -100,7 +100,7 @@ public class JeeUtils
     {
         if ( JSP_MAP.containsKey( jspVersion ) )
         {
-            return (JeeDescriptor) JSP_MAP.get( jspVersion );
+            return JSP_MAP.get( jspVersion );
         }
         else
         {
@@ -118,7 +118,7 @@ public class JeeUtils
     {
         if ( SERVLET_MAP.containsKey( servletVersion ) )
         {
-            return (JeeDescriptor) SERVLET_MAP.get( servletVersion );
+            return SERVLET_MAP.get( servletVersion );
         }
         else
         {

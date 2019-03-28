@@ -28,7 +28,7 @@ import org.apache.maven.project.MavenProject;
  * @version $Id$
  */
 public class IdeDependency
-    implements Comparable
+    implements Comparable<IdeDependency>
 {
     /**
      * Is this dependency available in the reactor?
@@ -440,6 +440,7 @@ public class IdeDependency
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return getId();
@@ -448,38 +449,38 @@ public class IdeDependency
     /**
      * @see java.lang.Comparable#compareTo(java.lang.Object) Compare using groupId+artifactId+type+classifier Strings
      */
-    public int compareTo( Object o )
+    @Override
+    public int compareTo( IdeDependency o )
     {
-        IdeDependency dep = (IdeDependency) o;
         // in case of system scoped dependencies the files must be compared.
-        if ( isSystemScoped() && dep.isSystemScoped() && getFile().equals( dep.getFile() ) )
+        if ( isSystemScoped() && o.isSystemScoped() && getFile().equals( o.getFile() ) )
         {
             return 0;
         }
-        int equals = this.getGroupId().compareTo( dep.getGroupId() );
+        int equals = this.getGroupId().compareTo( o.getGroupId() );
         if ( equals != 0 )
         {
             return equals;
         }
-        equals = this.getArtifactId().compareTo( dep.getArtifactId() );
+        equals = this.getArtifactId().compareTo( o.getArtifactId() );
         if ( equals != 0 )
         {
             return equals;
         }
-        equals = this.getType().compareTo( dep.getType() );
+        equals = this.getType().compareTo( o.getType() );
         if ( equals != 0 )
         {
             return equals;
         }
-        if ( this.getClassifier() != null && dep.getClassifier() != null )
+        if ( this.getClassifier() != null && o.getClassifier() != null )
         {
-            equals = this.getClassifier().compareTo( dep.getClassifier() );
+            equals = this.getClassifier().compareTo( o.getClassifier() );
         }
-        else if ( this.getClassifier() != null && dep.getClassifier() == null )
+        else if ( this.getClassifier() != null && o.getClassifier() == null )
         {
             return 1;
         }
-        else if ( this.getClassifier() == null && dep.getClassifier() != null )
+        else if ( this.getClassifier() == null && o.getClassifier() != null )
         {
             return -1;
         }
@@ -517,14 +518,24 @@ public class IdeDependency
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals( Object obj )
     {
-        return compareTo( obj ) == 0;
+        if ( obj == this )
+        {
+            return true;
+        }
+        if ( !( obj instanceof IdeDependency ) )
+        {
+            return false;
+        }
+        return compareTo( (IdeDependency) obj ) == 0;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode()
     {
         if ( isSystemScoped() )

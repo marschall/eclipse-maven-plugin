@@ -354,7 +354,7 @@ public class IdeUtils
     public static Xpp3Dom[] getPluginConfigurationDom( MavenProject project, String artifactId,
                                                        String[] subConfiguration )
     {
-        ArrayList configurationDomList = new ArrayList();
+        List<Xpp3Dom> configurationDomList = new ArrayList<>();
         Xpp3Dom configuration = getPluginConfigurationDom( project, artifactId );
         if ( configuration != null )
         {
@@ -362,10 +362,9 @@ public class IdeUtils
             for ( int index = 0; !configurationDomList.isEmpty() && subConfiguration != null
                 && index < subConfiguration.length; index++ )
             {
-                ArrayList newConfigurationDomList = new ArrayList();
-                for ( Object aConfigurationDomList : configurationDomList )
+                List<Xpp3Dom> newConfigurationDomList = new ArrayList<>();
+                for ( Xpp3Dom child : configurationDomList )
                 {
-                    Xpp3Dom child = (Xpp3Dom) aConfigurationDomList;
                     Xpp3Dom[] deeperChild = child.getChildren( subConfiguration[index] );
                     for ( Xpp3Dom aDeeperChild : deeperChild )
                     {
@@ -378,7 +377,7 @@ public class IdeUtils
                 configurationDomList = newConfigurationDomList;
             }
         }
-        return (Xpp3Dom[]) configurationDomList.toArray( new Xpp3Dom[configurationDomList.size()] );
+        return configurationDomList.toArray( new Xpp3Dom[0] );
     }
 
     /**

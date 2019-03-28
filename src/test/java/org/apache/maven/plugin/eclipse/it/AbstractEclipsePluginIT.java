@@ -40,6 +40,7 @@ import junit.framework.AssertionFailedError;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.factory.DefaultArtifactFactory;
+import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager;
@@ -127,13 +128,14 @@ public abstract class AbstractEclipsePluginIT
      */
     private static final String CLASSPATH_FILENAME = ".classpath";
     
-    private static final Collection<String> IGNORED_DIRS = new HashSet<String>( Arrays.asList( ".svn" ) );
+    private static final Collection<String> IGNORED_DIRS = new HashSet<>( Arrays.asList( ".svn" ) );
     
     private File mavenHome;
 
     /**
      * @see org.codehaus.plexus.PlexusTestCase#setUp()
      */
+    @Override
     protected void setUp()
         throws Exception
     {
@@ -190,6 +192,7 @@ public abstract class AbstractEclipsePluginIT
                 EntityResolver ignoreDtds = new EntityResolver()
                 {
 
+                    @Override
                     public InputSource resolveEntity( String publicId, String systemId )
                         throws SAXException, IOException
                     {
@@ -209,12 +212,13 @@ public abstract class AbstractEclipsePluginIT
     /**
      * @see org.codehaus.plexus.PlexusTestCase#tearDown()
      */
+    @Override
     protected void tearDown()
         throws Exception
     {
         super.tearDown();
 
-        List containers = new ArrayList();
+        List<PlexusContainer> containers = new ArrayList<>();
 
         containers.add( getContainer() );
 
@@ -326,7 +330,7 @@ public abstract class AbstractEclipsePluginIT
 
         String pluginSpec = getPluginCLISpecification();
 
-        List goals = new ArrayList();
+        List<String> goals = new ArrayList<>();
 
         goals.add( pluginSpec + cleanGoal );
         goals.add( pluginSpec + genGoal );
@@ -359,7 +363,7 @@ public abstract class AbstractEclipsePluginIT
         executeMaven( pom, properties, goals, true );
     }
 
-    protected void executeMaven( File pom, Properties properties, List goals, boolean switchLocalRepo )
+    protected void executeMaven( File pom, Properties properties, List<String> goals, boolean switchLocalRepo )
         throws TestToolsException, ExecutionFailedException
     {
         System.out.println( "  Building " + pom.getParentFile().getName() );
@@ -476,7 +480,7 @@ public abstract class AbstractEclipsePluginIT
             throw new AssertionFailedError( "Generated file not found: " + actualFile.getAbsolutePath() );
         }
 
-        HashMap variableReplacement = new HashMap();
+        Map<String, String> variableReplacement = new HashMap<>();
         variableReplacement.put( "${basedir}",
                                  IdeUtils.fixSeparator( IdeUtils.getCanonicalPath( new File( getBasedir() ) ) ) );
         variableReplacement.put( "${M2_REPO}",
@@ -545,8 +549,8 @@ public abstract class AbstractEclipsePluginIT
                                        String actualFileContents )
         throws MojoExecutionException
     {
-        List expectedLines = getLines( expectedFileContents );
-        List actualLines = getLines( actualFileContents );
+        List<String> expectedLines = getLines( expectedFileContents );
+        List<String> actualLines = getLines( actualFileContents );
         for ( int i = 0; i < expectedLines.size(); i++ )
         {
             String expected = expectedLines.get( i ).toString();
@@ -574,7 +578,7 @@ public abstract class AbstractEclipsePluginIT
      * @param variables if not null, then replace all keys with the corresponding values in the expected string.
      * @return processed input
      */
-    private String preprocess( File file, Map variables )
+    private String preprocess( File file, Map<String, String> variables )
         throws MojoExecutionException
     {
         String result;
@@ -627,15 +631,14 @@ public abstract class AbstractEclipsePluginIT
      * @param variables map of variables (keys) and replacement value (values)
      * @return the string with all variable values replaced.
      */
-    private String replaceVariables( String str, Map variables )
+    private String replaceVariables( String str, Map<String, String> variables )
     {
         String result = str;
         if ( variables != null && !variables.isEmpty() )
         {
-            for (Object o : variables.entrySet()) {
-                Entry entry = (Entry) o;
-                String variable = (String) entry.getKey();
-                String replacement = (String) entry.getValue();
+            for (Entry<String, String> entry : variables.entrySet()) {
+                String variable = entry.getKey();
+                String replacement = entry.getValue();
                 result = StringUtils.replace(result, variable, replacement);
             }
         }
@@ -677,13 +680,13 @@ public abstract class AbstractEclipsePluginIT
         }
     }
 
-    private List getLines( String input )
+    private List<String> getLines( String input )
         throws MojoExecutionException
     {
         try
 
         {
-            List lines = new ArrayList();
+            List<String> lines = new ArrayList<>();
 
             BufferedReader reader = new BufferedReader( new StringReader( input ) );
 
@@ -715,8 +718,8 @@ public abstract class AbstractEclipsePluginIT
             return Collections.emptyList();
         }
 
-        List<File> expectedDirectories = new ArrayList<File>();
-        List<File> subdirectories = new ArrayList<File>();
+        List<File> expectedDirectories = new ArrayList<>();
+        List<File> subdirectories = new ArrayList<>();
 
         File[] allFiles = basedir.listFiles();
         if ( allFiles != null )
@@ -758,8 +761,8 @@ public abstract class AbstractEclipsePluginIT
             return Collections.emptyList();
         }
 
-        List<File> expectedFiles = new ArrayList<File>();
-        List<File> subdirectories = new ArrayList<File>();
+        List<File> expectedFiles = new ArrayList<>();
+        List<File> subdirectories = new ArrayList<>();
 
         File[] allFiles = expectedDirectory.listFiles();
         if ( allFiles != null )
@@ -872,7 +875,7 @@ public abstract class AbstractEclipsePluginIT
         DefaultArtifactHandler javadocArtifactHandler = new DefaultArtifactHandler( "javadoc" );
         setVariableValueToObject( javadocArtifactHandler, "extension", "jar" );
 
-        Map artifactHandlers = new HashMap();
+        Map<String, ArtifactHandler> artifactHandlers = new HashMap<>();
         artifactHandlers.put( "java-source", javaSourceArtifactHandler );
         artifactHandlers.put( "javadoc", javadocArtifactHandler );
 

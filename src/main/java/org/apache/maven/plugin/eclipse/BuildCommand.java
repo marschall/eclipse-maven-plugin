@@ -21,7 +21,6 @@ package org.apache.maven.plugin.eclipse;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.XMLWriter;
@@ -42,7 +41,7 @@ public class BuildCommand
     private String triggers;
 
     /** Argument map */
-    private Map arguments;
+    private Map<String, String> arguments;
 
     /**
      * no-arg constructor for plugin configuration.
@@ -61,7 +60,7 @@ public class BuildCommand
         this( name, null );
     }
 
-    public BuildCommand( String name, Map arguments )
+    public BuildCommand( String name, Map<String, String> arguments )
     {
         this.name = name;
         this.arguments = arguments;
@@ -70,7 +69,7 @@ public class BuildCommand
     public BuildCommand( String name, String argName, String argValue )
     {
         this.name = name;
-        arguments = new Properties();
+        arguments = new HashMap<>();
         arguments.put( argName, argValue );
     }
 
@@ -81,7 +80,7 @@ public class BuildCommand
      * @param triggers Command triggers
      * @param arguments Command arguments
      */
-    public BuildCommand( String name, String triggers, Map arguments )
+    public BuildCommand( String name, String triggers, Map<String, String> arguments )
     {
         if ( name == null )
         {
@@ -93,11 +92,11 @@ public class BuildCommand
 
         if ( arguments == null )
         {
-            this.arguments = new HashMap();
+            this.arguments = new HashMap<>();
         }
         else
         {
-            this.arguments = new HashMap( arguments );
+            this.arguments = new HashMap<>( arguments );
         }
 
     }
@@ -129,7 +128,7 @@ public class BuildCommand
 
         Xpp3Dom argumentsNode = node.getChild( "arguments" );
 
-        arguments = new HashMap();
+        arguments = new HashMap<>();
 
         if ( argumentsNode != null )
         {
@@ -188,7 +187,7 @@ public class BuildCommand
                 writer.endElement();
 
                 writer.startElement( "value" );
-                writer.writeText( (String) arguments.get( key ) );
+                writer.writeText( arguments.get( key ) );
                 writer.endElement();
             }
 
@@ -200,6 +199,7 @@ public class BuildCommand
         writer.endElement();
     }
 
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj instanceof BuildCommand )
@@ -217,6 +217,7 @@ public class BuildCommand
         }
     }
 
+    @Override
     public int hashCode()
     {
         return name.hashCode() + ( triggers == null ? 0 : 13 * triggers.hashCode() )

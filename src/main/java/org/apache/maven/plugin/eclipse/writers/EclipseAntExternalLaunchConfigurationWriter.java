@@ -45,6 +45,7 @@ public class EclipseAntExternalLaunchConfigurationWriter
         return super.init( log, config, launcherName );
     }
 
+    @Override
     protected void addAttributes( XMLWriter writer )
     {
         // ant specific
@@ -65,17 +66,20 @@ public class EclipseAntExternalLaunchConfigurationWriter
                         new String[] { "/" + config.getEclipseProjectName() + "/" + buildfilePath } );
     }
 
+    @Override
     protected String getLaunchConfigurationType()
     {
         return "org.eclipse.ant.AntBuilderLaunchConfigurationType";
     }
 
+    @Override
     protected String getBuilderLocation()
     {
         return "${build_project}/" + buildfilePath;
     }
 
-    protected List getMonitoredResources()
+    @Override
+    protected List<MonitoredResource> getMonitoredResources()
     {
         // TODO: return a list of MonitoredResources that encapsulate
         // the resource locations - includes/excludes aren't supported

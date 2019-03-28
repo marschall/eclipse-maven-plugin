@@ -149,7 +149,7 @@ public abstract class AbstractIdeSupportMojo
      * If the executed project is a reactor project, this will contains the full list of projects in the reactor.
      */
     @Parameter( property = "reactorProjects", required = true, readonly = true )
-    protected List reactorProjects;
+    protected List<MavenProject> reactorProjects;
 
     /**
      * Skip the operation when true.
@@ -236,7 +236,7 @@ public abstract class AbstractIdeSupportMojo
      * 
      * @return Returns the reactorProjects.
      */
-    public List getReactorProjects()
+    public List<MavenProject> getReactorProjects()
     {
         return reactorProjects;
     }
@@ -246,7 +246,7 @@ public abstract class AbstractIdeSupportMojo
      * 
      * @param reactorProjects The reactorProjects to set.
      */
-    public void setReactorProjects( List reactorProjects )
+    public void setReactorProjects( List<MavenProject> reactorProjects )
     {
         this.reactorProjects = reactorProjects;
     }
@@ -430,13 +430,13 @@ public abstract class AbstractIdeSupportMojo
     /**
      * Not a plugin parameter. Collect the list of dependencies with a missing source artifact for the final report.
      */
-    private List missingSourceDependencies = new ArrayList();
+    private List<IdeDependency> missingSourceDependencies = new ArrayList<>();
 
     /**
      * Not a plugin parameter. Collect the list of dependencies with a missing javadoc artifact for the final report.
      */
     // TODO merge this with the missingSourceDependencies in a classifier based map?
-    private List missingJavadocDependencies = new ArrayList();
+    private List<IdeDependency> missingJavadocDependencies = new ArrayList<>();
 
     /**
      * Cached array of resolved dependencies.
@@ -452,6 +452,7 @@ public abstract class AbstractIdeSupportMojo
     /**
      * @see org.codehaus.plexus.logging.LogEnabled#enableLogging(org.codehaus.plexus.logging.Logger)
      */
+    @Override
     public void enableLogging( Logger logger )
     {
         this.logger = logger;
@@ -460,6 +461,7 @@ public abstract class AbstractIdeSupportMojo
     /**
      * @see org.apache.maven.plugin.Mojo#execute()
      */
+    @Override
     public final void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -506,11 +508,11 @@ public abstract class AbstractIdeSupportMojo
                 List deps = getProject().getDependencies();
 
                 // Collect the list of resolved IdeDependencies.
-                List dependencies = new ArrayList();
+                List<IdeDependency> dependencies = new ArrayList<>();
 
                 if ( deps != null )
                 {
-                    Map managedVersions =
+                    Map<String, Artifact> managedVersions =
                         createManagedVersionMap( getArtifactFactory(), project.getId(),
                                                  project.getDependencyManagement() );
 
@@ -548,7 +550,7 @@ public abstract class AbstractIdeSupportMojo
                     }
 
                     // keep track of added reactor projects in order to avoid duplicates
-                    Set emittedReactorProjectId = new HashSet();
+                    Set<String> emittedReactorProjectId = new HashSet<>();
 
                     for ( Object o : artifactResolutionResult.getArtifactResolutionNodes() )
                     {
@@ -618,7 +620,7 @@ public abstract class AbstractIdeSupportMojo
 
                 }
 
-                ideDeps = (IdeDependency[]) dependencies.toArray( new IdeDependency[dependencies.size()] );
+                ideDeps = dependencies.toArray( new IdeDependency[dependencies.size()] );
             }
             else
             {
@@ -644,11 +646,11 @@ public abstract class AbstractIdeSupportMojo
      * @return list of projects artifacts
      * @throws MojoExecutionException if unable to parse dependency versions
      */
-    private Set getProjectArtifacts()
+    private Set<Artifact> getProjectArtifacts()
         throws MojoExecutionException
     {
         // [MECLIPSE-388] Don't sort this, the order should be identical to getProject.getDependencies()
-        Set artifacts = new LinkedHashSet();
+        Set<Artifact> artifacts = new LinkedHashSet<>();
 
         for ( Object o : getProject().getDependencies() )
         {
@@ -710,7 +712,7 @@ public abstract class AbstractIdeSupportMojo
     private void handleExclusions( Artifact artifact, Dependency dependency )
     {
 
-        List exclusions = new ArrayList();
+        List<String> exclusions = new ArrayList<>();
         for ( Exclusion e : dependency.getExclusions() )
         {
             exclusions.add( e.getGroupId() + ":" + e.getArtifactId() );
@@ -742,10 +744,8 @@ public abstract class AbstractIdeSupportMojo
     {
         if ( reactorProjects != null )
         {
-            for ( Object reactorProject1 : reactorProjects )
+            for ( MavenProject reactorProject : reactorProjects )
             {
-                MavenProject reactorProject = (MavenProject) reactorProject1;
-
                 if ( reactorProject.getGroupId().equals( artifact.getGroupId() )
                     && reactorProject.getArtifactId().equals( artifact.getArtifactId() ) )
                 {
@@ -775,14 +775,14 @@ public abstract class AbstractIdeSupportMojo
         return new IdeDependency[0];
     }
 
-    private Map createManagedVersionMap( ArtifactFactory artifactFactory, String projectId,
+    private Map<String, Artifact> createManagedVersionMap( ArtifactFactory artifactFactory, String projectId,
                                          DependencyManagement dependencyManagement )
         throws MojoExecutionException
     {
-        Map map;
+        Map<String, Artifact> map;
         if ( dependencyManagement != null && dependencyManagement.getDependencies() != null )
         {
-            map = new HashMap();
+            map = new HashMap<>();
             for ( Dependency d : dependencyManagement.getDependencies() )
             {
                 try
@@ -808,7 +808,7 @@ public abstract class AbstractIdeSupportMojo
         }
         else
         {
-            map = Collections.EMPTY_MAP;
+            map = Collections.emptyMap();
         }
         return map;
     }
@@ -823,10 +823,10 @@ public abstract class AbstractIdeSupportMojo
      */
     private void resolveSourceAndJavadocArtifacts( IdeDependency[] deps )
     {
-        final List missingSources = resolveDependenciesWithClassifier( deps, "sources", getDownloadSources() );
+        List<IdeDependency> missingSources = resolveDependenciesWithClassifier( deps, "sources", getDownloadSources() );
         missingSourceDependencies.addAll( missingSources );
 
-        final List missingJavadocs = resolveDependenciesWithClassifier( deps, "javadoc", getDownloadJavadocs() );
+        List<IdeDependency> missingJavadocs = resolveDependenciesWithClassifier( deps, "javadoc", getDownloadJavadocs() );
         missingJavadocDependencies.addAll( missingJavadocs );
     }
 
@@ -839,14 +839,14 @@ public abstract class AbstractIdeSupportMojo
      * @param includeRemoteRepositories flag whether we should search remote repositories for the artifacts or not
      * @return the list of dependencies for which the required artifact was not found
      */
-    private List resolveDependenciesWithClassifier( IdeDependency[] deps, String inClassifier,
+    private List<IdeDependency> resolveDependenciesWithClassifier( IdeDependency[] deps, String inClassifier,
                                                     boolean includeRemoteRepositories )
     {
-        List missingClassifierDependencies = new ArrayList();
+        List<IdeDependency> missingClassifierDependencies = new ArrayList<>();
 
         // if downloadSources is off, just check
         // local repository for reporting missing source jars
-        List remoteRepos = includeRemoteRepositories ? getRemoteArtifactRepositories() : Collections.EMPTY_LIST;
+        List remoteRepos = includeRemoteRepositories ? getRemoteArtifactRepositories() : Collections.emptyList();
 
         for ( IdeDependency dependency : deps )
         {
@@ -947,9 +947,8 @@ public abstract class AbstractIdeSupportMojo
         {
             msg.append( Messages.getString( "AbstractIdeSupportMojo.sourcesnotavailable" ) );
 
-            for ( Object missingSourceDependency : missingSourceDependencies )
+            for ( IdeDependency art : missingSourceDependencies )
             {
-                IdeDependency art = (IdeDependency) missingSourceDependency;
                 msg.append( Messages.getString( "AbstractIdeSupportMojo.sourcesmissingitem", art.getId() ) );
             }
             msg.append( "\n" ); //$NON-NLS-1$
@@ -959,9 +958,8 @@ public abstract class AbstractIdeSupportMojo
         {
             msg.append( Messages.getString( "AbstractIdeSupportMojo.javadocnotavailable" ) );
 
-            for ( Object missingJavadocDependency : missingJavadocDependencies )
+            for ( IdeDependency art : missingJavadocDependencies )
             {
-                IdeDependency art = (IdeDependency) missingJavadocDependency;
                 msg.append( Messages.getString( "AbstractIdeSupportMojo.javadocmissingitem", art.getId() ) );
             }
             msg.append( "\n" ); //$NON-NLS-1$
@@ -973,7 +971,7 @@ public abstract class AbstractIdeSupportMojo
      * @return List of dependencies to exclude from eclipse classpath.
      * @since 2.5
      */
-    public abstract List getExcludes();
+    public abstract List<String> getExcludes();
 
     /**
      * Checks if jar has to be resolved for the given artifact

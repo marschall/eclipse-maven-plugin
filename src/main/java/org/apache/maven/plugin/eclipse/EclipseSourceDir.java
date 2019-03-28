@@ -22,6 +22,7 @@ package org.apache.maven.plugin.eclipse;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.ide.IdeUtils;
@@ -37,7 +38,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Id$
  */
 public class EclipseSourceDir
-    implements Comparable
+    implements Comparable<EclipseSourceDir>
 {
     private static final String PATTERN_SEPARATOR = "|";
 
@@ -48,15 +49,9 @@ public class EclipseSourceDir
      */
     private String output;
 
-    /**
-     * List<String>
-     */
-    private List include;
+    private List<String> include;
 
-    /**
-     * List<String>
-     */
-    private List exclude;
+    private List<String> exclude;
 
     private boolean isResource;
 
@@ -74,8 +69,8 @@ public class EclipseSourceDir
      * @param filtering true if filtering should be applied, false otherwise. Note: Filtering will only be applied if
      *            this become a "special directory" by being nested within the default output directory.
      */
-    public EclipseSourceDir( String path, String output, boolean isResource, boolean test, List include, List exclude,
-                             boolean filtering )
+    public EclipseSourceDir( String path, String output, boolean isResource, boolean test, List<String> include,
+                             List<String> exclude, boolean filtering )
     {
         setPath( path );
         this.output = output;
@@ -91,7 +86,7 @@ public class EclipseSourceDir
      * 
      * @return Returns the exclude. Never null.
      */
-    public List getExclude()
+    public List<String> getExclude()
     {
         return this.exclude;
     }
@@ -101,9 +96,9 @@ public class EclipseSourceDir
      * 
      * @param exclude The exclude to set.
      */
-    public void setExclude( List exclude )
+    public void setExclude( List<String> exclude )
     {
-        this.exclude = new ArrayList();
+        this.exclude = new ArrayList<>();
         if ( exclude != null )
         {
             this.exclude.addAll( exclude );
@@ -115,7 +110,7 @@ public class EclipseSourceDir
      * 
      * @return Returns the include. Never null.
      */
-    public List getInclude()
+    public List<String> getInclude()
     {
         return this.include;
     }
@@ -125,9 +120,9 @@ public class EclipseSourceDir
      * 
      * @param include The include to set.
      */
-    public void setInclude( List include )
+    public void setInclude( List<String> include )
     {
-        this.include = new ArrayList();
+        this.include = new ArrayList<>();
         if ( include != null )
         {
             this.include.addAll( include );
@@ -243,6 +238,7 @@ public class EclipseSourceDir
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals( Object obj )
     {
         return ( obj != null ) && ( obj instanceof EclipseSourceDir )
@@ -252,6 +248,7 @@ public class EclipseSourceDir
     /**
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return this.path.hashCode();
@@ -260,14 +257,16 @@ public class EclipseSourceDir
     /**
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo( Object obj )
+    @Override
+    public int compareTo( EclipseSourceDir obj )
     {
-        return this.path.compareTo( ( (EclipseSourceDir) obj ).path );
+        return this.path.compareTo( obj.path );
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return ( isResource ? "resource " : "source " ) + path + ": " + "output=" + output + ", " + "include=["
@@ -312,7 +311,7 @@ public class EclipseSourceDir
         else
         {
 
-            LinkedHashSet includesAsSet = new LinkedHashSet();
+            Set<String> includesAsSet = new LinkedHashSet<>();
 
             // if the orginal or merged dir have an empty "include" this means all is included,
             // so merge includes only if both are not empty
@@ -322,12 +321,12 @@ public class EclipseSourceDir
                 includesAsSet.addAll( mergeWith.include );
             }
 
-            include = new ArrayList( includesAsSet );
+            include = new ArrayList<>( includesAsSet );
 
-            LinkedHashSet excludesAsSet = new LinkedHashSet();
+            Set<String> excludesAsSet = new LinkedHashSet<>();
             excludesAsSet.addAll( exclude );
             excludesAsSet.addAll( mergeWith.exclude );
-            exclude = new ArrayList( excludesAsSet );
+            exclude = new ArrayList<>( excludesAsSet );
         }
 
         if ( !StringUtils.equals( output, mergeWith.output ) )
