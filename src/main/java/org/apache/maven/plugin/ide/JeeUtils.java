@@ -46,6 +46,8 @@ public class JeeUtils
     // //$NON-NLS-1$
     static
     {
+        addJEE( JeeDescriptor.JEE_8_0, JeeDescriptor.EJB_3_2, JeeDescriptor.SERVLET_4_0, JeeDescriptor.JSP_2_3 );
+        addJEE( JeeDescriptor.JEE_7_0, JeeDescriptor.EJB_3_2, JeeDescriptor.SERVLET_3_1, JeeDescriptor.JSP_2_3 );
         addJEE( JeeDescriptor.JEE_6_0, JeeDescriptor.EJB_3_1, JeeDescriptor.SERVLET_3_0, JeeDescriptor.JSP_2_2 );
         addJEE( JeeDescriptor.JEE_5_0, JeeDescriptor.EJB_3_0, JeeDescriptor.SERVLET_2_5, JeeDescriptor.JSP_2_1 );
         addJEE( JeeDescriptor.JEE_1_4, JeeDescriptor.EJB_2_1, JeeDescriptor.SERVLET_2_4, JeeDescriptor.JSP_2_0 );

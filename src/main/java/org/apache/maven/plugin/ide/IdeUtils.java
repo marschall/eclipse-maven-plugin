@@ -79,6 +79,11 @@ public class IdeUtils
      * 'source' property for maven-compiler-plugin.
      */
     private static final String PROPERTY_SOURCE = "source";
+    
+    /**
+     * 'release' property for maven-compiler-plugin.
+     */
+    private static final String PROPERTY_RELEASE = "release";
 
     /**
      * 'encoding' property for maven-compiler-plugin.
@@ -206,6 +211,18 @@ public class IdeUtils
     public static String getCompilerTargetVersion( MavenProject project )
     {
         return IdeUtils.getCompilerPluginSetting( project, PROPERTY_TARGET );
+    }
+    
+    /**
+     * Returns the release version configured for the compiler plugin. Returns the minimum version required to compile
+     * both standard and test sources, if settings are different.
+     *
+     * @param project maven project
+     * @return java target version
+     */
+    public static String getCompilerReleaseVersion( MavenProject project )
+    {
+        return IdeUtils.getCompilerPluginSetting( project, PROPERTY_RELEASE );
     }
 
     // /**
@@ -558,6 +575,10 @@ public class IdeUtils
         if ( version == null )
         {
             version = IdeUtils.getCompilerSourceVersion( project );
+        }
+        if ( version == null )
+        {
+            version = IdeUtils.getCompilerReleaseVersion( project );
         }
 
         if ( "1.5".equals( version ) ) 

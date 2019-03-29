@@ -267,10 +267,18 @@ public class ReadWorkspaceLocations
     {
         String foundContainer;
         String sourceVersion = IdeUtils.getCompilerSourceVersion( project );
+        if ( sourceVersion == null )
+        {
+            sourceVersion = IdeUtils.getCompilerReleaseVersion( project );
+        }
         foundContainer = jreMap.get( sourceVersion );
         if ( foundContainer != null )
         {
-            logger.debug( "detected classpathContainer from sourceVersion(" + sourceVersion + "): " + foundContainer );
+            if ( logger.isDebugEnabled() )
+            {
+                logger.debug( "detected classpathContainer from sourceVersion(" + sourceVersion + "): "
+                    + foundContainer );
+            }
         }
         return foundContainer;
     }
@@ -469,6 +477,10 @@ public class ReadWorkspaceLocations
         jreMap.put( "7", jreMap.get( "1.7" ) );
         jreMap.put( "1.8", CLASSPATHENTRY_STANDARD + "JavaSE-1.8" );
         jreMap.put( "8", jreMap.get( "1.8" ) );
+        for ( int i = 9; i < 18; i++ )
+        {
+            jreMap.put( Integer.toString( i ), CLASSPATHENTRY_STANDARD + "JavaSE-" + i );
+        }
 
         if ( workspaceLocation == null )
         {

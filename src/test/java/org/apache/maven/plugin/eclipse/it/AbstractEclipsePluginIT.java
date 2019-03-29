@@ -542,7 +542,7 @@ public abstract class AbstractEclipsePluginIT
      * @param expectedFile the expected file - only used for path information
      * @param expectedFileContents the contents of the expected file
      * @param actualFile the actual file - only used for path information
-     * @param actualFileContents the contents of the actual fiel
+     * @param actualFileContents the contents of the actual file
      * @throws MojoExecutionException failures.
      */
     private void assertTextFileEquals( File expectedFile, String expectedFileContents, File actualFile,
@@ -550,7 +550,15 @@ public abstract class AbstractEclipsePluginIT
         throws MojoExecutionException
     {
         List<String> expectedLines = getLines( expectedFileContents );
+        if ( isOrderInsensitive( expectedFile ) )
+        {
+            expectedLines.sort( null );
+        }
         List<String> actualLines = getLines( actualFileContents );
+        if ( isOrderInsensitive( actualFile ) )
+        {
+            actualLines.sort( null );
+        }
         for ( int i = 0; i < expectedLines.size(); i++ )
         {
             String expected = expectedLines.get( i ).toString();
@@ -569,6 +577,11 @@ public abstract class AbstractEclipsePluginIT
                 + IdeUtils.getCanonicalPath( expectedFile ) + "' at line #" + ( i + 1 ), expected, actual );
         }
         assertTrue( "Unequal number of lines.", expectedLines.size() == actualLines.size() );
+    }
+    
+    private static boolean isOrderInsensitive(File f) {
+        String fileName = f.getName();
+        return fileName.endsWith( ".prefs" );
     }
 
     /**

@@ -33,6 +33,8 @@ import org.apache.maven.plugin.eclipse.Messages;
 import org.apache.maven.plugin.eclipse.writers.AbstractEclipseWriter;
 import org.apache.maven.plugin.ide.IdeUtils;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>
@@ -50,12 +52,17 @@ public class EclipseSettingsWriter
     private static final String PROP_JDT_CORE_COMPILER_COMPLIANCE = "org.eclipse.jdt.core.compiler.compliance";
 
     private static final String PROP_JDT_CORE_COMPILER_SOURCE = "org.eclipse.jdt.core.compiler.source";
+    
+    private static final String PROP_JDT_CORE_COMPILER_RELEASE = "org.eclipse.jdt.core.compiler.release";
 
     private static final String PROP_JDT_CORE_COMPILER_ENCODING = "encoding/";
+    
+    private static final String[] ONE_DOT_VERSIONS = new String[] {"6", "7", "8"};
 
     /**
      * @see org.apache.maven.plugin.eclipse.writers.EclipseWriter#write()
      */
+    @Override
     public void write()
         throws MojoExecutionException
     {
@@ -66,6 +73,15 @@ public class EclipseSettingsWriter
         String source = IdeUtils.getCompilerSourceVersion( config.getProject() );
         String encoding = IdeUtils.getCompilerSourceEncoding( config.getProject() );
         String target = IdeUtils.getCompilerTargetVersion( config.getProject() );
+        String release = IdeUtils.getCompilerReleaseVersion( config.getProject() );
+        if ( source == null )
+        {
+            source = extractSourceOrTargetFromRelease(release);
+        }
+        if ( target == null )
+        {
+            target = extractSourceOrTargetFromRelease(release);
+        }
 
         if ( source != null )
         {
@@ -124,6 +140,12 @@ public class EclipseSettingsWriter
         {
             coreSettings.put( "org.eclipse.jdt.core.compiler.codegen.targetPlatform", target );
         }
+        
+        if ( !coreSettings.isEmpty() || release != null )
+        {
+            String useRelease = release == null ? "disabled" : "enabled";
+            coreSettings.put( PROP_JDT_CORE_COMPILER_RELEASE, useRelease );
+        }
 
         // write the settings, if needed
         if ( !coreSettings.isEmpty() )
@@ -178,5 +200,18 @@ public class EclipseSettingsWriter
         {
             log.info( Messages.getString( "EclipseSettingsWriter.usingdefaults" ) );
         }
+    }
+
+    private static String extractSourceOrTargetFromRelease( String release )
+    {
+        if ( release == null )
+        {
+            return release;
+        }
+        if ( Arrays.binarySearch( ONE_DOT_VERSIONS, release ) != -1 )
+        {
+            return "1." + release;
+        }
+        return release;
     }
 }
