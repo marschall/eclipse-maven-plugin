@@ -44,6 +44,7 @@ public class EclipseClasspathWriterUnitTest
 
     private TestFileManager fileManager = new TestFileManager( "EclipseClasspathWriter.unitTest.", "" );
 
+    @Override
     protected void tearDown()
         throws IOException
     {
@@ -71,10 +72,10 @@ public class EclipseClasspathWriterUnitTest
         new File( basedir, maskedOutputDir ).mkdirs();
 
         EclipseSourceDir dir =
-            new EclipseSourceDir( "src/main/resources", "target/classes", true, false, null, null, false );
+            new EclipseSourceDir( "src/main/resources", "target/classes", true, false, null, null, false, false );
         EclipseSourceDir testDir =
             new EclipseSourceDir( "src\\test\\resources", "target/classes/test-resources", true, true, null, null,
-                                  false );
+                                  false, false );
 
         EclipseSourceDir[] dirs = { dir, testDir };
 
@@ -165,6 +166,7 @@ public class EclipseClasspathWriterUnitTest
     private static final class TestLog
         extends SystemStreamLog
     {
+        @Override
         public boolean isDebugEnabled()
         {
             return true;

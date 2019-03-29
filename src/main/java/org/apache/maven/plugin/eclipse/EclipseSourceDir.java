@@ -58,6 +58,8 @@ public class EclipseSourceDir
     private boolean test;
 
     private boolean filtering;
+    
+    private boolean attached;
 
     /**
      * @param path the eclipse source directory
@@ -68,9 +70,11 @@ public class EclipseSourceDir
      * @param exclude a string in the eclipse pattern format for the exclude filter
      * @param filtering true if filtering should be applied, false otherwise. Note: Filtering will only be applied if
      *            this become a "special directory" by being nested within the default output directory.
+     * @param attached true if a a directory attached by a plugin or build helper, false if directly
+     *            configured in the build section of the pom
      */
     public EclipseSourceDir( String path, String output, boolean isResource, boolean test, List<String> include,
-                             List<String> exclude, boolean filtering )
+                             List<String> exclude, boolean filtering, boolean attached )
     {
         setPath( path );
         this.output = output;
@@ -79,6 +83,7 @@ public class EclipseSourceDir
         setInclude( include );
         setExclude( exclude );
         this.filtering = filtering;
+        this.attached = attached;
     }
 
     /**
@@ -236,6 +241,26 @@ public class EclipseSourceDir
     }
 
     /**
+     * Getter for <code>attached</code>.
+     * 
+     * @return Returns the attached.
+     */
+    public boolean isAttached()
+    {
+        return attached;
+    }
+
+    /**
+     * Setter for <code>attached</code>.
+     * 
+     * @param test The attached to set.
+     */
+    public void setAttached( boolean attached )
+    {
+        this.attached = attached;
+    }
+
+    /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -269,9 +294,13 @@ public class EclipseSourceDir
     @Override
     public String toString()
     {
-        return ( isResource ? "resource " : "source " ) + path + ": " + "output=" + output + ", " + "include=["
-            + getIncludeAsString() + "], " + "exclude=[" + getExcludeAsString() + "], " + "test=" + test + ", "
-            + "filtering=" + filtering;
+        return ( isResource ? "resource " : "source " ) + path + ": "
+                        + "output=" + output + ", "
+                        + "include=[" + getIncludeAsString() + "], "
+                        + "exclude=[" + getExcludeAsString() + "], "
+                        + "test=" + test + ", "
+                        + "filtering=" + filtering + ", "
+                        + "attached=" + attached;
     }
 
     /**

@@ -259,6 +259,21 @@ public class EclipseClasspathWriter
               writer.addAttribute( NAME, "test" );
               writer.endElement();
             }
+            
+            // ignore optional compile problems, needs eclipse 4.2
+            if ( dir.isAttached() )
+            {
+                if ( !attributeElemOpen )
+                {
+                    writer.startElement( ATTRIBUTES );
+                    attributeElemOpen = true;
+                }
+                
+                writer.startElement( ATTRIBUTE );
+                writer.addAttribute( VALUE, "true" );
+                writer.addAttribute( NAME, "ignore_optional_problems" );
+                writer.endElement();
+            }
 
             if ( attributeElemOpen )
             {

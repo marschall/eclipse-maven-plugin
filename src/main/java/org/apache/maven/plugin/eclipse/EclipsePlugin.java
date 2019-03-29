@@ -1519,7 +1519,8 @@ public class EclipsePlugin
 
         Set<EclipseSourceDir> mainDirectories = new LinkedHashSet<>();
 
-        extractSourceDirs( mainDirectories, project.getCompileSourceRoots(), basedir, projectBaseDir, false, null );
+        extractSourceDirs( mainDirectories, project.getCompileSourceRoots(), basedir, projectBaseDir, false, null,
+                           project.getBuild().getSourceDirectory() );
 
         extractResourceDirs( mainDirectories, project.getBuild().getResources(), basedir, projectBaseDir, false,
                              mainOutput );
@@ -1527,7 +1528,7 @@ public class EclipsePlugin
         Set<EclipseSourceDir> testDirectories = new LinkedHashSet<>();
 
         extractSourceDirs( testDirectories, project.getTestCompileSourceRoots(), basedir, projectBaseDir, true,
-                           testOutput );
+                           testOutput, project.getBuild().getTestSourceDirectory() );
 
         extractResourceDirs( testDirectories, project.getBuild().getTestResources(), basedir, projectBaseDir, true,
                              testOutput );
@@ -1559,7 +1560,7 @@ public class EclipsePlugin
     }
 
     private void extractSourceDirs( Set<EclipseSourceDir> directories, List<String> sourceRoots, File basedir,
-                                    File projectBaseDir, boolean test, String output )
+                                    File projectBaseDir, boolean test, String output, String defaultSourceRoot )
         throws MojoExecutionException
     {
         for ( String sourceRoot1 : sourceRoots )
@@ -1574,7 +1575,7 @@ public class EclipsePlugin
                                                         !projectBaseDir.equals( basedir ) );
 
                 directories.add( new EclipseSourceDir( sourceRoot, output, false, test, sourceIncludes, sourceExcludes,
-                                                       false ) );
+                                                       false, !defaultSourceRoot.equals( sourceRoot1 ) ) );
             }
         }
     }
@@ -1634,7 +1635,7 @@ public class EclipsePlugin
 
             EclipseSourceDir resourceDir =
                 new EclipseSourceDir( resourcePath, thisOutput, true, test, resource.getIncludes(), excludes,
-                                      resource.isFiltering() );
+                                      resource.isFiltering(), false );
 
             if ( !directories.add( resourceDir ) )
             {
