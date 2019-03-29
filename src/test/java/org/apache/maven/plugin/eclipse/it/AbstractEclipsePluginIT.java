@@ -576,7 +576,10 @@ public abstract class AbstractEclipsePluginIT
             assertEquals( "Comparing '" + IdeUtils.getCanonicalPath( actualFile ) + "' against '"
                 + IdeUtils.getCanonicalPath( expectedFile ) + "' at line #" + ( i + 1 ), expected, actual );
         }
-        assertTrue( "Unequal number of lines.", expectedLines.size() == actualLines.size() );
+        assertTrue( "Unequal number of lines in '"
+                        + IdeUtils.getCanonicalPath( actualFile ) + "' compared to '"
+                        + IdeUtils.getCanonicalPath( expectedFile ) + "'",
+                        expectedLines.size() == actualLines.size() );
     }
     
     private static boolean isOrderInsensitive(File f) {
