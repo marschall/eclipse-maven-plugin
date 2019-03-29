@@ -267,7 +267,7 @@ public class ReadWorkspaceLocations
     {
         String foundContainer;
         String sourceVersion = IdeUtils.getCompilerSourceVersion( project );
-        foundContainer = (String) jreMap.get( sourceVersion );
+        foundContainer = jreMap.get( sourceVersion );
         if ( foundContainer != null )
         {
             logger.debug( "detected classpathContainer from sourceVersion(" + sourceVersion + "): " + foundContainer );
@@ -401,7 +401,7 @@ public class ReadWorkspaceLocations
 
     /* package */Map<String, String> readDefinedServers( WorkspaceConfiguration workspaceConfiguration, Log logger )
     {
-        Map<String, String> detectedRuntimes = new HashMap<String, String>();
+        Map<String, String> detectedRuntimes = new HashMap<>();
         if ( workspaceConfiguration.getWorkspaceDirectory() != null )
         {
             Xpp3Dom runtimesElement = null;
@@ -457,7 +457,7 @@ public class ReadWorkspaceLocations
      */
     private Map<String, String> readAvailableJREs( File workspaceLocation, Log logger )
     {
-        Map<String, String> jreMap = new HashMap<String, String>();
+        Map<String, String> jreMap = new HashMap<>();
         jreMap.put( "1.2", CLASSPATHENTRY_STANDARD + "J2SE-1.2" );
         jreMap.put( "1.3", CLASSPATHENTRY_STANDARD + "J2SE-1.3" );
         jreMap.put( "1.4", CLASSPATHENTRY_STANDARD + "J2SE-1.4" );
@@ -518,8 +518,10 @@ public class ReadWorkspaceLocations
                         logger.warn( Messages.getString( "EclipsePlugin.invalidvminworkspace", jrePath ) );
                         continue;
                     }
-                    JarFile rtJar = new JarFile( rtJarFile );
-                    String version = rtJar.getManifest().getMainAttributes().getValue( "Specification-Version" );
+                    String version;
+                    try (JarFile rtJar = new JarFile( rtJarFile )) {
+                        version = rtJar.getManifest().getMainAttributes().getValue( "Specification-Version" );
+                    }
                     if ( defaultJRE.endsWith( "," + vmId ) )
                     {
                         jreMap.put( jrePath, ReadWorkspaceLocations.CLASSPATHENTRY_DEFAULT );
@@ -558,7 +560,7 @@ public class ReadWorkspaceLocations
      */
     public List<File> readProjectLocations( File workspaceDirectory, Log logger )
     {
-        List<File> projectLocations = new ArrayList<File>();
+        List<File> projectLocations = new ArrayList<>();
         File projectsDirectory =
             new File( workspaceDirectory, ReadWorkspaceLocations.METADATA_PLUGINS_ORG_ECLIPSE_CORE_RESOURCES_PROJECTS );
 
@@ -595,7 +597,7 @@ public class ReadWorkspaceLocations
      */
     private void readWorkspace( WorkspaceConfiguration workspaceConfiguration, Log logger )
     {
-        List<IdeDependency> dependencies = new ArrayList<IdeDependency>();
+        List<IdeDependency> dependencies = new ArrayList<>();
         File workspaceDirectory = workspaceConfiguration.getWorkspaceDirectory();
         if ( workspaceDirectory != null )
         {
