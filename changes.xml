@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/changes/1.0.0"
+    xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
+  <body>
+
+    <release version="2.11.0" date="2019-03-30">
+      <action type="add" dev="marschall">
+        Add support for test dependencies, both JAR and project dependencies
+      </action>
+      <action type="add" dev="marschall">
+        Add support for test directories
+      </action>
+      <action type="add" dev="marschall">
+        Ignore optional compile problems on attached source folders
+      </action>
+      <action type="add" dev="marschall">
+        Add support for Java 9 to 17
+      </action>
+      <action type="add" dev="marschall">
+        Add support for JavaEE 8
+      </action>
+      <action type="add" dev="marschall">
+        Add support for JavaEE 7
+      </action>
+      <action type="remove" dev="marschall">
+        Remove AJDT support
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "configure-workspace"
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "resolve-workspace-dependencies"
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "to-maven"
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "install-plugins"
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "make-artifacts"
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "myeclipse"
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "myeclipse-clean"
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "rad"
+      </action>
+      <action type="remove" dev="marschall">
+        Remove goal "rad-clean"
+      </action>
+    </release>
+
+  </body>
+</document>
