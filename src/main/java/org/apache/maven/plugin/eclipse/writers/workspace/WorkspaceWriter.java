@@ -42,7 +42,7 @@ public interface WorkspaceWriter
     /**
      * Main method that should be implemented by the writer to do the work.
      * 
-     * @throws MojoExecutionException
+     * @throws MojoExecutionException if an error occurs
      */
     void write()
         throws MojoExecutionException;

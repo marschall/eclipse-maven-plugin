@@ -549,9 +549,10 @@ public class EclipsePlugin
     protected boolean testSourcesLast;
 
     /**
-     * The plugin is often capable in predicting the required jee version based on the dependencies of the project. By
-     * setting this parameter to one of the {@code jeeversion} options the version will be locked.
+     * The plugin is often capable in predicting the required Java EE version based on the dependencies of the project.
+     * By setting this parameter to one of the {@code jeeversion} options the version will be locked.
      * <table>
+     * <caption>Java EE API versions</caption>
      * <thead>
      * <tr>
      * <th>jeeversion</th>
@@ -560,6 +561,18 @@ public class EclipsePlugin
      * <th>JSP version</th>
      * </tr>
      * </thead> <tbody>
+     * <tr>
+     * <td>8.0</td>
+     * <td>3.2</td>
+     * <td>4.0</td>
+     * <td>2.3</td>
+     * </tr>
+     * <tr>
+     * <td>7.0</td>
+     * <td>3.2</td>
+     * <td>3.1</td>
+     * <td>2.3</td>
+     * </tr>
      * <tr>
      * <td>6.0</td>
      * <td>3.1</td>
@@ -767,7 +780,7 @@ public class EclipsePlugin
     /**
      * Getter for <code>additionalProjectnatures</code>.
      * 
-     * @return Returns the additionalProjectnatures.
+     * @return the additionalProjectnatures.
      */
     public final List<String> getAdditionalProjectnatures()
     {
@@ -786,6 +799,8 @@ public class EclipsePlugin
 
     /**
      * Getter for <code>addVersionToProjectName</code>.
+     * 
+     * @return the addVersionToProjectName.
      */
     public final boolean isAddVersionToProjectName()
     {
@@ -794,6 +809,8 @@ public class EclipsePlugin
 
     /**
      * Setter for <code>addVersionToProjectName</code>.
+     * 
+     * @param addVersionToProjectName addVersionToProjectName
      */
     public final void setAddVersionToProjectName( boolean addVersionToProjectName )
     {
@@ -802,6 +819,8 @@ public class EclipsePlugin
 
     /**
      * Getter for <code>addGroupIdToProjectName</code>.
+     * 
+     * @return the addGroupIdToProjectName.
      */
     public final boolean isAddGroupIdToProjectName()
     {
@@ -810,6 +829,8 @@ public class EclipsePlugin
 
     /**
      * Setter for <code>addGroupIdToProjectName</code>.
+     * 
+     * @param addGroupIdToProjectName addGroupIdToProjectName
      */
     public final void setAddGroupIdToProjectName( boolean addGroupIdToProjectName )
     {

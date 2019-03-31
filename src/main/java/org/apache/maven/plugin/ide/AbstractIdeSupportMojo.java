@@ -611,8 +611,7 @@ public abstract class AbstractIdeSupportMojo
 
                     }
 
-                    // @todo a final report with the list of
-                    // missingArtifacts?
+                    // TODO: a final report with the list of missingArtifacts?
 
                 }
 

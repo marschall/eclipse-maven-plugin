@@ -35,6 +35,9 @@ public class EclipseAntExternalLaunchConfigurationWriter
     private String buildfilePath;
 
     /**
+     * 
+     * @param log the mojo logger
+     * @param config writer configuration
      * @param launcherName Name of the launch file, for instance 'AntBuilder.launch'
      * @param buildfilePath Project relative path to the ant build file, for instance 'eclipse-build.xml'
      * @return this

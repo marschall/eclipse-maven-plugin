@@ -238,9 +238,9 @@ public class IdeDependency
     }
 
     /**
-     * Setter for <code>groupId</code>.
+     * Setter for <code>classifier</code>.
      * 
-     * @param groupId The groupId to set.
+     * @param classifier The groupId to set.
      */
     public void setClassifier( String classifier )
     {
@@ -495,7 +495,8 @@ public class IdeDependency
      * Is this dependency System scoped outside the eclipse project. This is NOT complete because in reality the check
      * should mean that any module in the reactor contains the system scope locally!
      * 
-     * @return Returns this dependency is systemScoped outside the project.
+     * @param project the project to check against
+     * @return this dependency is systemScoped outside the project.
      */
     public boolean isSystemScopedOutsideProject( MavenProject project )
     {
@@ -508,7 +509,9 @@ public class IdeDependency
     }
 
     /**
-     * @return <tt>true</tt> if this dependency is a Java API
+     * Checks whether this dependency represents a Java API.
+     * 
+     * @return <code>true</code> if this dependency is a Java API
      */
     public boolean isJavaApi()
     {

@@ -81,6 +81,7 @@ public class EclipseWtpComponentWriter
     /**
      * @see org.apache.maven.plugin.eclipse.writers.EclipseWriter#write()
      */
+    @Override
     public void write()
         throws MojoExecutionException
     {
@@ -171,7 +172,7 @@ public class EclipseWtpComponentWriter
                 writer.endElement();
             }
 
-            // @todo is this really needed?
+            // TODO: is this really needed?
             writer.startElement( ELT_PROPERTY );
             writer.addAttribute( ATTR_NAME, "java-output-path" ); //$NON-NLS-1$
             writer.addAttribute( ATTR_VALUE, "/" //$NON-NLS-1$
@@ -223,7 +224,9 @@ public class EclipseWtpComponentWriter
     }
 
     /**
-     * @param writer
+     * Writes the context root.
+     * 
+     * @param writer the writer to use
      */
     protected void writeContextRoot( XMLWriter writer )
     {

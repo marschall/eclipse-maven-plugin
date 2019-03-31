@@ -131,7 +131,7 @@ public class JeeUtils
     /**
      * Search in dependencies a version of EJB APIs (or of JEE APIs).
      * 
-     * @param artifacts The list of dependencies where we search the information
+     * @param project the project where we search the information
      * @return An EJB version as defined by constants JeeDescriptor.EJB_x_x. By default, if nothing is found, returns
      *         JeeDescriptor.EJB_2_1.
      */
@@ -155,7 +155,7 @@ public class JeeUtils
     /**
      * Search in dependencies a version of JEE APIs.
      * 
-     * @param artifacts The list of dependencies where we search the information
+     * @param project the project where we search the information
      * @return A JEE version as defined by constants JeeDescriptor.JEE_x_x. By default, if nothing is found, returns
      *         JeeDescriptor.JEE_1_4.
      */
@@ -200,7 +200,7 @@ public class JeeUtils
     /**
      * Search in dependencies a version of JSP APIs (or from JEE APIs, or from Servlet APIs).
      * 
-     * @param artifacts The list of dependencies where we search the information
+     * @param project the project where we search the information
      * @return A JSP version as defined by constants JeeDescriptor.JSP_x_x. By default, if nothing is found, returns
      *         JeeDescriptor.JSP_2_0.
      */
@@ -236,7 +236,7 @@ public class JeeUtils
     /**
      * Search in dependencies a version of Servlet APIs (or of JEE APIs).
      * 
-     * @param artifacts The list of dependencies where we search the information
+     * @param project the project where we search the information
      * @return A SERVLET version as defined by constants JeeDescriptor.SERLVET_x_x. By default, if nothing is found,
      *         returns JeeDescriptor.SERVLET_2_4.
      */

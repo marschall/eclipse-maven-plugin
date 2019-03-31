@@ -104,6 +104,7 @@ public class IdeUtils
      * Delete a file, handling log messages and exceptions
      *
      * @param f File to be deleted
+     * @param log the mojo log
      * @throws MojoExecutionException only if a file exists and can't be deleted
      */
     public static void delete( File f, Log log )
@@ -158,6 +159,7 @@ public class IdeUtils
      * Returns a compiler plugin settings, considering also settings altered in plugin executions .
      *
      * @param project maven project
+     * @param optionName the name of the plugin configuration option
      * @return option value (may be null)
      */
     public static String getCompilerPluginSetting( MavenProject project, String optionName )
@@ -225,31 +227,6 @@ public class IdeUtils
         return IdeUtils.getCompilerPluginSetting( project, PROPERTY_RELEASE );
     }
 
-    // /**
-    // * Extracts the version of the first matching dependency in the given list.
-    // *
-    // * @param artifactIds artifact names to compare against for extracting version
-    // * @param dependencies Collection of dependencies for our project
-    // * @param len expected length of the version sub-string
-    // * @return
-    // */
-    // public static String getDependencyVersion( String[] artifactIds, List dependencies, int len )
-    // {
-    // for ( int j = 0; j < artifactIds.length; j++ )
-    // {
-    // String id = artifactIds[j];
-    // for ( Iterator itr = dependencies.iterator(); itr.hasNext(); )
-    // {
-    // Dependency dependency = (Dependency) itr.next();
-    // if ( id.equals( dependency.getArtifactId() ) )
-    // {
-    // return StringUtils.substring( dependency.getVersion(), 0, len );
-    // }
-    // }
-    // }
-    // return null;
-    // }
-
     /**
      * Extracts the version of the first matching artifact in the given list.
      * <p>
@@ -261,9 +238,9 @@ public class IdeUtils
      * </ul>
      * 
      * @param artifactIds artifact names to compare against for extracting version
-     * @param artifacts Set of artifacts for our project
+     * @param dependencies Set of dependencies for our project
      * @param len expected length of the version sub-string
-     * @return
+     * @return the version of the first matching artifact
      */
     public static String getArtifactVersion( String[] artifactIds, List dependencies, int len )
     {
@@ -322,7 +299,6 @@ public class IdeUtils
     /**
      * Search for a configuration setting of an other plugin for a configuration setting.
      *
-     * @todo there should be a better way to do this
      * @param project the current maven project to get the configuration from.
      * @param pluginId the group id and artifact id of the plugin to search for
      * @param optionName the option to get from the configuration
@@ -332,6 +308,7 @@ public class IdeUtils
     public static String getPluginSetting( MavenProject project, String pluginId, String optionName,
                                            String defaultValue )
     {
+        //TODO: there should be a better way to do this
         Xpp3Dom dom = getPluginConfigurationDom( project, pluginId );
         if ( dom != null && dom.getChild( optionName ) != null )
         {
@@ -343,14 +320,13 @@ public class IdeUtils
     /**
      * Search for the configuration Xpp3 dom of an other plugin.
      *
-     * @todo there should be a better way to do this
      * @param project the current maven project to get the configuration from.
      * @param pluginId the group id and artifact id of the plugin to search for
      * @return the value of the option configured in the plugin configuration
      */
     public static Xpp3Dom getPluginConfigurationDom( MavenProject project, String pluginId )
     {
-
+        //TODO: there should be a better way to do this
         Plugin plugin = (org.apache.maven.model.Plugin) project.getBuild().getPluginsAsMap().get( pluginId );
         if ( plugin != null )
         {
@@ -363,14 +339,15 @@ public class IdeUtils
     /**
      * Search for the configuration Xpp3 dom of an other plugin.
      *
-     * @todo there should be a better way to do this
      * @param project the current maven project to get the configuration from.
      * @param artifactId the artifact id of the plugin to search for
+     * @param subConfiguration the subconfigurations
      * @return the value of the option configured in the plugin configuration
      */
     public static Xpp3Dom[] getPluginConfigurationDom( MavenProject project, String artifactId,
                                                        String[] subConfiguration )
     {
+        // TODO: there should be a better way to do this
         List<Xpp3Dom> configurationDomList = new ArrayList<>();
         Xpp3Dom configuration = getPluginConfigurationDom( project, artifactId );
         if ( configuration != null )
@@ -406,7 +383,8 @@ public class IdeUtils
      *
      * @param projectNameTemplate the current projectNameTemplate, if available
      * @param addVersionToProjectName whether to include Version in the project name
-     * @param addGroupIdToProjectName whether to include GroupId in the project name.
+     * @param addGroupIdToProjectName whether to include GroupId in the project name
+     * @param log the mojo log
      * @return the project name template.
      */
     public static String calculateProjectNameTemplate( String projectNameTemplate, boolean addVersionToProjectName,
@@ -437,14 +415,6 @@ public class IdeUtils
     }
 
     /**
-     * Use {@link IdeDependency#getEclipseProjectName()} instead.
-     */
-    protected static String getProjectName( String template, IdeDependency dep )
-    {
-        return getProjectName( template, dep.getGroupId(), dep.getArtifactId(), dep.getVersion() );
-    }
-
-    /**
      * Use the project name template to create an eclipse project.
      *
      * @param template Template for the project name
@@ -468,6 +438,7 @@ public class IdeUtils
     }
 
     /**
+     * @param localRepository the local repository
      * @param artifact the artifact
      * @return the not-available marker file for the specified artifact
      */

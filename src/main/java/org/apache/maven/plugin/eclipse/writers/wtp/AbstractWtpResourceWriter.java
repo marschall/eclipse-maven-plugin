@@ -79,9 +79,12 @@ public abstract class AbstractWtpResourceWriter
     protected static final String ELT_PROJECT_MODULES = "project-modules"; //$NON-NLS-1$
 
     /**
-     * @param project
-     * @param writer
-     * @throws MojoExecutionException
+     * Write the module type according the the project packaging.
+     * 
+     * @param project the project
+     * @param writer the writer to use
+     * @param buildOutputDirectory the output directory
+     * @throws MojoExecutionException if an error occurs
      */
     protected void writeModuleTypeAccordingToPackaging( MavenProject project, XMLWriter writer,
                                                         File buildOutputDirectory )
@@ -170,11 +173,12 @@ public abstract class AbstractWtpResourceWriter
     /**
      * Adds dependency for Eclipse WTP project.
      * 
-     * @param writer
-     * @param artifact
-     * @param localRepository
-     * @param basedir
-     * @throws MojoExecutionException
+     * @param writer the writer to use
+     * @param dep the dependency to add
+     * @param localRepository the local repository
+     * @param basedir the base directory
+     * @param deployPath the deploy path
+     * @throws MojoExecutionException if an error occurs
      */
     protected void addDependency( XMLWriter writer, IdeDependency dep, ArtifactRepository localRepository,
                                   File basedir, String deployPath )

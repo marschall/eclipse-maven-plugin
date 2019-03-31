@@ -37,6 +37,7 @@ public class EclipseWtpComponent15Writer
      * 
      * @return <code>org.eclipse.wst.common.component</code>
      */
+    @Override
     protected String getComponentFileName()
     {
         return "org.eclipse.wst.common.component";
@@ -47,6 +48,7 @@ public class EclipseWtpComponent15Writer
      * 
      * @return <code>1.0</code>
      */
+    @Override
     protected String getProjectVersion()
     {
         if ( this.config.getWtpVersion() < 2.0f )
@@ -59,9 +61,7 @@ public class EclipseWtpComponent15Writer
         }
     }
 
-    /**
-     * @param writer
-     */
+    @Override
     protected void writeContextRoot( XMLWriter writer )
     {
         writer.startElement( ELT_PROPERTY );

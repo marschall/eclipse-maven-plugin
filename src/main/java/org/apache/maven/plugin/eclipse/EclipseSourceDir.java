@@ -215,7 +215,7 @@ public class EclipseSourceDir
     /**
      * Getter for <code>isResource</code>.
      * 
-     * @return Returns the isResource.
+     * @return the isResource
      */
     public boolean isResource()
     {
@@ -223,7 +223,9 @@ public class EclipseSourceDir
     }
 
     /**
-     * Wheter this resource should be copied with filtering.
+     * Whether this resource should be copied with filtering.
+     * 
+     * @return whether this resource should be copied with filtering
      */
     public boolean isFiltering()
     {
@@ -231,7 +233,7 @@ public class EclipseSourceDir
     }
 
     /**
-     * Wheter this resource should be copied with filtering.
+     * Whether this resource should be copied with filtering.
      * 
      * @param filtering filter resources
      */
@@ -243,7 +245,7 @@ public class EclipseSourceDir
     /**
      * Getter for <code>attached</code>.
      * 
-     * @return Returns the attached.
+     * @return the attached
      */
     public boolean isAttached()
     {
@@ -253,7 +255,7 @@ public class EclipseSourceDir
     /**
      * Setter for <code>attached</code>.
      * 
-     * @param test The attached to set.
+     * @param attached The attached to set.
      */
     public void setAttached( boolean attached )
     {
@@ -266,8 +268,16 @@ public class EclipseSourceDir
     @Override
     public boolean equals( Object obj )
     {
-        return ( obj != null ) && ( obj instanceof EclipseSourceDir )
-            && this.path.equals( ( (EclipseSourceDir) obj ).path );
+        if ( obj == this )
+        {
+            return true;
+        }
+        if ( !(obj instanceof EclipseSourceDir) )
+        {
+            return false;
+        }
+        EclipseSourceDir other = (EclipseSourceDir) obj;
+        return this.path.equals( other.path );
     }
 
     /**
@@ -320,6 +330,7 @@ public class EclipseSourceDir
      * @param mergeWith the directory to merge with
      * @throws MojoExecutionException test or filtering values are not identical, or isResource true and output are not
      *             identical
+     * @return whether the merge was successful
      */
     public boolean merge( EclipseSourceDir mergeWith )
         throws MojoExecutionException

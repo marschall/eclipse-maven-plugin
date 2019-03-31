@@ -122,6 +122,7 @@ public class EclipseWtpApplicationXMLWriter
      * 
      * @throws MojoExecutionException when writing the config files was not possible
      */
+    @Override
     public void write()
         throws MojoExecutionException
     {
@@ -206,9 +207,9 @@ public class EclipseWtpApplicationXMLWriter
      * <li>The <code>sourceDirectory</code> must exists.
      * </ul>
      * 
-     * @param sourceDirectory
-     * @param destinationDirectory
-     * @throws IOException
+     * @param sourceDirectory the source directory
+     * @param destinationDirectory the destination directory
+     * @throws IOException if an IO exception occurs
      */
     public static void copyDirectoryStructure( File sourceDirectory, File destinationDirectory )
         throws IOException

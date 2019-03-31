@@ -85,10 +85,10 @@ public class JeeDescriptor
     public static final String JSP_2_3 = "2.3";
 
     /**
-     * @param jeeVersion
-     * @param ejbVersion
-     * @param servletVersion
-     * @param jspVersion
+     * @param jeeVersion the Java EE version
+     * @param ejbVersion the EJB version
+     * @param servletVersion the servlet version
+     * @param jspVersion the JSP version
      */
     public JeeDescriptor( String jeeVersion, String ejbVersion, String servletVersion, String jspVersion )
     {

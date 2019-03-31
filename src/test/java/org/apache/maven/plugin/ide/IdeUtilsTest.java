@@ -39,27 +39,6 @@ import org.junit.Test;
 public class IdeUtilsTest
 {
 
-    @Test
-    public void testGetProjectNameStringIdeDependency()
-    {
-        IdeDependency dependency = new IdeDependency();
-        dependency.setGroupId( "g" );
-        dependency.setArtifactId( "a" );
-        dependency.setVersion( "v" );
-
-        String name = IdeUtils.getProjectName( IdeUtils.PROJECT_NAME_DEFAULT_TEMPLATE, dependency );
-        assertEquals( dependency.getArtifactId(), name );
-
-        name = IdeUtils.getProjectName( IdeUtils.PROJECT_NAME_WITH_GROUP_AND_VERSION_TEMPLATE, dependency );
-        assertEquals( dependency.getGroupId() + "." + dependency.getArtifactId() + "-" + dependency.getVersion(), name );
-
-        name = IdeUtils.getProjectName( IdeUtils.PROJECT_NAME_WITH_GROUP_TEMPLATE, dependency );
-        assertEquals( dependency.getGroupId() + "." + dependency.getArtifactId(), name );
-
-        name = IdeUtils.getProjectName( IdeUtils.PROJECT_NAME_WITH_VERSION_TEMPLATE, dependency );
-        assertEquals( dependency.getArtifactId() + "-" + dependency.getVersion(), name );
-    }
-
     /**
      * When the file to add is on a different drive and an absolute path expect that the returned value is the same as
      * the file to add (but with /s)

@@ -50,9 +50,12 @@ public abstract class EclipseLaunchConfigurationWriter
     private boolean initialized;
 
     /**
-     * Filename including .launch
+     * Init this writer.
      * 
-     * @param filename
+     * @param log the mojo logger
+     * @param config writer configuration
+     * @param filename the file to including .launch
+     * @return the writer instance
      */
     protected EclipseWriter init( Log log, EclipseWriterConfig config, String filename )
     {
@@ -150,7 +153,7 @@ public abstract class EclipseLaunchConfigurationWriter
     protected abstract void addAttributes( XMLWriter writer );
 
     /**
-     * Wheter to allocate a console.
+     * Whether to allocate a console.
      */
     private boolean isCaptureOutput()
     {

@@ -31,8 +31,8 @@ public interface EclipseWriter
     /**
      * Init this writer.
      * 
-     * @param log mojo logger.
-     * @param config writer configuration.
+     * @param log mojo logger
+     * @param config writer configuration
      * @return the writer instance
      */
     EclipseWriter init( Log log, EclipseWriterConfig config );
@@ -40,7 +40,7 @@ public interface EclipseWriter
     /**
      * Main method that should be implemented by the writer to do the work.
      * 
-     * @throws MojoExecutionException
+     * @throws MojoExecutionException when an exception occurs during writing
      */
     void write()
         throws MojoExecutionException;
