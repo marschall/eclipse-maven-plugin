@@ -1,1 +1,4 @@
-/target/
+target/
+pom.xml.releaseBackup
+release.properties
+
