@@ -394,6 +394,7 @@ public abstract class AbstractEclipsePluginIT
 
         if (properties == null) properties = new Properties();
         InvocationRequest request = buildTool.createBasicInvocationRequest( pom, properties, goals, buildLog );
+        request.setBatchMode( true );
         request.setUpdateSnapshots( false );
         request.setShowErrors( true );
         request.getProperties().setProperty( "downloadSources", "false" );

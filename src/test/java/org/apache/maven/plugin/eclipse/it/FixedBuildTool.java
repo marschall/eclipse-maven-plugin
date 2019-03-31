@@ -41,6 +41,8 @@ public class FixedBuildTool
                                                            File buildLogFile )
     {
         InvocationRequest request = super.createBasicInvocationRequest( pom, properties, goals, buildLogFile );
+        
+        request.setBatchMode( true );
 
         request.setLocalRepositoryDirectory( findLocalRepo() );
 
