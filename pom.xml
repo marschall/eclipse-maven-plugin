@@ -356,23 +356,6 @@ under the License.
             </dependency>
           </dependencies>
         </plugin>
-        <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
-          <version>0.13</version>
-          <configuration>
-            <excludes combine.children="append">
-              <exclude>README-testing.txt</exclude>
-              
-              <!--
-                These files contain several files for eclipse
-                which will let fail the tests if a license header
-                is being added.
-              -->
-              <exclude>src/test/resources/**</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -382,6 +365,32 @@ under the License.
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <configuration>
+          <scmBranch>gh-pages</scmBranch>
+          <pubScmUrl>${project.scm.developerConnection}</pubScmUrl>
+          <content>${project.reporting.outputDirectory}</content>
+          <!-- 
+          <content>${project.build.directory}/site</content>
+           -->
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>publish-scm</goal>
+            </goals>
+            <phase>site-deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <!-- We are deploying site using scm-publish, not site-deploy... -->
+          <skipDeploy>true</skipDeploy>
         </configuration>
       </plugin>
       <plugin>
