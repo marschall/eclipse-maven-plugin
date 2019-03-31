@@ -45,14 +45,10 @@ Maven Eclipse Plugin: Usage
 * Maven repository
 
  Eclipse needs to know the path to the local maven repository. Therefore the
- classpath variable <M2_REPO> has to be set. Execute the following command:
+ classpath variable <M2_REPO> has to be set.
 
-+----+
-mvn -Declipse.workspace=<path-to-eclipse-workspace> eclipse:add-maven-repo
-+----+
-
- You can also define a new classpath variable inside Eclipse: From the menu
- bar, select Window > Preferences. Select the Java > Build Path > Classpath
+ You can also a new classpath variable inside Eclipse: From the menu bar,
+ select Window > Preferences. Select the Java > Build Path > Classpath
  Variables page.
 
 * Maven as an external tool
@@ -115,12 +111,4 @@ mvn eclipse:eclipse
  to project B, assuming that project B defines a dependency on project A.
 
  For further details, see {{{./reactor.html}Multiple Module Projects}}.
-
-* Eclipse PDE Projects
-
- This plugin is capable of creating and / or synchronising an Eclipse
- Plugin Development Environment project.
-
- For further details, see the configuration instructions
- {{{./pde.html}here}}.
 

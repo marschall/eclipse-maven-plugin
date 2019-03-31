@@ -31,7 +31,7 @@ ${project.name}
   The Maven Eclipse Plugin is used to generate Eclipse IDE files (*.classpath,
   *.project, *.wtpmodules and the .settings folder) for use with a project.
 
-  <<Disclaimer:>> Users are advised to use m2e, the {{{https://projects.eclipse.org/projects/technology.m2e}Eclipse Maven Integration}}
+  <<Disclaimer:>> Users are advised to use m2e, the {{{https://www.eclipse.org/m2e/}Eclipse Maven Integration}}
   instead of this plugin, as it can more closely resemble the actual build and runtime classpaths as described in the
   project pom.xml - among other advantages. However, there are project setups and workflows that still work more
   efficiently with statically generated Eclipse metadata - for example when there is a large number of projects in
@@ -43,10 +43,6 @@ ${project.name}
 
 ** Standard eclipse goals
 
-  * {{{./configure-workspace-mojo.html}eclipse:configure-workspace}} is used to add the
-  classpath variable M2_REPO to Eclipse which points to your local repository and
-  optional to configure other workspace features.
-
   * {{{./eclipse-mojo.html}eclipse:eclipse}} generates the Eclipse configuration
   files.
 
@@ -56,22 +52,16 @@ ${project.name}
 * Usage
 
   General instructions on how to use the Eclipse Plugin can be found on the {{{./usage.html}usage page}}. Some more
-  specific use cases are described in the examples given below. Last but not least, users occasionally contribute
-  additional examples, tips or errata to the
-  {{{http://docs.codehaus.org/display/MAVENUSER/Eclipse+Plugin}plugin's wiki page}}.
+  specific use cases are described in the examples given below.
 
-  In case you still have questions regarding the plugin's usage, please have a look at the {{{./faq.html}FAQ}} and feel
-  free to contact the {{{./mail-lists.html}user mailing list}}. The posts to the mailing list are archived and could
-  already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching
-  the {{{./mail-lists.html}mail archive}}.
+  In case you still have questions regarding the plugin's usage, please have a look at the {{{./faq.html}FAQ}}.
 
   If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in our
   {{{./issue-tracking.html}issue tracker}}. When creating a new issue, please provide a comprehensive description of your
   concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason,
   entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated.
   Of course, patches are welcome, too. Contributors can check out the project from our
-  {{{./source-repository.html}source repository}} and will find supplementary information in the
-  {{{http://maven.apache.org/guides/development/guide-helping.html}guide to helping with Maven}}.
+  {{{./source-repository.html}source repository}}.
 
 * Examples
 
@@ -91,8 +81,6 @@ ${project.name}
   * {{{./examples/configure-checkstyle.html}Configure Checkstyle}}
 
   * {{{./examples/multi-module-projects.html}Multi-module projects with WTP}}
-
-  * {{{./examples/ajdt-projects.html}AJDT projects}}
 
   * {{{./examples/specifying-source-path-inclusions-and-exclusions.html}Specifying source path inclusions and exclusions}}
 

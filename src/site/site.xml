@@ -23,15 +23,6 @@ under the License.
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
 
-  <bannerLeft>
-    <name>${project.name}</name>
-    <src>http://maven.apache.org/images/apache-maven-project.png</src>
-    <href>http://maven.apache.org/</href>
-  </bannerLeft>
-  <bannerRight>
-    <src>http://maven.apache.org/images/maventxt_logo_200.gif</src>
-  </bannerRight>
-
   <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-fluido-skin</artifactId>
@@ -40,13 +31,9 @@ under the License.
 
   <custom>
     <fluidoSkin>
-      <topBarEnabled>true</topBarEnabled>
       <sideBarEnabled>true</sideBarEnabled>
-      <googleSearch>
-        <sitesearch>${project.url}</sitesearch>
-      </googleSearch>
       <gitHub>
-        <projectId>apache/maven-plugins</projectId>
+        <projectId>marschall/maven-eclipse-plugin</projectId>
         <ribbonOrientation>right</ribbonOrientation>
         <ribbonColor>gray</ribbonColor>
       </gitHub>
@@ -66,13 +53,11 @@ under the License.
     </menu>
     <menu name="Configuration">
       <item name="Multiple Module Projects" href="reactor.html"/>
-      <item name="Eclipse PDE Projects" href="pde.html"/>
       <item name="WTP Support" href="wtp.html"/>
     </menu>
 
     <menu name="Examples">
       <item name="Adding additional facets" href="examples/additional-facets.html"/>
-      <item name="AJDT Projects" href="examples/ajdt-projects.html"/>
       <item name="Attach Library Sources" href="examples/attach-library-sources.html"/>
       <item name="Configure Checkstyle" href="examples/configure-checkstyle.html"/>
       <item name="Load Code Style file" href="examples/load-code-styles.html"/>
