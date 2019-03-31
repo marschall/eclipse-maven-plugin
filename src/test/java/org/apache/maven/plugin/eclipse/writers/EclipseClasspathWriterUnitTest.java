@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
 
-import junit.framework.TestCase;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.eclipse.EclipseSourceDir;
 import org.apache.maven.plugin.eclipse.writers.testutils.TestEclipseWriterConfig;
@@ -32,11 +30,14 @@ import org.apache.maven.plugin.ide.IdeDependency;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.plugin.testing.stubs.StubArtifactRepository;
 import org.apache.maven.shared.tools.easymock.TestFileManager;
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.xpath.XPath;
+import org.jdom2.Attribute;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaders;
+import org.jdom2.xpath.XPath;
+
+import junit.framework.TestCase;
 
 public class EclipseClasspathWriterUnitTest
     extends TestCase
@@ -89,7 +90,7 @@ public class EclipseClasspathWriterUnitTest
         classpathWriter.init( log, config );
         classpathWriter.write();
 
-        SAXBuilder builder = new SAXBuilder( false );
+        SAXBuilder builder = new SAXBuilder( XMLReaders.NONVALIDATING );
 
         Document doc = builder.build( new File( basedir, ".classpath" ) );
 
@@ -102,7 +103,7 @@ public class EclipseClasspathWriterUnitTest
         assertTrue( "test resources (minus custom output dir) classpath entry not found.",
                     testResourcePath.selectSingleNode( doc ) != null );
 
-        XPath stdOutputPath = XPath.newInstance( "//classpathentry[@kind='output' && @path='target/classes']" );
+        XPath stdOutputPath = XPath.newInstance( "//classpathentry[@kind='output' and @path='target/classes']" );
 
         assertTrue( "standard output classpath entry not found.", stdOutputPath.selectSingleNode( doc ) != null );
 
@@ -149,7 +150,7 @@ public class EclipseClasspathWriterUnitTest
         classpathWriter.init( log, config );
         classpathWriter.write();
 
-        SAXBuilder builder = new SAXBuilder( false );
+        SAXBuilder builder = new SAXBuilder( XMLReaders.NONVALIDATING );
 
         Document doc = builder.build( new File( basedir, ".classpath" ) );
 

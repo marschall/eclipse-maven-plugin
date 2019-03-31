@@ -17,13 +17,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.apache.maven.plugin.eclipse.TempEclipseWorkspace;
 import org.apache.maven.plugin.eclipse.WorkspaceConfiguration;
 import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.shared.tools.easymock.MockManager;
-import org.easymock.MockControl;
+import org.easymock.EasyMockSupport;
+
+import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:baerrach@apache.org">Barrie Treloar</a>
@@ -33,29 +32,21 @@ public class ReadWorkspaceLocationsTest
     extends TestCase
 {
 
-//    private final File PROJECTS_DIRECTORY = new File( "target/tmp-workspace/eclipse" );
-//
-//    private final File DYNAMIC_WORKSPACE_DIRECTORY = TempEclipseWorkspace.getFixtureEclipseDynamicWorkspace().workspaceLocation;
-//
-//    private static final File WORKSPACE_DIRECTORY = new File( DYNAMIC_WORKSPACE_DIRECTORY, "workspace" );
-//
-//    private static final File WORKSPACE_PROJECT_METADATA_DIRECTORY =
-//        new File( WORKSPACE_DIRECTORY, ReadWorkspaceLocations.METADATA_PLUGINS_ORG_ECLIPSE_CORE_RESOURCES_PROJECTS );
-
-    private MockManager mm = new MockManager();
-private File workspaceLocation;
-private File metaDataDirectory;
+    private EasyMockSupport mm = new EasyMockSupport();
+    private File workspaceLocation;
+    private File metaDataDirectory;
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setUp()
         throws Exception
     {
         super.setUp();
         
         workspaceLocation = TempEclipseWorkspace.getFixtureEclipseDynamicWorkspace().workspaceLocation;
-        metaDataDirectory = new File( workspaceLocation, ReadWorkspaceLocations.METADATA_PLUGINS_ORG_ECLIPSE_CORE_RESOURCES_PROJECTS );;
+        metaDataDirectory = new File( workspaceLocation, ReadWorkspaceLocations.METADATA_PLUGINS_ORG_ECLIPSE_CORE_RESOURCES_PROJECTS );
 
     }
 
@@ -125,10 +116,8 @@ private File metaDataDirectory;
     public void testReadDefinedServers_PrefsFileDoesNotExist()
         throws Exception
     {
-        MockControl logControl = MockControl.createControl( Log.class );
-        mm.add( logControl );
+        Log logger = mm.mock( Log.class );
 
-        Log logger = (Log) logControl.getMock();
         WorkspaceConfiguration workspaceConfiguration = new WorkspaceConfiguration();
         workspaceConfiguration.setWorkspaceDirectory( new File( "/does/not/exist" ) );
 
@@ -144,10 +133,8 @@ private File metaDataDirectory;
     public void testReadDefinedServers_PrefsFileExistsWithMissingRuntimes()
         throws Exception
     {
-        MockControl logControl = MockControl.createControl( Log.class );
-        mm.add( logControl );
+        Log logger = mm.mock( Log.class );
 
-        Log logger = (Log) logControl.getMock();
         WorkspaceConfiguration workspaceConfiguration = new WorkspaceConfiguration();
         File prefsFile =
             new File(

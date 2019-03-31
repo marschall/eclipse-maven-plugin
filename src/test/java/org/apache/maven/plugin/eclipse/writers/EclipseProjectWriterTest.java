@@ -39,7 +39,8 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
+
 import junit.framework.TestCase;
 
 public class EclipseProjectWriterTest
@@ -52,12 +53,14 @@ public class EclipseProjectWriterTest
         super( name );
     }
 
+    @Override
     protected void setUp()
         throws Exception
     {
 
     }
 
+    @Override
     protected void tearDown()
         throws Exception
     {
@@ -143,6 +146,7 @@ public class EclipseProjectWriterTest
     private static final class TestLog
         extends SystemStreamLog
     {
+        @Override
         public boolean isDebugEnabled()
         {
             return true;

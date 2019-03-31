@@ -21,8 +21,6 @@ package org.apache.maven.plugin.eclipse.writers;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.eclipse.writers.testutils.TestEclipseWriterConfig;
 import org.apache.maven.plugin.eclipse.writers.wtp.EclipseWtpComponent15Writer;
@@ -32,11 +30,14 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.tools.easymock.TestFileManager;
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.xpath.XPath;
+import org.jdom2.Attribute;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaders;
+import org.jdom2.xpath.XPath;
+
+import junit.framework.TestCase;
 
 /**
  * Component writer test for WTP 1.5.
@@ -49,6 +50,7 @@ public class EclipseWtpComponent15WriterTest
 
     private TestFileManager fileManager = new TestFileManager( "EclipseWtpComponent15Writer.unitTest.", "" );
 
+    @Override
     protected void tearDown()
         throws IOException
     {
@@ -102,7 +104,7 @@ public class EclipseWtpComponent15WriterTest
         lWriter.write();
 
         // now check extension of archivenames to be jar
-        SAXBuilder builder = new SAXBuilder( false );
+        SAXBuilder builder = new SAXBuilder( XMLReaders.NONVALIDATING );
 
         Document doc = builder.build( new File( basedir, ".settings/org.eclipse.wst.common.component" ) );
 
@@ -136,6 +138,7 @@ public class EclipseWtpComponent15WriterTest
     private static final class TestLog
         extends SystemStreamLog
     {
+        @Override
         public boolean isDebugEnabled()
         {
             return true;
