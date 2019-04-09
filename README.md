@@ -49,7 +49,7 @@ instead of
 </plugin>
 ```
 
-If you add ´com.github.marschall´ as a [pluginGroup](https://maven.apache.org/guides/introduction/introduction-to-plugin-prefix-mapping.html) to your `${user.home}/.m2/settings.xml` or `${maven.home}/conf/settings.xml`
+If you add `com.github.marschall` as a [pluginGroup](https://maven.apache.org/guides/introduction/introduction-to-plugin-prefix-mapping.html) to your `${user.home}/.m2/settings.xml` or `${maven.home}/conf/settings.xml`
 
 ```xml
 <pluginGroups>
