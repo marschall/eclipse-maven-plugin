@@ -37,8 +37,6 @@ Overview
 	
 	  * If your project is a java project then "**/*.java" will always be added to the including attribute of source directories.
 	  
-	  * If your project is an ajdt project then "**/*.aj" will always be added to the including attribute of source directories.
-	  
 	  * If you need any additional includes or excludes for source directories then use the configuration elements sourceIncludes/sourceExcludes
 	  
 	  []
