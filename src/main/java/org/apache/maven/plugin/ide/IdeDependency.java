@@ -119,13 +119,11 @@ public class IdeDependency
      * @param addedToClasspath Is this dependency added to classpath?
      * @param file Resolved artifact file
      * @param type Artifact type
-     * @param dependencyDepth Depth of this dependency in the transitive dependency trail.
      * @param eclipseProjectName The name of the project in eclipse
      */
     public IdeDependency( String groupId, String artifactId, String version, String classifier,
                           boolean referencedProject, boolean testDependency, boolean systemScoped, boolean provided,
-                          boolean addedToClasspath, File file, String type, int dependencyDepth,
-                          String eclipseProjectName )
+                          boolean addedToClasspath, File file, String type, String eclipseProjectName )
     {
         // group:artifact:version
         this.groupId = groupId;

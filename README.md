@@ -10,6 +10,7 @@ Changes since the original Maven Eclipse Plugin 2.10
 ----------------------------------------------------
 
 ### Added
+
 * support for test folders
 * support for test dependencies, both JAR and project dependencies
 * support for the `--release` compiler option
@@ -20,6 +21,7 @@ Changes since the original Maven Eclipse Plugin 2.10
 
 
 ### Removed
+
 * all goals except `eclipse` and `clean`
 * AJDT support
 * MyEclipse support

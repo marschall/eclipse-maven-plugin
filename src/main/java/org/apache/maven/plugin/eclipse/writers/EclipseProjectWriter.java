@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -213,7 +214,7 @@ public class EclipseProjectWriter
 
         IdeDependency[] dependencies = config.getDeps();
 
-        List duplicates = new ArrayList();
+        Set<String> duplicates = new HashSet<>();
         for ( IdeDependency dep : dependencies )
         {
             // Avoid duplicates entries when same project is refered using multiple types
@@ -231,19 +232,19 @@ public class EclipseProjectWriter
 
         writer.startElement( ELT_BUILD_SPEC );
 
-        for ( Object buildCommand : buildCommands )
+        for ( BuildCommand buildCommand : buildCommands )
         {
-            ( (BuildCommand) buildCommand ).print( writer );
+            buildCommand.print( writer );
         }
 
         writer.endElement(); // buildSpec
 
         writer.startElement( ELT_NATURES );
 
-        for ( Object projectnature : projectnatures )
+        for ( String projectnature : projectnatures )
         {
             writer.startElement( ELT_NATURE );
-            writer.writeText( (String) projectnature );
+            writer.writeText( projectnature );
             writer.endElement(); // name
         }
 
@@ -257,9 +258,9 @@ public class EclipseProjectWriter
             // preserve the symbolic links
             if ( linkedResources.size() > 0 )
             {
-                for ( Object linkedResource : linkedResources )
+                for ( LinkedResource linkedResource : linkedResources )
                 {
-                    ( (LinkedResource) linkedResource ).print( writer );
+                    linkedResource.print( writer );
                 }
             }
 
@@ -305,12 +306,11 @@ public class EclipseProjectWriter
         }
     }
 
-    private void addSourceLinks( XMLWriter writer, File projectBaseDir, File basedir, List sourceRoots )
+    private void addSourceLinks( XMLWriter writer, File projectBaseDir, File basedir, List<String> sourceRoots )
         throws MojoExecutionException
     {
-        for ( Object sourceRoot1 : sourceRoots )
+        for ( String sourceRootString : sourceRoots )
         {
-            String sourceRootString = (String) sourceRoot1;
             File sourceRoot = new File( sourceRootString );
 
             if ( sourceRoot.isDirectory() )
@@ -323,13 +323,12 @@ public class EclipseProjectWriter
         }
     }
 
-    private void addResourceLinks( XMLWriter writer, File projectBaseDir, File basedir, List sourceRoots )
+    private void addResourceLinks( XMLWriter writer, File projectBaseDir, File basedir, List<Resource> sourceRoots )
         throws MojoExecutionException
     {
-        for ( Object sourceRoot : sourceRoots )
+        for ( Resource sourceRoot : sourceRoots )
         {
-            String resourceDirString = ( (Resource) sourceRoot ).getDirectory();
-            File resourceDir = new File( resourceDirString );
+            File resourceDir = new File( sourceRoot.getDirectory() );
 
             if ( resourceDir.isDirectory() )
             {

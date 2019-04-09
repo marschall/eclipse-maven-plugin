@@ -33,7 +33,7 @@ import org.apache.maven.plugin.eclipse.Messages;
 import org.apache.maven.plugin.eclipse.writers.AbstractEclipseWriter;
 import org.apache.maven.plugin.ide.IdeUtils;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -92,43 +92,39 @@ public class EclipseSettingsWriter
         if ( encoding != null )
         {
             File basedir = config.getProject().getBasedir();
-            List compileSourceRoots = config.getProject().getCompileSourceRoots();
+            List<String> compileSourceRoots = config.getProject().getCompileSourceRoots();
             if ( compileSourceRoots != null )
             {
-                for ( Object compileSourceRoot : compileSourceRoots )
+                for ( String sourcePath : compileSourceRoots )
                 {
-                    String sourcePath = (String) compileSourceRoot;
                     String relativePath = IdeUtils.toRelativeAndFixSeparator( basedir, new File( sourcePath ), false );
                     coreSettings.put( PROP_JDT_CORE_COMPILER_ENCODING + relativePath, encoding );
                 }
             }
-            List testCompileSourceRoots = config.getProject().getTestCompileSourceRoots();
+            List<String> testCompileSourceRoots = config.getProject().getTestCompileSourceRoots();
             if ( testCompileSourceRoots != null )
             {
-                for ( Object testCompileSourceRoot : testCompileSourceRoots )
+                for ( String sourcePath : testCompileSourceRoots )
                 {
-                    String sourcePath = (String) testCompileSourceRoot;
                     String relativePath = IdeUtils.toRelativeAndFixSeparator( basedir, new File( sourcePath ), false );
                     coreSettings.put( PROP_JDT_CORE_COMPILER_ENCODING + relativePath, encoding );
                 }
             }
-            List resources = config.getProject().getResources();
+            List<Resource> resources = config.getProject().getResources();
             if ( resources != null )
             {
-                for ( Object resource1 : resources )
+                for ( Resource resource : resources )
                 {
-                    Resource resource = (Resource) resource1;
                     String relativePath =
                         IdeUtils.toRelativeAndFixSeparator( basedir, new File( resource.getDirectory() ), false );
                     coreSettings.put( PROP_JDT_CORE_COMPILER_ENCODING + relativePath, encoding );
                 }
             }
-            List testResources = config.getProject().getTestResources();
+            List<Resource> testResources = config.getProject().getTestResources();
             if ( testResources != null )
             {
-                for ( Object testResource : testResources )
+                for ( Resource resource : testResources )
                 {
-                    Resource resource = (Resource) testResource;
                     String relativePath =
                         IdeUtils.toRelativeAndFixSeparator( basedir, new File( resource.getDirectory() ), false );
                     coreSettings.put( PROP_JDT_CORE_COMPILER_ENCODING + relativePath, encoding );

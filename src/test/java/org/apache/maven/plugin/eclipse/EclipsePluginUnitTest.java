@@ -29,7 +29,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.apache.maven.execution.DefaultRuntimeInformation;
+import org.apache.maven.rtinfo.internal.DefaultRuntimeInformation;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Resource;
@@ -55,7 +55,6 @@ public class EclipsePluginUnitTest
     {
         EclipsePlugin mojo = new EclipsePlugin();
         DefaultRuntimeInformation rti = new DefaultRuntimeInformation();
-        rti.initialize();
         Field field = AbstractIdeSupportMojo.class.getDeclaredField( "runtimeInformation" );
         field.setAccessible( true );
         field.set( mojo, rti );

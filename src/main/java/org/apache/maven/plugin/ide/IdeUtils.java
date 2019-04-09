@@ -27,9 +27,6 @@ import java.util.List;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
@@ -327,7 +324,7 @@ public class IdeUtils
     public static Xpp3Dom getPluginConfigurationDom( MavenProject project, String pluginId )
     {
         //TODO: there should be a better way to do this
-        Plugin plugin = (org.apache.maven.model.Plugin) project.getBuild().getPluginsAsMap().get( pluginId );
+        Plugin plugin = project.getBuild().getPluginsAsMap().get( pluginId );
         if ( plugin != null )
         {
             // TODO: This may cause ClassCastExceptions eventually, if the dom impls differ.
@@ -425,6 +422,18 @@ public class IdeUtils
     {
         return getProjectName( template, artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion() );
     }
+    
+    /**
+     * Use the project name template to create an eclipse project.
+     *
+     * @param template Template for the project name
+     * @param artifact the artifact to create the project name for
+     * @return the created ide project name
+     */
+    public static String getProjectName( String template, org.eclipse.aether.artifact.Artifact artifact )
+    {
+        return getProjectName( template, artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion() );
+    }
 
     public static String getProjectName( String template, MavenProject project )
     {
@@ -448,50 +457,51 @@ public class IdeUtils
             + NOT_AVAILABLE_MARKER_FILE_SUFFIX );
     }
 
-    /**
-     * Wrapper around {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
-     *
-     * @param artifactResolver see {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
-     * @param artifact see {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
-     * @param remoteRepos see {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
-     * @param localRepository see {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
-     * @param log Logger
-     * @return the artifact, resolved if possible.
-     */
-    public static Artifact resolveArtifact( ArtifactResolver artifactResolver, Artifact artifact, List remoteRepos,
-                                            ArtifactRepository localRepository, Log log )
-
-    {
-        try
-        {
-            artifactResolver.resolve( artifact, remoteRepos, localRepository );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            // ignore, the jar has not been found
-
-            /*
-             * This method gets called with no remote repositories to avoid remote trips (which would ideally be
-             * realized by means of a per-request offline flag), the set of available remote repos can however affect
-             * the resolution from the local repo as well, in particular in Maven 3. So double check whether the local
-             * file is really not present.
-             */
-            if ( artifact.getFile() != null && artifact.getFile().isFile() )
-            {
-                artifact.setResolved( true );
-            }
-        }
-        catch ( ArtifactResolutionException e )
-        {
-            String message =
-                Messages.getString( "IdeUtils.errorresolving",
-                                    new Object[] { artifact.getClassifier(), artifact.getId(), e.getMessage() } );
-
-            log.warn( message );
-        }
-
-        return artifact;
-    }
+    // FIXME
+//    /**
+//     * Wrapper around {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
+//     *
+//     * @param artifactResolver see {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
+//     * @param artifact see {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
+//     * @param remoteRepos see {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
+//     * @param localRepository see {@link ArtifactResolver#resolve(Artifact, List, ArtifactRepository)}
+//     * @param log Logger
+//     * @return the artifact, resolved if possible.
+//     */
+//    public static Artifact resolveArtifact( ArtifactResolver artifactResolver, Artifact artifact, List remoteRepos,
+//                                            ArtifactRepository localRepository, Log log )
+//
+//    {
+//        try
+//        {
+//            artifactResolver.resolve( artifact, remoteRepos, localRepository );
+//        }
+//        catch ( ArtifactNotFoundException e )
+//        {
+//            // ignore, the jar has not been found
+//
+//            /*
+//             * This method gets called with no remote repositories to avoid remote trips (which would ideally be
+//             * realized by means of a per-request offline flag), the set of available remote repos can however affect
+//             * the resolution from the local repo as well, in particular in Maven 3. So double check whether the local
+//             * file is really not present.
+//             */
+//            if ( artifact.getFile() != null && artifact.getFile().isFile() )
+//            {
+//                artifact.setResolved( true );
+//            }
+//        }
+//        catch ( ArtifactResolutionException e )
+//        {
+//            String message =
+//                Messages.getString( "IdeUtils.errorresolving",
+//                                    new Object[] { artifact.getClassifier(), artifact.getId(), e.getMessage() } );
+//
+//            log.warn( message );
+//        }
+//
+//        return artifact;
+//    }
 
     /**
      * Wrap {@link ArtifactFactory#createArtifactWithClassifier} so that the type and classifier are set correctly for

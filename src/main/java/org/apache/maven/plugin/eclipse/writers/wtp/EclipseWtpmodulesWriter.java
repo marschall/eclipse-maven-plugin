@@ -50,6 +50,7 @@ public class EclipseWtpmodulesWriter
     /**
      * @see org.apache.maven.plugin.eclipse.writers.EclipseWriter#write()
      */
+    @Override
     public void write()
         throws MojoExecutionException
     {
@@ -111,9 +112,8 @@ public class EclipseWtpmodulesWriter
             writeWarOrEarResources( writer, config.getProject(), config.getLocalRepository() );
         }
 
-        for ( int j = 0; j < config.getSourceDirs().length; j++ )
+        for ( EclipseSourceDir dir : config.getSourceDirs() )
         {
-            EclipseSourceDir dir = config.getSourceDirs()[j];
             // test src/resources are not added to wtpmodules
             if ( !dir.isTest() )
             {

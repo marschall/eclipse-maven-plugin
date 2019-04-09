@@ -36,6 +36,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.UnknownRepositoryLayoutException;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.factory.DefaultArtifactFactory;
 import org.apache.maven.artifact.handler.ArtifactHandler;
@@ -43,22 +44,32 @@ import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
+import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.eclipse.ExecutionFailedException;
 import org.apache.maven.plugin.eclipse.Messages;
+import org.apache.maven.plugin.ide.AbstractIdeSupportMojo;
 import org.apache.maven.plugin.ide.IdeUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.ProjectBuilder;
+import org.apache.maven.project.ProjectBuildingException;
+import org.apache.maven.project.ProjectBuildingRequest;
+import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.test.plugin.BuildTool;
 import org.apache.maven.shared.test.plugin.PluginTestTool;
 import org.apache.maven.shared.test.plugin.ProjectTool;
 import org.apache.maven.shared.test.plugin.TestToolsException;
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -370,6 +381,7 @@ public abstract class AbstractEclipsePluginIT
 
         new File( BUILD_OUTPUT_DIRECTORY ).mkdirs();
 
+        // TODO StackWalker
         NullPointerException npe = new NullPointerException();
         StackTraceElement[] trace = npe.getStackTrace();
 
@@ -399,6 +411,8 @@ public abstract class AbstractEclipsePluginIT
         request.setShowErrors( true );
         request.getProperties().setProperty( "downloadSources", "false" );
         request.getProperties().setProperty( "downloadJavadocs", "false" );
+//        request.setMavenOpts( "-Xdebug -Xrunjdwp:transport=dt_socket,address=5006,server=y,suspend=y -Xmx512m" );
+        request.setMavenOpts( "-Xmx512m" );
 
         request.setDebug( true );
 
@@ -430,7 +444,31 @@ public abstract class AbstractEclipsePluginIT
     protected MavenProject readProject( File pom )
         throws TestToolsException
     {
-        return projectTool.readProject( pom, localRepositoryDirectory );
+        // return projectTool.readProject( pom, localRepositoryDirectory );
+        ProjectBuildingRequest request = new DefaultProjectBuildingRequest();
+
+        try
+        {
+            ProjectBuilder projectBuilder = lookup( ProjectBuilder.class );
+
+            ArtifactRepositoryLayout defaultLayout =
+                (ArtifactRepositoryLayout) lookup( ArtifactRepositoryLayout.ROLE, "default" );
+
+            ArtifactRepositoryFactory repositoryFactory = lookup( ArtifactRepositoryFactory.class );
+
+            ArtifactRepository artifactRepository =
+                repositoryFactory.createArtifactRepository( "local", localRepositoryDirectory.toURL().toExternalForm(),
+                                                            defaultLayout, null, null );
+
+            request.setLocalRepository( artifactRepository );
+
+            request.setRepositorySession( MavenRepositorySystemUtils.newSession() );
+            return projectBuilder.build( pom, request ).getProject();
+        }
+        catch ( ComponentLookupException | IOException | ProjectBuildingException e )
+        {
+            throw new TestToolsException( e.getMessage(), e );
+        }
     }
 
     protected String getPluginCLISpecification()
@@ -881,8 +919,8 @@ public abstract class AbstractEclipsePluginIT
         // HACK: START
         // TODO: Work out how to use Plexus to obtain these values
         String url = "file://" + localRepositoryDirectory;
-        ArtifactRepository localRepository =
-            new DefaultArtifactRepository( "local", url, new DefaultRepositoryLayout() );
+        ArtifactRepository localRepository = null;
+//            new DefaultArtifactRepository( "local", url, new DefaultRepositoryLayout() );
 
         ArtifactFactory artifactFactory = new DefaultArtifactFactory();
 

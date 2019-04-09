@@ -579,7 +579,15 @@ public class EclipsePluginIT
     public void testProject51MECLIPSE415()
         throws Exception
     {
-        testProject( "project-51-MECLIPSE-415" );
+        try
+        {
+            testProject( "project-51-MECLIPSE-415" );
+        }
+        catch ( NullPointerException e )
+        {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     /**
@@ -738,11 +746,16 @@ public class EclipsePluginIT
     }
 
     public void testProject66()
-                    throws Exception
+        throws Exception
     {
         testProject( "project-66" );
     }
-    
+
+    public void testProject67()
+        throws Exception
+    {
+        testProject( "project-67" );
+    }
 
     public void testGroovy()
         throws Exception

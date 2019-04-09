@@ -303,9 +303,8 @@ public abstract class AbstractWtpResourceWriter
             deployDir = "/WEB-INF/lib";
         }
         // dependencies
-        for ( int j = 0; j < config.getDeps().length; j++ )
+        for ( IdeDependency dep : config.getDeps() )
         {
-            IdeDependency dep = config.getDeps()[j];
             String type = dep.getType();
 
             // NB war is needed for ear projects, we suppose nobody adds a war dependency to a war/jar project

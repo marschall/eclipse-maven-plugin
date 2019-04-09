@@ -15,8 +15,8 @@
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.1.4/jetty-6.1.4.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.1.4/jetty-util-6.1.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/servlet-api-2.5/6.1.4/servlet-api-2.5-6.1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.1.4/jetty-util-6.1.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-management/6.1.4/jetty-management-6.1.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/mx4j/mx4j/3.0.1/mx4j-3.0.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar"/>

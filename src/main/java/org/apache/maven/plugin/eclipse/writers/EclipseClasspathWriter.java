@@ -176,10 +176,8 @@ public class EclipseClasspathWriter
 
         Map<String, List<EclipseSourceDir>> byOutputDir = new HashMap<>();
 
-        for ( int j = 0; j < config.getSourceDirs().length; j++ )
+        for ( EclipseSourceDir dir : config.getSourceDirs() )
         {
-            EclipseSourceDir dir = config.getSourceDirs()[j];
-
             List<EclipseSourceDir> byOutputDirs = byOutputDir.get( dir.getOutput() );
             if ( byOutputDirs == null )
             {
@@ -189,10 +187,8 @@ public class EclipseClasspathWriter
             byOutputDirs.add( dir );
         }
 
-        for ( int j = 0; j < config.getSourceDirs().length; j++ )
+        for ( EclipseSourceDir dir : config.getSourceDirs() )
         {
-            EclipseSourceDir dir = config.getSourceDirs()[j];
-
             log.debug( "Processing classpath for: " + dir.toString() + "; default output=" + defaultOutput );
 
             boolean isSpecial = false;
@@ -368,7 +364,7 @@ public class EclipseClasspathWriter
         writer.addAttribute( ATTR_PATH, defaultOutput );
         writer.endElement();
 
-        Set addedDependencies = new HashSet();
+        Set<String> addedDependencies = new HashSet<>();
 
         // ----------------------------------------------------------------------
         // Java API dependencies that may complete the classpath container must
