@@ -222,6 +222,18 @@ public class EclipseClasspathWriter
             }
 
             writer.startElement( ELT_CLASSPATHENTRY );
+            
+            String excludes = dir.getExcludeAsString();
+            if ( StringUtils.isNotEmpty( excludes ) )
+            {
+                writer.addAttribute( ATTR_EXCLUDING, excludes );
+            }
+            
+            String includes = dir.getIncludeAsString();
+            if ( StringUtils.isNotEmpty( includes ) )
+            {
+                writer.addAttribute( ATTR_INCLUDING, includes );
+            }
 
             writer.addAttribute( ATTR_KIND, "src" ); //$NON-NLS-1$
             writer.addAttribute( ATTR_PATH, dir.getPath() );
@@ -229,18 +241,6 @@ public class EclipseClasspathWriter
             if ( !isSpecial && dir.getOutput() != null && !defaultOutput.equals( dir.getOutput() ) )
             {
                 writer.addAttribute( ATTR_OUTPUT, dir.getOutput() );
-            }
-
-            String includes = dir.getIncludeAsString();
-            if ( StringUtils.isNotEmpty( includes ) )
-            {
-                writer.addAttribute( ATTR_INCLUDING, includes );
-            }
-
-            String excludes = dir.getExcludeAsString();
-            if ( StringUtils.isNotEmpty( excludes ) )
-            {
-                writer.addAttribute( ATTR_EXCLUDING, excludes );
             }
 
             boolean attributeElemOpen = false;
