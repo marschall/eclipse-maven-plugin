@@ -5,6 +5,7 @@ The Eclipse Plugin is used to generate Eclipse IDE files (.project, .classpath a
 
 This is based on [wcm-io-devops/eclipse-maven-plugin](https://github.com/wcm-io-devops/eclipse-maven-plugin) which is a fork of the original [Maven Eclipse Plugin](https://maven.apache.org/plugins/maven-eclipse-plugin/) which [was retired end of 2015](http://mail-archives.apache.org/mod_mbox/maven-dev/201510.mbox/%3Cop.x55dxii1kdkhrr%40robertscholte.dynamic.ziggo.nl%3E) in favor of [M2Eclipse](https://www.eclipse.org/m2e/).
 
+For more information check out the generated [plugin page](https://marschall.github.io/eclipse-maven-plugin/) .
 
 Changes since the original Maven Eclipse Plugin 2.10
 ----------------------------------------------------
@@ -33,7 +34,7 @@ To use this in your projects update all your POMs to use
 <plugin>
   <groupId>com.github.marschall</groupId>
   <artifactId>eclipse-maven-plugin</artifactId>
-  <version>2.11.0</version>
+  <version>2.11.1</version>
 </plugin>
 ```
 
