@@ -2,7 +2,7 @@
 <classpath>
   <classpathentry kind="src" path="target/generated-sources/modello" including="**/*.java">
     <attributes>
-      <attribute value="true" name="ignore_optional_problems"/>
+      <attribute name="ignore_optional_problems" value="true"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="output" path="target/classes"/>

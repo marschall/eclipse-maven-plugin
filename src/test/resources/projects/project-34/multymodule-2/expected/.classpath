@@ -28,7 +28,7 @@
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/eclipsetest/direct-test/1.0/direct-test-1.0.jar">
     <attributes>
-      <attribute value="true" name="test"/>
+      <attribute name="test" value="true"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/eclipsetest/direct-provided/1.0/direct-provided-1.0.jar"/>

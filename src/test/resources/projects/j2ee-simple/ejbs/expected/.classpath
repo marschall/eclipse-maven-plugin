@@ -9,7 +9,7 @@
   <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-ejb_2.1_spec/1.1/geronimo-ejb_2.1_spec-1.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar">
     <attributes>
-      <attribute value="true" name="test"/>
+      <attribute name="test" value="true"/>
     </attributes>
   </classpathentry>
 </classpath>

@@ -2,18 +2,18 @@
 <classpath>
   <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java">
     <attributes>
-      <attribute value="true" name="test"/>
+      <attribute name="test" value="true"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="src" path="src/test/resources" output="target/test-classes" excluding="**/*.java">
     <attributes>
-      <attribute value="true" name="test"/>
+      <attribute name="test" value="true"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
   <classpathentry kind="src" path="target/generated-sources/cxf" including="**/*.java">
     <attributes>
-      <attribute value="true" name="ignore_optional_problems"/>
+      <attribute name="ignore_optional_problems" value="true"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>

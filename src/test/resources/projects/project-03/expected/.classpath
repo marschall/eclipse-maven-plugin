@@ -2,7 +2,7 @@
 <classpath>
   <classpathentry kind="src" path="src/test/resources" output="target/test-output-dir" including="**/*.properties" excluding="**/*.xml|**/*.java">
     <attributes>
-      <attribute value="true" name="test"/>
+      <attribute name="test" value="true"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>

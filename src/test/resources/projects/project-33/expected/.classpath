@@ -5,7 +5,7 @@
   <classpathentry kind="var" path="M2_REPO/maven/maven-core/98.0/maven-core-98.0.jar" sourcepath="M2_REPO/maven/maven-core/98.0/maven-core-98.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/maven/maven-core/98.0/maven-core-98.0-tests.jar" sourcepath="M2_REPO/maven/maven-core/98.0/maven-core-98.0-test-sources.jar">
     <attributes>
-      <attribute value="true" name="test"/>
+      <attribute name="test" value="true"/>
     </attributes>
   </classpathentry>
 </classpath>

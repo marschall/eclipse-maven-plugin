@@ -255,8 +255,8 @@ public class EclipseClasspathWriter
               }
 
               writer.startElement( ATTRIBUTE );
-              writer.addAttribute( VALUE, "true" );
               writer.addAttribute( NAME, "test" );
+              writer.addAttribute( VALUE, "true" );
               writer.endElement();
             }
             
@@ -270,8 +270,8 @@ public class EclipseClasspathWriter
                 }
                 
                 writer.startElement( ATTRIBUTE );
-                writer.addAttribute( VALUE, "true" );
                 writer.addAttribute( NAME, "ignore_optional_problems" );
+                writer.addAttribute( VALUE, "true" );
                 writer.endElement();
             }
 
