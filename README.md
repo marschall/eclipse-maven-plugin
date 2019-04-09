@@ -1,5 +1,5 @@
-Eclipse Maven Plugin
-======
+Eclipse Maven Plugin [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.marschall/eclipse-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.marschall/eclipse-maven-plugin)
+====================
 
 The Eclipse Plugin is used to generate Eclipse IDE files (.project, .classpath and the .settings folder) from a POM.
 
@@ -9,6 +9,8 @@ For more information check out the generated [plugin page](https://marschall.git
 
 Changes since the original Maven Eclipse Plugin 2.10
 ----------------------------------------------------
+
+[Changelog](https://marschall.github.io/eclipse-maven-plugin/changes-report.html)
 
 ### Added
 * support for test folders
@@ -46,3 +48,14 @@ instead of
   <artifactId>maven-eclipse-plugin</artifactId>
 </plugin>
 ```
+
+If you add ´com.github.marschall´ as a [pluginGroup](https://maven.apache.org/guides/introduction/introduction-to-plugin-prefix-mapping.html) to your `${user.home}/.m2/settings.xml` or `${maven.home}/conf/settings.xml`
+
+```xml
+<pluginGroups>
+  <pluginGroup>com.github.marschall</pluginGroup>
+</pluginGroups>
+```
+
+you will be able to use `eclipse:eclipse` as a Maven goal directly.
+
