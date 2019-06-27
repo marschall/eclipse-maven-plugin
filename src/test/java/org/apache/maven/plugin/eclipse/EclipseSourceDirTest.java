@@ -36,14 +36,14 @@ public class EclipseSourceDirTest
     {
         List<String> includes = new ArrayList<>();
         includes.add( EclipsePlugin.JAVA_FILE_PATTERN );
-        return new EclipseSourceDir( "/src/main/java", null, false, false, includes, null, false, false );
+        return new EclipseSourceDir( "/src/main/java", null, false, false, false, includes, null, false, false );
     }
 
     private EclipseSourceDir testFixture_src_main_resources()
     {
         List<String> excludes = new ArrayList<>();
         excludes.add( EclipsePlugin.JAVA_FILE_PATTERN );
-        return new EclipseSourceDir( "/src/main/resources", "target/classes", true, false, null, excludes, false,
+        return new EclipseSourceDir( "/src/main/resources", "target/classes", true, false, false, null, excludes, false,
                                      false );
     }
 
@@ -51,7 +51,7 @@ public class EclipseSourceDirTest
     {
         List<String> includes = new ArrayList<>();
         includes.add( EclipsePlugin.JAVA_FILE_PATTERN );
-        return new EclipseSourceDir( "/src/test/java", "target/test-classes", false, true, includes, null, false,
+        return new EclipseSourceDir( "/src/test/java", "target/test-classes", false, true, false, includes, null, false,
                                      false );
     }
 
@@ -59,7 +59,7 @@ public class EclipseSourceDirTest
     {
         List<String> excludes = new ArrayList<>();
         excludes.add( EclipsePlugin.JAVA_FILE_PATTERN );
-        return new EclipseSourceDir( "/src/test/resources", "target/test-classes", true, true, null, excludes, false,
+        return new EclipseSourceDir( "/src/test/resources", "target/test-classes", true, true, false, null, excludes, false,
                                      false );
     }
 
@@ -80,7 +80,7 @@ public class EclipseSourceDirTest
         EclipseSourceDir src_main_resources = testFixture_src_main_resources();
 
         src_main_java.merge( src_main_resources );
-        assertEquals( "source /src/main/java: output=null, include=[], exclude=[], test=false, filtering=false, attached=false",
+        assertEquals( "source /src/main/java: output=null, include=[], exclude=[], test=false, optional=false, filtering=false, attached=false",
                       src_main_java.toString() );
     }
 
@@ -99,7 +99,7 @@ public class EclipseSourceDirTest
         resource1.merge( resource2 );
 
         assertEquals(
-                      "resource /src/main/resources: output=target/classes, include=[**/*.txt|**/*.xml], exclude=[**/*.java|**/*.svn|**/*.cvs], test=false, filtering=false, attached=false",
+                      "resource /src/main/resources: output=target/classes, include=[**/*.txt|**/*.xml], exclude=[**/*.java|**/*.svn|**/*.cvs], test=false, optional=false, filtering=false, attached=false",
                       resource1.toString() );
     }
 
@@ -122,7 +122,7 @@ public class EclipseSourceDirTest
         resource1.merge( resource2 );
 
         assertEquals(
-                      "resource /src/main/resources: output=target/classes, include=[**/*.dup|**/*.txt|**/*.xml], exclude=[**/*.java|**/*.svn|**/*~|**/*.cvs], test=false, filtering=false, attached=false",
+                      "resource /src/main/resources: output=target/classes, include=[**/*.dup|**/*.txt|**/*.xml], exclude=[**/*.java|**/*.svn|**/*~|**/*.cvs], test=false, optional=false, filtering=false, attached=false",
                       resource1.toString() );
     }
 
@@ -131,7 +131,7 @@ public class EclipseSourceDirTest
         EclipseSourceDir objectUnderTest = testFixture_src_main_java();
 
         assertEquals(
-                      "source /src/main/java: output=null, include=[**/*.java], exclude=[], test=false, filtering=false, attached=false",
+                      "source /src/main/java: output=null, include=[**/*.java], exclude=[], test=false, optional=false, filtering=false, attached=false",
                       objectUnderTest.toString() );
     }
 
@@ -140,7 +140,7 @@ public class EclipseSourceDirTest
         EclipseSourceDir objectUnderTest = testFixture_src_main_resources();
 
         assertEquals(
-                      "resource /src/main/resources: output=target/classes, include=[], exclude=[**/*.java], test=false, filtering=false, attached=false",
+                      "resource /src/main/resources: output=target/classes, include=[], exclude=[**/*.java], test=false, optional=false, filtering=false, attached=false",
                       objectUnderTest.toString() );
     }
 
@@ -149,7 +149,7 @@ public class EclipseSourceDirTest
         EclipseSourceDir objectUnderTest = testFixture_src_test_java();
 
         assertEquals(
-                      "source /src/test/java: output=target/test-classes, include=[**/*.java], exclude=[], test=true, filtering=false, attached=false",
+                      "source /src/test/java: output=target/test-classes, include=[**/*.java], exclude=[], test=true, optional=false, filtering=false, attached=false",
                       objectUnderTest.toString() );
     }
 
@@ -158,7 +158,7 @@ public class EclipseSourceDirTest
         EclipseSourceDir objectUnderTest = testFixture_src_test_resources();
 
         assertEquals(
-                      "resource /src/test/resources: output=target/test-classes, include=[], exclude=[**/*.java], test=true, filtering=false, attached=false",
+                      "resource /src/test/resources: output=target/test-classes, include=[], exclude=[**/*.java], test=true, optional=false, filtering=false, attached=false",
                       objectUnderTest.toString() );
     }
 
@@ -183,7 +183,7 @@ public class EclipseSourceDirTest
         assertFalse("Resource dirs should not have been merged successfully", result);
        
         assertEquals(
-            "resource /src/main/resources: output=target/classes, include=[**/*.dup|**/*.txt|**/*.xml], exclude=[**/*.java|**/*.svn|**/*~|**/*.cvs], test=false, filtering=false, attached=false",
+            "resource /src/main/resources: output=target/classes, include=[**/*.dup|**/*.txt|**/*.xml], exclude=[**/*.java|**/*.svn|**/*~|**/*.cvs], test=false, optional=false, filtering=false, attached=false",
             resource1.toString());
     }
 
@@ -200,7 +200,7 @@ public class EclipseSourceDirTest
         assertFalse("Resource dirs should not have been merged successfully", result);
 
         assertEquals(
-            "resource /src/main/resources: output=target/classes, include=[], exclude=[**/*.java], test=false, filtering=false, attached=false",
+            "resource /src/main/resources: output=target/classes, include=[], exclude=[**/*.java], test=false, optional=false, filtering=false, attached=false",
             resource1.toString());
     }
 

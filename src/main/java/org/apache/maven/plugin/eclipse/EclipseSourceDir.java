@@ -56,6 +56,8 @@ public class EclipseSourceDir
     private boolean isResource;
 
     private boolean test;
+    
+    private boolean optional;
 
     private boolean filtering;
     
@@ -66,6 +68,7 @@ public class EclipseSourceDir
      * @param output path output directory
      * @param isResource true if the directory only contains resources, false if a compilation directory
      * @param test true if is a test directory, false otherwise
+     * @param optional true if is a optional directory, false otherwise
      * @param include a string in the eclipse pattern format for the include filter
      * @param exclude a string in the eclipse pattern format for the exclude filter
      * @param filtering true if filtering should be applied, false otherwise. Note: Filtering will only be applied if
@@ -73,13 +76,15 @@ public class EclipseSourceDir
      * @param attached true if a a directory attached by a plugin or build helper, false if directly
      *            configured in the build section of the pom
      */
-    public EclipseSourceDir( String path, String output, boolean isResource, boolean test, List<String> include,
+    public EclipseSourceDir( String path, String output, boolean isResource, boolean test, boolean optional,
+                             List<String> include,
                              List<String> exclude, boolean filtering, boolean attached )
     {
         setPath( path );
         this.output = output;
         this.isResource = isResource;
         this.test = test;
+        this.optional = optional;
         setInclude( include );
         setExclude( exclude );
         this.filtering = filtering;
@@ -211,6 +216,26 @@ public class EclipseSourceDir
     {
         this.test = test;
     }
+    
+    /**
+     * Getter for <code>optional</code>.
+     * 
+     * @return Returns the optional.
+     */
+    public boolean isOptional()
+    {
+        return this.optional;
+    }
+    
+    /**
+     * Setter for <code>optional</code>.
+     * 
+     * @param optional The optional to set.
+     */
+    public void setOptional( boolean optional )
+    {
+        this.optional = optional;
+    }
 
     /**
      * Getter for <code>isResource</code>.
@@ -309,6 +334,7 @@ public class EclipseSourceDir
                         + "include=[" + getIncludeAsString() + "], "
                         + "exclude=[" + getExcludeAsString() + "], "
                         + "test=" + test + ", "
+                        + "optional=" + optional + ", "
                         + "filtering=" + filtering + ", "
                         + "attached=" + attached;
     }
@@ -378,6 +404,12 @@ public class EclipseSourceDir
         if ( test != mergeWith.test )
         {
             // Request to merge when 'test' is not identical
+            return false;
+        }
+        
+        if ( optional != mergeWith.optional )
+        {
+            // Request to merge when 'optional' is not identical
             return false;
         }
 

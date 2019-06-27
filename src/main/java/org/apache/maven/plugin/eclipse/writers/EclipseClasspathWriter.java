@@ -259,6 +259,20 @@ public class EclipseClasspathWriter
               writer.addAttribute( VALUE, "true" );
               writer.endElement();
             }
+
+            if ( dir.isOptional() )
+            {
+                if ( !attributeElemOpen )
+                {
+                    writer.startElement( ATTRIBUTES );
+                    attributeElemOpen = true;
+                }
+                
+                writer.startElement( ATTRIBUTE );
+                writer.addAttribute( NAME, "optional" );
+                writer.addAttribute( VALUE, "true" );
+                writer.endElement();
+            }
             
             // ignore optional compile problems, needs eclipse 4.2
             if ( dir.isAttached() )

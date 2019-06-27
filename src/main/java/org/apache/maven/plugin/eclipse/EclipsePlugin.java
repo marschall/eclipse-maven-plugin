@@ -1594,7 +1594,7 @@ public class EclipsePlugin
                     IdeUtils.toRelativeAndFixSeparator( projectBaseDir, sourceRootFile,
                                                         !projectBaseDir.equals( basedir ) );
 
-                directories.add( new EclipseSourceDir( sourceRoot, output, false, test, sourceIncludes, sourceExcludes,
+                directories.add( new EclipseSourceDir( sourceRoot, output, false, test, false, sourceIncludes, sourceExcludes,
                                                        false, !defaultSourceRoot.equals( sourceRoot1 ) ) );
             }
         }
@@ -1654,7 +1654,7 @@ public class EclipsePlugin
             }
 
             EclipseSourceDir resourceDir =
-                new EclipseSourceDir( resourcePath, thisOutput, true, test, resource.getIncludes(), excludes,
+                new EclipseSourceDir( resourcePath, thisOutput, true, test, false, resource.getIncludes(), excludes,
                                       resource.isFiltering(), false );
 
             if ( !directories.add( resourceDir ) )
