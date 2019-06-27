@@ -36,7 +36,7 @@ To use this in your projects update all your POMs to use
 <plugin>
   <groupId>com.github.marschall</groupId>
   <artifactId>eclipse-maven-plugin</artifactId>
-  <version>2.11.1</version>
+  <version>2.11.2</version>
 </plugin>
 ```
 
@@ -46,6 +46,7 @@ instead of
 <plugin>
   <groupId>org.apache.maven.plugins</groupId>
   <artifactId>maven-eclipse-plugin</artifactId>
+  <version>2.10</version>
 </plugin>
 ```
 
