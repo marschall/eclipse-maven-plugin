@@ -571,8 +571,8 @@ public class EclipseClasspathWriter
           }
 
           writer.startElement( ATTRIBUTE );
-          writer.addAttribute( VALUE, "true" );
           writer.addAttribute( NAME, "test" );
+          writer.addAttribute( VALUE, "true" );
           writer.endElement();
         }
 
