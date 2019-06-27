@@ -173,20 +173,11 @@ public class EclipseProjectWriter
         }
 
         // adds new entries after the existing ones
-        for ( String o2 : config.getProjectnatures() )
-        {
-            projectnatures.add( o2 );
-        }
+        projectnatures.addAll( config.getProjectnatures() );
 
-        for ( BuildCommand o1 : config.getBuildCommands() )
-        {
-            buildCommands.add( o1 );
-        }
+        buildCommands.addAll( config.getBuildCommands() );
 
-        for ( LinkedResource o : config.getLinkedResources() )
-        {
-            linkedResources.add( o );
-        }
+        linkedResources.addAll( config.getLinkedResources() );
 
         Writer w;
 

@@ -648,14 +648,12 @@ public class IdeUtils
      * @param project maven project
      * @return option value (may be null)
      */
-    private static String findCompilerPluginSettingInPlugins( List plugins, String optionName )
+    private static String findCompilerPluginSettingInPlugins( List<Plugin> plugins, String optionName )
     {
         String value = null;
 
-        for ( Object plugin1 : plugins )
+        for ( Plugin plugin : plugins )
         {
-            Plugin plugin = (Plugin) plugin1;
-
             if ( plugin.getArtifactId().equals( ARTIFACT_MAVEN_COMPILER_PLUGIN ) )
             {
                 // TODO: This may cause ClassCastExceptions eventually, if the dom impls differ.
@@ -667,13 +665,9 @@ public class IdeUtils
                     value = o.getChild( optionName ).getValue();
                 }
 
-                List executions = plugin.getExecutions();
-
                 // a different source/target version can be configured for test sources compilation
-                for ( Object execution1 : executions )
+                for ( PluginExecution execution : plugin.getExecutions() )
                 {
-                    PluginExecution execution = (PluginExecution) execution1;
-
                     // TODO: This may cause ClassCastExceptions eventually, if the dom impls differ.
                     o = (Xpp3Dom) execution.getConfiguration();
 

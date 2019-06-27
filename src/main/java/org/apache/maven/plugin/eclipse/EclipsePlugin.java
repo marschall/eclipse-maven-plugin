@@ -1604,10 +1604,8 @@ public class EclipsePlugin
                                     File workspaceProjectBaseDir, boolean test, final String output )
         throws MojoExecutionException
     {
-        for ( Object resource1 : resources )
+        for ( Resource resource : resources )
         {
-            Resource resource = (Resource) resource1;
-
             getLog().debug( "Processing resource dir: " + resource.getDirectory() );
 
             List<String> excludes = new ArrayList<>( resource.getExcludes() );
