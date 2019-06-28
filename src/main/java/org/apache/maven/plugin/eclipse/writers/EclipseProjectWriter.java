@@ -204,7 +204,7 @@ public class EclipseProjectWriter
 
         IdeDependency[] dependencies = config.getDeps();
 
-        List duplicates = new ArrayList();
+        List<String> duplicates = new ArrayList<>();
         for ( IdeDependency dep : dependencies )
         {
             // Avoid duplicates entries when same project is refered using multiple types

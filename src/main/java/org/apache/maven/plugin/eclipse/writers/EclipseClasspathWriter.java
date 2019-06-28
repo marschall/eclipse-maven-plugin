@@ -374,7 +374,7 @@ public class EclipseClasspathWriter
                                                      + "Maven_Ant_Builder.launch" ) );
         }
 
-        Set addedDependencies = new HashSet();
+        Set<String> addedDependencies = new HashSet<>();
 
         // ----------------------------------------------------------------------
         // Java API dependencies that may complete the classpath container must
