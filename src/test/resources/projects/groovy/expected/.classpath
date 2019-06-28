@@ -17,7 +17,6 @@
     </attributes>
   </classpathentry>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
-  <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="var" path="M2_REPO/org/codehaus/groovy/groovy-all/1.8.0/groovy-all-1.8.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar">
@@ -25,4 +24,5 @@
       <attribute name="test" value="true"/>
     </attributes>
   </classpathentry>
+  <classpathentry kind="output" path="target/classes"/>
 </classpath>

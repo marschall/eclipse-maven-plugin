@@ -2,7 +2,6 @@
 <classpath>
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
-  <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="src" path="/primary-source-1.0-SNAPSHOT"/>
   <classpathentry kind="src" path="/logging-1.0-SNAPSHOT"/>
@@ -12,4 +11,5 @@
       <attribute name="test" value="true"/>
     </attributes>
   </classpathentry>
+  <classpathentry kind="output" path="target/classes"/>
 </classpath>

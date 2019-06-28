@@ -374,15 +374,6 @@ public class EclipseClasspathWriter
                                                      + "Maven_Ant_Builder.launch" ) );
         }
 
-        // ----------------------------------------------------------------------
-        // The default output
-        // ----------------------------------------------------------------------
-
-        writer.startElement( ELT_CLASSPATHENTRY );
-        writer.addAttribute( ATTR_KIND, ATTR_OUTPUT );
-        writer.addAttribute( ATTR_PATH, defaultOutput );
-        writer.endElement();
-
         Set addedDependencies = new HashSet();
 
         // ----------------------------------------------------------------------
@@ -429,6 +420,15 @@ public class EclipseClasspathWriter
         {
             writeClasspathContainers( writer );
         }
+
+        // ----------------------------------------------------------------------
+        // The default output
+        // ----------------------------------------------------------------------
+
+        writer.startElement( ELT_CLASSPATHENTRY );
+        writer.addAttribute( ATTR_KIND, ATTR_OUTPUT );
+        writer.addAttribute( ATTR_PATH, defaultOutput );
+        writer.endElement();
 
         writer.endElement();
 

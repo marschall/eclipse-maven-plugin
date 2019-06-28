@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
-  <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="src" path="/prefix-multymodule-1-1.0"/>
   <classpathentry kind="src" path="/multymodule-4-1.0"/>
@@ -38,4 +37,5 @@
     </attributes>
   </classpathentry>
   <classpathentry kind="lib" path="direct-sysdep.jar"/>
+  <classpathentry kind="output" path="target/classes"/>
 </classpath>
