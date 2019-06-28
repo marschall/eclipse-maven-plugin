@@ -878,7 +878,7 @@ public class EclipsePlugin
     /**
      * Setter for <code>additionalTestSourceFolders</code>.
      * 
-     * @param additionalProjectnatures The additionalTestSourceFolders to set.
+     * @param additionalTestSourceFolders The additionalTestSourceFolders to set.
      */
     public final void setAdditionalTestSourceFolders( List<String> additionalTestSourceFolders )
     {
@@ -1645,11 +1645,11 @@ public class EclipsePlugin
     }
 
     /**
-     * @param project
-     * @param basedir
-     * @param buildOutputDirectory
-     * @return
-     * @throws MojoExecutionException
+     * @param project the current Maven project
+     * @param basedir the eclipse workspace directory
+     * @param buildOutputDirectory the default output directory
+     * @return the array of Eclipse source directories
+     * @throws MojoExecutionException of failure
      */
     public final EclipseSourceDir[] buildDirectoryList( MavenProject project, File basedir, File buildOutputDirectory )
         throws MojoExecutionException
