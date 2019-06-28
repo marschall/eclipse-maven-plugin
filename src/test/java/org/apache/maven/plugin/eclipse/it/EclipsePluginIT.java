@@ -743,6 +743,12 @@ public class EclipsePluginIT
         testProject( "project-66" );
     }
     
+    public void testProject67()
+                    throws Exception
+    {
+        testProject( "project-67" );
+    }
+    
 
     public void testGroovy()
         throws Exception

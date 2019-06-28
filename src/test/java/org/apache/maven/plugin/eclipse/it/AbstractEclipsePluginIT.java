@@ -399,6 +399,7 @@ public abstract class AbstractEclipsePluginIT
         request.setShowErrors( true );
         request.getProperties().setProperty( "downloadSources", "false" );
         request.getProperties().setProperty( "downloadJavadocs", "false" );
+        // request.setMavenOpts( "-Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000" );
 
         request.setDebug( true );
 

@@ -236,6 +236,54 @@ public class EclipsePlugin
     @Parameter
     private List additionalBuildcommands;
 
+    /**
+     * List of source folders to be added to the default ones.
+     *
+     * <pre>
+     * &lt;additionalSourceFolders&gt;
+     *    &lt;additionalSourceFolder&gt;target/generated-sources&lt;/additionalSourceFolder&gt;
+     * &lt;/additionalSourceFolders&gt;
+     * </pre>
+     */
+    @Parameter
+    private List<String> additionalSourceFolders;
+
+    /**
+     * List of optional source folders to be added to the default ones.
+     *
+     * <pre>
+     * &lt;additionalOptionalSourceFolders&gt;
+     *    &lt;additionalOptionalSourceFolder&gt;target/generated-sources&lt;/additionalOptionalSourceFolder&gt;
+     * &lt;/additionalOptionalSourceFolders&gt;
+     * </pre>
+     */
+    @Parameter
+    private List<String> additionalOptionalSourceFolders;
+
+    /**
+     * List of test source folders to be added to the default ones.
+     *
+     * <pre>
+     * &lt;additionalTestSourceFolders&gt;
+     *    &lt;additionalTestSourceFolder&gt;target/generated-test-sources&lt;/additionalTestSourceFolder&gt;
+     * &lt;/additionalTestSourceFolders&gt;
+     * </pre>
+     */
+    @Parameter
+    private List<String> additionalTestSourceFolders;
+
+    /**
+     * List of optional test source folders to be added to the default ones.
+     *
+     * <pre>
+     * &lt;additionalOptionalTestSourceFolders&gt;
+     *    &lt;additionalOptionalTestSourceFolder&gt;target/generated-test-sources&lt;/additionalOptionalTestSourceFolder&gt;
+     * &lt;/additionalOptionalTestSourceFolders&gt;
+     * </pre>
+     */
+    @Parameter
+    private List<String> additionalOptionalTestSourceFolders;
+
     // CHECKSTYLE_OFF: LineLength
     /**
      * List of container classpath entries. By default the <code>org.eclipse.jdt.launching.JRE_CONTAINER</code>
@@ -775,6 +823,86 @@ public class EclipsePlugin
     public final void setAdditionalBuildcommands( List additionalBuildcommands )
     {
         this.additionalBuildcommands = additionalBuildcommands;
+    }
+
+    /**
+     * Getter for <code>additionalProjectnatures</code>.
+     * 
+     * @return the additionalProjectnatures.
+     */
+    public final List<String> getAdditionalSourceFolders()
+    {
+        return additionalSourceFolders;
+    }
+
+    /**
+     * Setter for <code>additionalSourceFolders</code>.
+     * 
+     * @param additionalSourceFolders The additionalProjectnatures to set.
+     */
+    public final void setAdditionalSourceFolders( List<String> additionalSourceFolders )
+    {
+        this.additionalSourceFolders = additionalSourceFolders;
+    }
+
+    /**
+     * Getter for <code>additionalOptionalSourceFolders</code>.
+     * 
+     * @return the additionalOptionalSourceFolders.
+     */
+    public final List<String> getAdditionalOptionalSourceFolders()
+    {
+        return additionalOptionalSourceFolders;
+    }
+
+    /**
+     * Setter for <code>additionalOptionalSourceFolders</code>.
+     * 
+     * @param additionalOptionalSourceFolders The additionalOptionalSourceFolders to set.
+     */
+    public final void setAdditionalOptionalSourceFolders( List<String> additionalOptionalSourceFolders )
+    {
+        this.additionalOptionalSourceFolders = additionalOptionalSourceFolders;
+    }
+
+    /**
+     * Getter for <code>additionalTestSourceFolders</code>.
+     * 
+     * @return the additionalTestSourceFolders.
+     */
+    public final List<String> getAdditionalTestSourceFolders()
+    {
+        return additionalTestSourceFolders;
+    }
+
+    /**
+     * Setter for <code>additionalTestSourceFolders</code>.
+     * 
+     * @param additionalProjectnatures The additionalTestSourceFolders to set.
+     */
+    public final void setAdditionalTestSourceFolders( List<String> additionalTestSourceFolders )
+    {
+        this.additionalTestSourceFolders = additionalTestSourceFolders;
+    }
+
+    /**
+     * Getter for <code>additionalOptionalTestSourceFolders</code>.
+     * 
+     * @return the additionalOptionalTestSourceFolders.
+     */
+    public final List<String> getAdditionalOptionalTestSourceFolders()
+    {
+        return additionalOptionalTestSourceFolders;
+    }
+
+    /**
+     * Setter for <code>additionalOptionalTestSourceFolders</code>.
+     * 
+     * @param additionalOptionalTestSourceFolders The additionalOptionalTestSourceFolders to set.
+     */
+    public final void setAdditionalOptionalTestSourceFolders( List<String> additionalOptionalTestSourceFolders )
+    {
+        this.additionalOptionalTestSourceFolders = additionalOptionalTestSourceFolders;
     }
 
     /**
@@ -1516,6 +1644,13 @@ public class EclipsePlugin
         // CHECKSTYLE_ON: MagicNumber
     }
 
+    /**
+     * @param project
+     * @param basedir
+     * @param buildOutputDirectory
+     * @return
+     * @throws MojoExecutionException
+     */
     public final EclipseSourceDir[] buildDirectoryList( MavenProject project, File basedir, File buildOutputDirectory )
         throws MojoExecutionException
     {
@@ -1539,16 +1674,31 @@ public class EclipsePlugin
 
         Set<EclipseSourceDir> mainDirectories = new LinkedHashSet<>();
 
-        extractSourceDirs( mainDirectories, project.getCompileSourceRoots(), basedir, projectBaseDir, false, null,
-                           project.getBuild().getSourceDirectory() );
+        String sourceDirectory = project.getBuild().getSourceDirectory();
+        extractSourceDirs( mainDirectories, project.getCompileSourceRoots(), basedir, projectBaseDir, false, false,
+                           null, sourceDirectory );
+
+        extractAdditionalSourceDirs( mainDirectories, getAdditionalSourceFolders(),
+                           basedir, projectBaseDir, false, false, null, sourceDirectory );
+
+        extractAdditionalSourceDirs( mainDirectories, getAdditionalOptionalSourceFolders(),
+                           basedir, projectBaseDir, false, true,
+                           null, sourceDirectory );
 
         extractResourceDirs( mainDirectories, project.getBuild().getResources(), basedir, projectBaseDir, false,
                              mainOutput );
 
         Set<EclipseSourceDir> testDirectories = new LinkedHashSet<>();
 
-        extractSourceDirs( testDirectories, project.getTestCompileSourceRoots(), basedir, projectBaseDir, true,
-                           testOutput, project.getBuild().getTestSourceDirectory() );
+        String testSourceDirectory = project.getBuild().getTestSourceDirectory();
+        extractSourceDirs( testDirectories, project.getTestCompileSourceRoots(), basedir, projectBaseDir, true, false,
+                           testOutput, testSourceDirectory );
+        
+        extractAdditionalSourceDirs( testDirectories, getAdditionalTestSourceFolders(),
+                           basedir, projectBaseDir, true, false, testOutput, testSourceDirectory );
+
+        extractAdditionalSourceDirs( testDirectories, getAdditionalOptionalTestSourceFolders(),
+                           basedir, projectBaseDir, true, true, testOutput, testSourceDirectory );
 
         extractResourceDirs( testDirectories, project.getBuild().getTestResources(), basedir, projectBaseDir, true,
                              testOutput );
@@ -1580,9 +1730,15 @@ public class EclipsePlugin
     }
 
     private void extractSourceDirs( Set<EclipseSourceDir> directories, List<String> sourceRoots, File basedir,
-                                    File projectBaseDir, boolean test, String output, String defaultSourceRoot )
+                                    File projectBaseDir, boolean test, boolean optional, String output,
+                                    String defaultSourceRoot )
         throws MojoExecutionException
     {
+        if ( sourceRoots == null )
+        {
+            return;
+        }
+        
         for ( String sourceRoot1 : sourceRoots )
         {
 
@@ -1594,9 +1750,33 @@ public class EclipsePlugin
                     IdeUtils.toRelativeAndFixSeparator( projectBaseDir, sourceRootFile,
                                                         !projectBaseDir.equals( basedir ) );
 
-                directories.add( new EclipseSourceDir( sourceRoot, output, false, test, false, sourceIncludes, sourceExcludes,
+                directories.add( new EclipseSourceDir( sourceRoot, output, false, test, optional, sourceIncludes, sourceExcludes,
                                                        false, !defaultSourceRoot.equals( sourceRoot1 ) ) );
             }
+        }
+    }
+    
+    private void extractAdditionalSourceDirs( Set<EclipseSourceDir> directories, List<String> sourceRoots, File basedir,
+                                              File projectBaseDir, boolean test, boolean optional, String output,
+                                              String defaultSourceRoot )
+                                                              throws MojoExecutionException
+    {
+        if ( sourceRoots == null )
+        {
+            return;
+        }
+
+        for ( String sourceRoot1 : sourceRoots )
+        {
+
+            File sourceRootFile = new File( sourceRoot1 );
+
+            String sourceRoot =
+                            IdeUtils.toRelativeAndFixSeparator( projectBaseDir, sourceRootFile,
+                                                                !projectBaseDir.equals( basedir ) );
+
+            directories.add( new EclipseSourceDir( sourceRoot, output, false, test, optional, sourceIncludes, sourceExcludes,
+                                                   false, !defaultSourceRoot.equals( sourceRoot1 ) ) );
         }
     }
 
