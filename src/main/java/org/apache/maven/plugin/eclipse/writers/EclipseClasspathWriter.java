@@ -236,13 +236,14 @@ public class EclipseClasspathWriter
             }
 
             writer.addAttribute( ATTR_KIND, "src" ); //$NON-NLS-1$
-            writer.addAttribute( ATTR_PATH, dir.getPath() );
 
             if ( !isSpecial && dir.getOutput() != null && !defaultOutput.equals( dir.getOutput() ) )
             {
                 writer.addAttribute( ATTR_OUTPUT, dir.getOutput() );
             }
 
+            writer.addAttribute( ATTR_PATH, dir.getPath() );
+            
             boolean attributeElemOpen = false;
 
             // mark test source folders as "test" (required for eclipse 4.8 photon)
