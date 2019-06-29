@@ -244,6 +244,8 @@ public class EclipsePlugin
      *    &lt;additionalSourceFolder&gt;target/generated-sources&lt;/additionalSourceFolder&gt;
      * &lt;/additionalSourceFolders&gt;
      * </pre>
+     * 
+     * @since 2.12
      */
     @Parameter
     private List<String> additionalSourceFolders;
@@ -256,6 +258,8 @@ public class EclipsePlugin
      *    &lt;additionalOptionalSourceFolder&gt;target/generated-sources&lt;/additionalOptionalSourceFolder&gt;
      * &lt;/additionalOptionalSourceFolders&gt;
      * </pre>
+     * 
+     * @since 2.12
      */
     @Parameter
     private List<String> additionalOptionalSourceFolders;
@@ -268,6 +272,8 @@ public class EclipsePlugin
      *    &lt;additionalTestSourceFolder&gt;target/generated-test-sources&lt;/additionalTestSourceFolder&gt;
      * &lt;/additionalTestSourceFolders&gt;
      * </pre>
+     * 
+     * @since 2.12
      */
     @Parameter
     private List<String> additionalTestSourceFolders;
@@ -280,6 +286,8 @@ public class EclipsePlugin
      *    &lt;additionalOptionalTestSourceFolder&gt;target/generated-test-sources&lt;/additionalOptionalTestSourceFolder&gt;
      * &lt;/additionalOptionalTestSourceFolders&gt;
      * </pre>
+     * 
+     * @since 2.12
      */
     @Parameter
     private List<String> additionalOptionalTestSourceFolders;
