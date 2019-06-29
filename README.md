@@ -17,6 +17,7 @@ Changes since the original Maven Eclipse Plugin 2.10
 * support for test dependencies, both JAR and project dependencies
 * support for the `--release` compiler option
 * ignore optional compile problems on attached source folders
+* additional source folders
 * JavaEE 7
 * JavaEE 8
 * Java 9 to 17
